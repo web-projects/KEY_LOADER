@@ -1,6 +1,8 @@
-﻿using Devices.Verifone.VIPA;
+﻿using Devices.Common;
+using Devices.Verifone.VIPA;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Threading;
 
@@ -22,25 +24,37 @@ namespace Devices.Verifone.Connection
 
         private Thread readThread;
         private bool readContinue = true;
+        private DeviceInformation deviceInformation;
+
+        // monitor port change
+        private bool connected;
 
         private const int portReadTimeout = 10000;
         private const int portWriteTimeout = 10000;
         private SerialPort serialPort;
 
-        private readonly Object ReadResponsesBytesLock = new object();
+        private readonly object ReadResponsesBytesLock = new object();
         private byte[] ReadResponsesBytes = Array.Empty<byte>();
         private List<byte[]> ReadResponseComponentBytes = new List<byte[]>();
         private ResponseBytesHandlerDelegate ResponseBytesHandler;
         public delegate void ResponseBytesHandlerDelegate(byte[] msg);
 
         private bool lastCDHolding;
-        private bool connected;
         private string commPort;
 
         internal VIPADevice.ResponseTagsHandlerDelegate ResponseTagsHandler = null;
         internal VIPADevice.ResponseTaglessHandlerDelegate ResponseTaglessHandler = null;
         internal VIPADevice.ResponseCLessHandlerDelegate ResponseContactlessHandler = null;
 
+        public SerialConnection(DeviceInformation deviceInformation)
+        {
+            this.deviceInformation = deviceInformation;
+
+            //if (deviceInformation.ComPort?.Length > 0 && !Config.SerialConfig.CommPortName.Equals(deviceInformation.ComPort, StringComparison.OrdinalIgnoreCase))
+            //{
+            //    Config.SerialConfig.CommPortName = deviceInformation.ComPort;
+            //}
+        }
         #endregion --- attributes ---
 
         #region --- private methods ---
@@ -147,7 +161,12 @@ namespace Devices.Verifone.Connection
                     if (ResponseTagsHandler != null || ResponseContactlessHandler != null)
                     {
                         TLV.TLV tlv = new TLV.TLV();
-                        var tags = tlv.Decode(totalDecodeBytes, 0, totalDecodeBytes.Length, nestedTagTags);
+                        List<TLV.TLV> tags = null;
+
+                        if (responseCode == (int)VipaSW1SW2Codes.Success)
+                        {
+                            tags = tlv.Decode(totalDecodeBytes, 0, totalDecodeBytes.Length, nestedTagTags);
+                        }
 
                         //PrintTags(tags);
                         if (ResponseTagsHandler != null)
@@ -194,31 +213,36 @@ namespace Devices.Verifone.Connection
             {
                 try
                 {
-                    byte[] bytes = new byte[256];
-                    var readLength = serialPort.Read(bytes, 0, bytes.Length);
-                    if (readLength > 0 && readContinue)
-                    {
-                        byte[] readBytes = new byte[readLength];
-                        Array.Copy(bytes, 0, readBytes, 0, readLength);
-
-                        ResponseBytesHandler(readBytes);
+                    if (serialPort?.IsOpen ?? false)
+                    { 
+                        byte[] bytes = new byte[256];
+                        var readLength = serialPort?.Read(bytes, 0, bytes.Length) ?? 0;
+                        if (readLength > 0)
+                        {
+                            byte[] readBytes = new byte[readLength];
+                            Array.Copy(bytes, 0, readBytes, 0, readLength);
 #if DEBUG
-                        Console.WriteLine($"DEVICE-READ: ON PORT={commPort} - {BitConverter.ToString(readBytes)}");
-                        System.Diagnostics.Debug.WriteLine($"READ: ON PORT={commPort} - {BitConverter.ToString(readBytes)}");
+                            System.Diagnostics.Debug.WriteLine($"VIPA-READ [{serialPort?.PortName}]: {BitConverter.ToString(readBytes)}");
 #endif
+                            ResponseBytesHandler(readBytes);
+                        }
                     }
                 }
-                catch (TimeoutException te)
+                catch (TimeoutException)
                 {
-                    //Console.WriteLine($"SERIAL: ON PORT={commPort} - exception={te.Message}");
                 }
-                catch (OperationCanceledException op)
+                // TODO: remove unnecessary catches after POC for multi-device is shakendown
+                catch (InvalidOperationException)
                 {
-                    ///Console.WriteLine($"SERIAL: ON PORT={commPort} - exception={op.Message}");
                 }
-                catch (Exception ex)
+                catch (OperationCanceledException)
                 {
-                    //Console.WriteLine($"SERIAL: ON PORT={commPort} - exception={ex.Message}");
+                }
+                catch (NullReferenceException)
+                {
+                }
+                catch (IOException)
+                {
                 }
             }
         }
@@ -246,9 +270,6 @@ namespace Devices.Verifone.Connection
 
             try
             {
-                // Setup read thread
-                readThread = new Thread(ReadResponseBytes);
-
                 // Create a new SerialPort object with default settings.
                 serialPort = new SerialPort(commPort);
 
@@ -269,9 +290,11 @@ namespace Devices.Verifone.Connection
                 serialPort.DiscardInBuffer();
                 serialPort.DiscardOutBuffer();
 
-                ResponseBytesHandler += ReadResponses;
+                // Setup read thread
+                readThread = new Thread(ReadResponseBytes);
 
                 readThread.Start();
+                ResponseBytesHandler += ReadResponses;
 
                 Console.WriteLine($"SERIAL: ON PORT={commPort} - CONNECTION OPEN");
 
@@ -285,8 +308,15 @@ namespace Devices.Verifone.Connection
                 {
                     throw;
                 }
+
+                Dispose();
             }
 
+            return connected;
+        }
+
+        public bool IsConnected()
+        {
             return connected;
         }
 
@@ -297,9 +327,10 @@ namespace Devices.Verifone.Connection
                 try
                 {
                     readContinue = false;
-                    Thread.Sleep(100);
+                    connected = false;
+                    Thread.Sleep(1000);
 
-                    readThread.Join(1024);
+                    readThread.Join(1000);
                     ResponseBytesHandler -= ReadResponses;
 
                     // discard any buffered bytes
@@ -307,6 +338,8 @@ namespace Devices.Verifone.Connection
                     serialPort.DiscardOutBuffer();
 
                     serialPort.Close();
+
+                    System.Diagnostics.Debug.WriteLine($"VIPA [{serialPort?.PortName}]: closed port.");
                 }
                 catch (Exception)
                 {
@@ -315,48 +348,31 @@ namespace Devices.Verifone.Connection
                         throw;
                     }
                 }
-                finally
-                {
-                    Console.WriteLine($"SERIAL: ON PORT={commPort} - CONNECTION CLOSED");
-                }
             }
-        }
-
-        public bool Connected()
-        {
-            try
-            {
-                if (lastCDHolding != serialPort?.CDHolding)
-                {
-                    connected = false;
-                    Dispose();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"SerialConnection: exception=[{e.Message}]");
-            }
-
-            return connected;
         }
 
         public void Dispose()
         {
-            try
-            {
-                readContinue = false;
-                Thread.Sleep(100);
-                Disconnect();
-            }
-            finally
-            {
-                Dispose(true);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            GC.SuppressFinalize(this);
+            Disconnect();
+
+            if (disposing)
+            {
+                serialPort?.Dispose();
+                serialPort = null;
+            }
+
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.ports.serialport.open?view=dotnet-plat-ext-3.1#System_IO_Ports_SerialPort_Open
+            // SerialPort has a quirk (aka bug) where needs time to let a worker thread exit:
+            //    "The best practice for any application is to wait for some amount of time after calling the Close method before
+            //     attempting to call the Open method, as the port may not be closed instantly".
+            // The amount of time is unspecified and unpredictable.
+            Thread.Sleep(250);
         }
 
         #endregion

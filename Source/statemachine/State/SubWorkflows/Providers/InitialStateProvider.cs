@@ -18,6 +18,9 @@ namespace StateMachine.State.SubWorkflows.Providers
             DeviceSubWorkflowState proposedState = ((linkActionRequest.DeviceActionRequest?.DeviceAction) switch
             {
                 LinkDeviceActionType.GetStatus => DeviceSubWorkflowState.GetStatus,
+                LinkDeviceActionType.GetSecurityConfiguration => DeviceSubWorkflowState.GetSecurityConfiguration,
+                LinkDeviceActionType.LoadHMACKeys => DeviceSubWorkflowState.LoadHMACKeys,
+                LinkDeviceActionType.GenerateHMAC => DeviceSubWorkflowState.GenerateHMAC,
                 LinkDeviceActionType.AbortCommand => DeviceSubWorkflowState.AbortCommand,
                 LinkDeviceActionType.ResetCommand => DeviceSubWorkflowState.ResetCommand,
                 _ => DeviceSubWorkflowState.Undefined

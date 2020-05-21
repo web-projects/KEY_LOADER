@@ -1,6 +1,7 @@
 ﻿using StateMachine.State.Enums;
 using StateMachine.State.Interfaces;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace StateMachine.State.Actions
@@ -15,7 +16,7 @@ namespace StateMachine.State.Actions
         {
             // TODO: Implement Device Health here.
             //Controller.LoggingClient?.LogInfoAsync($"Currently in the '{WorkflowStateType}' state with nothing to do.. skipping...");
-            Console.WriteLine($"Currently in the '{WorkflowStateType}' state with nothing to do.. skipping...");
+            Debug.WriteLine($"Currently in the '{WorkflowStateType}' state with nothing to do.. skipping...");
 
             Controller.SetPublishEventHandlerAsTask();
 

@@ -8,6 +8,7 @@ namespace DEVICE_CORE
 {
     class Program
     {
+        const int COMMAND_WAIT_DELAY = 4096;
         static readonly DeviceActivator activator = new DeviceActivator();
 
         static async Task Main(string[] args)
@@ -20,15 +21,13 @@ namespace DEVICE_CORE
 
             IDeviceApplication application = activator.Start(pluginPath);
             await application.Run().ConfigureAwait(false);
-            await Task.Delay(5120);
+            await Task.Delay(COMMAND_WAIT_DELAY);
 
             // GET STATUS
-            await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
-            await Task.Delay(5120);
+            //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
+            //await Task.Delay(4096);
 
-            Console.WriteLine("\nCOMMANDS: [l=LOAD, t=TEST, s=STATUS, q=QUIT]\r\n");
-
-            ConsoleKey keypressed = Console.ReadKey(true).Key;
+            ConsoleKey keypressed = GetKeyPressed();
 
             while (keypressed != ConsoleKey.Q)
             {
@@ -36,30 +35,41 @@ namespace DEVICE_CORE
                 {
                     case ConsoleKey.L:
                     {
-                        Console.WriteLine("\r\nCOMMAND: [LOAD]");
+                        //Console.WriteLine("\r\nCOMMAND: [LOAD]");
+                        await application.Command(LinkDeviceActionType.LoadHMACKeys).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
                     case ConsoleKey.T:
                     {
-                        Console.WriteLine("\r\nCOMMAND: [TEST]");
+                        //Console.WriteLine("\r\nCOMMAND: [TEST]");
+                        await application.Command(LinkDeviceActionType.GenerateHMAC).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
                     case ConsoleKey.S:
                     {
-                        Console.WriteLine("\r\nCOMMAND: [STATUS]");
+                        //Console.WriteLine("\r\nCOMMAND: [STATUS]");
                         await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
                 }
 
                 await Task.Delay(50).ConfigureAwait(false);
 
-                keypressed = Console.ReadKey(true).Key;
+                keypressed = GetKeyPressed();
             }
 
             Console.WriteLine("\r\nCOMMAND: [QUIT]\r\n");
 
             application.Shutdown();
+        }
+
+        static private ConsoleKey GetKeyPressed()
+        {
+            Console.WriteLine("\nCOMMANDS: [l=LOAD, t=TEST, s=STATUS, q=QUIT]\r\n");
+            return Console.ReadKey(true).Key;
         }
     }
 }

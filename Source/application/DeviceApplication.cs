@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using StateMachine.State.Management;
+using System;
 using System.Threading.Tasks;
 using XO.Requests;
 
@@ -23,8 +24,10 @@ namespace DEVICE_CORE
 
         public Task Command(LinkDeviceActionType action)
         {
+            Console.WriteLine($"\n===========================================================================");
+            Console.WriteLine($"DAL COMMAND: {action}");
+            Console.WriteLine($"===========================================================================");
             DeviceStateManager.SetWorkflow(action);
-            _ = Task.Run(() => DeviceStateManager.LaunchWorkflow());
             return Task.CompletedTask;
         }
 

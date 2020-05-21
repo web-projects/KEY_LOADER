@@ -31,3 +31,4 @@ This an application to load HMAC KEYS.
 ### HISTORY ###
 
 * 20200520 - Initial repository
+* 20200521 - Added HMAC Validator

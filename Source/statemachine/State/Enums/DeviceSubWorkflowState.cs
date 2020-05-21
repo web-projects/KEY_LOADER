@@ -20,9 +20,19 @@ namespace StateMachine.State.Enums
         GetStatus,
 
         /// <summary>
-        /// Represents a state when DAL starts getting security status information from the device
+        /// Represents a state when DAL gets security status information from the device
         /// </summary>
         GetSecurityConfiguration,
+
+        /// <summary>
+        /// Represents a state when DAL loads HMAC keys to the device
+        /// </summary>
+        LoadHMACKeys,
+
+        /// <summary>
+        /// Represents a state when DAL generates HMAC from the device
+        /// </summary>
+        GenerateHMAC,
 
         /// <summary>
         /// Represents a state when DAL aborts pending device commands

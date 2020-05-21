@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Source\Application\Application.csproj" />
+    <ProjectReference Include="..\..\..\..\Source\Application\SphereVerifoneDeviceHealth.csproj" />
     <ProjectReference Include="..\..\..\..\Source\common\core\Core.Patterns\Core.Patterns.csproj" />
     <ProjectReference Include="..\..\..\..\Source\common\xo\XO.csproj" />
     <ProjectReference Include="..\..\..\TestHelper\TestHelper.csproj" />

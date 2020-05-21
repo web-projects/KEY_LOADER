@@ -170,8 +170,8 @@ namespace StateMachine.State.Actions
                 {
                     //Controller.LoggingClient.LogInfoAsync($"Device found: name='{device.Name}', model={device.DeviceInformation.Model}, " +
                     //    $"serial={device.DeviceInformation.SerialNumber}");
-                    Console.WriteLine($"Device found: name='{device.Name}', model='{device?.DeviceInformation?.Model}', " +
-                        $"serial='{device?.DeviceInformation?.SerialNumber}'");
+                    Console.WriteLine($"DEVICE FOUND: name='{device.Name}', model='{device?.DeviceInformation?.Model}', " +
+                        $"serial='{device?.DeviceInformation?.SerialNumber}'\n");
                     device.DeviceSetIdle();
                 }
             }

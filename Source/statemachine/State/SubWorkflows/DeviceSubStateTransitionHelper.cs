@@ -20,6 +20,20 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeGetLoadHMACKeysStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeGetGenerateHMACStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeDeviceAbortStateTransition(bool exception) =>
             exception switch
             {
@@ -53,6 +67,8 @@ namespace StateMachine.State.SubWorkflows
             {
                 GetStatus => ComputeGetStatusStateTransition(exception),
                 GetSecurityConfiguration => ComputeGetSecurityConfigurationStateTransition(exception),
+                LoadHMACKeys => ComputeGetLoadHMACKeysStateTransition(exception),
+                GenerateHMAC => ComputeGetGenerateHMACStateTransition(exception),
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),

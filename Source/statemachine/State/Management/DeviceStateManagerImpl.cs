@@ -19,6 +19,7 @@ using StateMachine.State.SubWorkflows;
 using StateMachine.State.SubWorkflows.Management;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using XO.Requests;
@@ -321,7 +322,7 @@ namespace StateMachine.State.Management
             finally
             {
                 //_ = LoggingClient.LogInfoAsync($"Request of MessageID: '{messageId}' {sendReceive} Listener.").ConfigureAwait(false);
-                Console.WriteLine($"Request of MessageID: '{messageId}' {sendReceive} Listener.");
+                Debug.WriteLine($"Request of MessageID: '{messageId}' {sendReceive} Listener.");
             }
         }
 
@@ -597,7 +598,7 @@ namespace StateMachine.State.Management
 
         private void LogStateChange(DeviceWorkflowState oldState, DeviceWorkflowState newState)
             //=> _ = LoggingClient.LogInfoAsync($"Workflow State change from '{oldState}' to '{newState}' detected.");
-            => Console.WriteLine($"Workflow State change from '{oldState}' to '{newState}' detected.");
+            => Debug.WriteLine($"Workflow State change from '{oldState}' to '{newState}' detected.");
 
         public async Task Error(IDeviceStateAction state)
         {

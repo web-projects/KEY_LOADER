@@ -17,6 +17,8 @@ namespace StateMachine.State.SubWorkflows.Actions.Controllers
                 {
                     [GetStatus] = (IDeviceSubStateController _) => new DeviceGetStatusSubStateAction(_),
                     [GetSecurityConfiguration] = (IDeviceSubStateController _) => new DeviceGetSecurityConfigurationSubStateAction(_),
+                    [LoadHMACKeys] = (IDeviceSubStateController _) => new DeviceLoadHMACKeysSubStateAction(_),
+                    [GenerateHMAC] = (IDeviceSubStateController _) => new DeviceGenerateHMACSubStateAction(_),
                     [AbortCommand] = (IDeviceSubStateController _) => new DeviceAbortCommandSubStateAction(_),
                     [ResetCommand] = (IDeviceSubStateController _) => new DeviceResetCommandSubStateAction(_),
                     [SanityCheck] = (IDeviceSubStateController _) => new DeviceSanityCheckSubStateAction(_),

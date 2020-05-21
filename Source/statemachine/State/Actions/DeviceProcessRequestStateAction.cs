@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 using XO.Device;
 using XO.Requests;
+using System.Diagnostics;
 
 namespace StateMachine.State.Actions
 {
@@ -37,7 +38,7 @@ namespace StateMachine.State.Actions
             try
             {
                 //_ = Controller.LoggingClient.LogInfoAsync($"Received from {linkRequest}");
-                Console.WriteLine($"Received from {linkRequest}");
+                Debug.WriteLine($"Received from {linkRequest}");
                 LinkRequest linkRequestResponse = null;
                 bool deviceConnected = false;
 
@@ -85,7 +86,7 @@ namespace StateMachine.State.Actions
 
                     object response = JsonConvert.SerializeObject(linkRequestResponse);
                     //_ = Controller.LoggingClient.LogInfoAsync($"Sending to Listener");
-                    Console.WriteLine($"Sending to Listener");
+                    Debug.WriteLine($"Sending to Listener");
                     //await Controller.Connector.Publish(response, new TopicOption[] { TopicOption.Servicer }).ConfigureAwait(false);
                 }
             }

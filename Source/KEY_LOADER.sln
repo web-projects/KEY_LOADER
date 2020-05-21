@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{17B2930D-4E85-4EBE-86A8-EC1181E3D04E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SphereVerifoneDeviceHealth", "Application\SphereVerifoneDeviceHealth.csproj", "{17B2930D-4E85-4EBE-86A8-EC1181E3D04E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{62A38E03-D830-4A44-ADD2-2913151D0C3D} = {62A38E03-D830-4A44-ADD2-2913151D0C3D}
 		{35CF7D08-EDD9-4BB5-8ACF-1FEE231069A0} = {35CF7D08-EDD9-4BB5-8ACF-1FEE231069A0}

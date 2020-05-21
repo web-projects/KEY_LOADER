@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using XO.Requests;
+using System.Diagnostics;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
@@ -22,7 +23,7 @@ namespace StateMachine.State.SubWorkflows.Actions
                 string serializedResponse = JsonConvert.SerializeObject(response);
 
                 //_ = Controller.LoggingClient.LogInfoAsync($"Request completed. Sending to Listener.");
-                Console.WriteLine($"Request completed. Sending to Listener.");
+                Debug.WriteLine($"Request completed. Sending to Listener.");
                 //_ = Controller.Connector.Publish(serializedResponse, new TopicOption[] { TopicOption.Servicer }).ConfigureAwait(false);
             }
             else

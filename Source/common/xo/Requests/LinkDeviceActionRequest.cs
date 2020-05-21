@@ -17,6 +17,6 @@ namespace XO.Requests
         GetIdentifier,
         GetSecurityConfiguration,
         LoadHMACKeys,
-        TestHMACKeys
+        GenerateHMAC
     }
 }

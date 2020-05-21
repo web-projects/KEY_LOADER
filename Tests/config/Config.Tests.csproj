@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\Application\Application.csproj" />
+    <ProjectReference Include="..\..\Source\Application\SphereVerifoneDeviceHealth.csproj" />
     <ProjectReference Include="..\..\Source\devices\common\Devices.Common.csproj" />
     <ProjectReference Include="..\..\Source\devices\Simulator\SimulatorDevice.csproj" />
     <ProjectReference Include="..\..\Source\devices\Verifone\Devices.Verifone.csproj" />

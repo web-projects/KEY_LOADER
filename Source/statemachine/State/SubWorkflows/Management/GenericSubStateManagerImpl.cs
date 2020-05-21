@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using XO.Requests;
+using System.Diagnostics;
 
 namespace StateMachine.State.SubWorkflows.Management
 {
@@ -183,7 +184,7 @@ namespace StateMachine.State.SubWorkflows.Management
         {
             // TODO: Add your logging here on the state change and update the messaging if necessary.
             //LoggingClient.LogInfoAsync($"State change from {oldState} to {newState}.");
-            Console.WriteLine($"State change from {oldState} to {newState}.");
+            Debug.WriteLine($"State change from {oldState} to {newState}.");
         }
 
         #endregion

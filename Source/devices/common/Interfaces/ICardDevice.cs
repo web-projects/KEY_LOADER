@@ -41,6 +41,8 @@ namespace Devices.Common.Interfaces
         // ------------------------------------------------------------------------
         LinkRequest GetStatus(LinkRequest linkRequest);
         LinkRequest GetSecurityConfiguration(LinkRequest linkRequest);
+        LinkRequest LoadHMACKeys(LinkRequest linkRequest);
+        LinkRequest GenerateHMAC(LinkRequest linkRequest);
         LinkRequest AbortCommand(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);
     }

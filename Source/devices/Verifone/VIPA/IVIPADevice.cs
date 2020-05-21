@@ -2,14 +2,25 @@
 using Devices.Verifone.TLV;
 using Devices.Verifone.Connection;
 using System.Collections.Generic;
+using static Devices.Verifone.VIPA.VIPADevice;
 
 namespace Devices.Verifone.VIPA
 {
     public interface IVIPADevice
     {
         bool Connect(string comPort, SerialConnection connection);
+
         void Dispose();
-        (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceCommandReset();
+        
         void ResponseCodeHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false);
+
+        bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "");
+
+        (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceCommandReset();
+
+        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot);
+
+        (string HMAC, int VipaResponse) GenerateHMAC();
+
     }
 }

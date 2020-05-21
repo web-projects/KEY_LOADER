@@ -26,9 +26,11 @@ namespace Devices.Verifone
         //public event PublishEvent PublishEvent;
         public event DeviceEventHandler DeviceEventOccured;
 
-        private SerialConnection serialConnection { get; set; } = new SerialConnection();
+        private SerialConnection SerialConnection { get; set; }
 
         private bool IsConnected { get; set; }
+
+        private DeviceConfig _config;
 
         [Inject]
         internal IVIPADevice vipaDevice { get; set; } = new VIPADevice();
@@ -53,6 +55,7 @@ namespace Devices.Verifone
         public void Dispose()
         {
             vipaDevice?.Dispose();
+            IsConnected = false;
         }
 
         bool ICardDevice.IsConnected(object request)
@@ -66,16 +69,15 @@ namespace Devices.Verifone
             DeviceInformation.Manufacturer = ManufacturerConfigID;
             DeviceInformation.ComPort = deviceInfo.ComPort;
 
-            serialConnection = new SerialConnection();
-            active = IsConnected = vipaDevice.Connect(deviceInfo.ComPort, serialConnection);
+            SerialConnection = new SerialConnection(DeviceInformation);
+            active = IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+
             if (active)
             {
                 (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
 
                 if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                 {
-                    //DeviceInformation = deviceInformation;
-
                     if (DeviceInformation != null)
                     {
                         DeviceInformation.Manufacturer = ManufacturerConfigID;
@@ -83,15 +85,15 @@ namespace Devices.Verifone
                         DeviceInformation.SerialNumber = deviceIdentifier.deviceInfoObject.linkDeviceResponse.SerialNumber;
                     }
                     vipaDevice = vipaDevice;
-                    //_config = config;
+                    _config = config;
                     active = true;
 
-                    Console.WriteLine($"\nDEVICE PROBE SUCCESS ON COM: {DeviceInformation?.ComPort} FOR SN: {DeviceInformation?.SerialNumber}\n");
+                    Console.WriteLine($"\nDEVICE PROBE SUCCESS ON {DeviceInformation?.ComPort}, FOR SN: {DeviceInformation?.SerialNumber}");
                 }
                 else
                 {
                     //vipaDevice.CancelResponseHandlers();
-                    Console.WriteLine($"\nDEVICE PROBE FAILED ON COM: {DeviceInformation?.ComPort}\n");
+                    Console.WriteLine($"\nDEVICE PROBE FAILED ON {DeviceInformation?.ComPort}\n");
                 }
             }
             return null;
@@ -132,7 +134,11 @@ namespace Devices.Verifone
 
         public void DeviceSetIdle()
         {
-            Console.WriteLine($"DEVICE: ON PORT={DeviceInformation.ComPort} - SET-IDLE");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: SET TO IDLE.");
+            if (vipaDevice != null)
+            {
+                vipaDevice.DisplayMessage(VIPADevice.VIPADisplayMessageValue.Idle);
+            }
         }
 
         public bool DeviceRecovery()
@@ -153,29 +159,99 @@ namespace Devices.Verifone
         public LinkRequest GetStatus(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"simulator: GET STATUS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: GET STATUS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 
         public LinkRequest GetSecurityConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"simulator: GET SECURITY CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: GET SECURITY CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        byte vssSlot = 0x02;
+                        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = vipaDevice.GetSecurityConfiguration(vssSlot);
+                        if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: KEY SLOT NUMBER  ={config.securityConfigurationObject.KeySlotNumber}");
+                            Console.WriteLine($"DEVICE: VSS SCRIPT NUMBER={config.securityConfigurationObject.VSSPrimarySlot}");
+                            Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
+                            Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                        }
+                        DeviceSetIdle();
+                    }
+                }
+            }
+ 
             return linkRequest;
         }
 
+        public LinkRequest LoadHMACKeys(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            return linkRequest;
+        }
+
+        public LinkRequest GenerateHMAC(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: GENERATE HMAC for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        (string HMAC, int VipaResponse) config = vipaDevice.GenerateHMAC();
+                        if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: HMAC={config.HMAC}\n");
+                        }
+                        DeviceSetIdle();
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
 
         public LinkRequest AbortCommand(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"simulator: ABORT COMMAND for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE: ABORT COMMAND for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 
         public LinkRequest ResetDevice(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"simulator: RESET DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE: RESET DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 
