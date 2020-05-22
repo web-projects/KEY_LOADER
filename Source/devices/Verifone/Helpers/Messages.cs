@@ -13,10 +13,12 @@ namespace Devices.Verifone.Helpers
             GetDeviceInfo,
             [StringValue("VIPA: GET DEVICE HEALTH")]
             GetDeviceHealth,
-            [StringValue("VIPA: UNLOCK DEVICE UPDATE")]
-            UnlockDeviceUpdate,
             [StringValue("VIPA: LOCK DEVICE UPDATE")]
             LockDeviceUpdate,
+            [StringValue("VIPA: UNLOCK DEVICE UPDATE")]
+            UnlockDeviceUpdate,
+            [StringValue("VIPA: UPDATE DEVICE CONFIGURATION")]
+            UpdateDeviceUpdate,
             [StringValue("VIPA: UPDATE HMAC KEYS")]
             UpdateHMACKeys,
             [StringValue("VIPA: GENERATE HMAC")]

@@ -251,7 +251,7 @@ namespace Devices.Verifone.Connection
         {
             try
             {
-                serialPort.Write(msg, 0, msg.Length);
+                serialPort?.Write(msg, 0, msg.Length);
             }
             catch (TimeoutException e)
             {
@@ -446,6 +446,12 @@ namespace Devices.Verifone.Connection
             System.Diagnostics.Debug.WriteLine($"VIPA-WRITE: ON PORT={commPort} - {BitConverter.ToString(cmdBytes)}");
 #endif
             WriteBytes(cmdBytes);
+        }
+
+        public void WriteRaw(byte []buffer)
+        {
+            System.Diagnostics.Debug.WriteLine($"VIPA-WRITE: ON PORT={commPort} - {BitConverter.ToString(buffer)}");
+            WriteBytes(buffer);
         }
 
         #endregion --- COMMANDS ---

@@ -20,6 +20,7 @@ namespace XO.Requests
         GetSecurityConfiguration,
         LockDeviceConfig,
         UnlockDeviceConfig,
+        UpdateDeviceConfig,
         UpdateHMACKeys,
         GenerateHMAC
     }

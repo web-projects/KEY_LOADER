@@ -136,6 +136,30 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: LOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest UnlockDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: UNLOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest UpdateDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: UPDATE DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         public LinkRequest GetSecurityConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();

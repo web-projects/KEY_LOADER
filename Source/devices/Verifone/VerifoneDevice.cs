@@ -236,6 +236,114 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED LOCK CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
+        public LinkRequest UnlockDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: UNLOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.UnlockDeviceConfiguration();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: CONFIGURATION UNLOCKED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED UNLOCK CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
+        public LinkRequest UpdateDeviceConfiguration(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: UPDATE DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.UpdateDeviceConfiguration();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED UPDATE CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         public LinkRequest AbortCommand(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
