@@ -128,27 +128,19 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest GetActiveKeySlot(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: GET ACTIVE KEY SLOT for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         public LinkRequest GetSecurityConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine("----------------------------------------------------------------------------------------------------");
             Console.WriteLine($"simulator: GET SECURITY CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
-            return linkRequest;
-        }
-
-        public LinkRequest LoadHMACKeys(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"simulator: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
-            return linkRequest;
-        }
-        
-        public LinkRequest GenerateHMAC(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"simulator: GENERATE HMAC for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 
@@ -165,6 +157,30 @@ namespace Devices.Simulator
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine("----------------------------------------------------------------------------------------------------");
             Console.WriteLine($"simulator: RESET DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest RebootDevice(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: REBOOT DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest UpdateHMACKeys(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+        
+        public LinkRequest GenerateHMAC(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: GENERATE HMAC for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 

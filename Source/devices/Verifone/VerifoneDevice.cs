@@ -163,6 +163,42 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest GetActiveKeySlot(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: GET ACTIVE SLOT for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        (int VipaResult, int VipaResponse) response = vipaDevice.GetActiveKeySlot();
+                        if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: VIPA ACTIVE ADE KEY SLOT={response.VipaResult}\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED GET ACTIVE SLOT REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         public LinkRequest GetSecurityConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
@@ -200,7 +236,57 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
-        public LinkRequest LoadHMACKeys(LinkRequest linkRequest)
+        public LinkRequest AbortCommand(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE: ABORT COMMAND for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest ResetDevice(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE: RESET DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest RebootDevice(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: REBOOT DEVICE with SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.DeviceReboot();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED REBOOT REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
+        public LinkRequest UpdateHMACKeys(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
@@ -220,7 +306,7 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.LoadHMACKeys();
+                        int vipaResponse = vipaDevice.UpdateHMACKeys();
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: HMAC KEYS LOADED SUCCESSFULLY\n");
@@ -267,20 +353,6 @@ namespace Devices.Verifone
                 }
             }
 
-            return linkRequest;
-        }
-
-        public LinkRequest AbortCommand(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE: ABORT COMMAND for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
-            return linkRequest;
-        }
-
-        public LinkRequest ResetDevice(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE: RESET DEVICE for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 

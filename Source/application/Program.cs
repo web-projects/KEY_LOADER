@@ -33,10 +33,31 @@ namespace DEVICE_CORE
             {
                 switch (keypressed)
                 {
+                    case ConsoleKey.K:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
+                        await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
+                        break;
+                    }
                     case ConsoleKey.L:
                     {
-                        //Console.WriteLine("\r\nCOMMAND: [LOAD]");
-                        await application.Command(LinkDeviceActionType.LoadHMACKeys).ConfigureAwait(false);
+                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
+                        await application.Command(LinkDeviceActionType.LockDeviceConfig).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
+                        break;
+                    }
+                    case ConsoleKey.R:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [REBOOT]");
+                        await application.Command(LinkDeviceActionType.RebootDevice).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
+                        break;
+                    }
+                    case ConsoleKey.S:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [STATUS]");
+                        await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
                         await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
@@ -47,10 +68,17 @@ namespace DEVICE_CORE
                         await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
-                    case ConsoleKey.S:
+                    case ConsoleKey.U:
                     {
-                        //Console.WriteLine("\r\nCOMMAND: [STATUS]");
-                        await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
+                        //Console.WriteLine("\r\nCOMMAND: [UPDATE]");
+                        await application.Command(LinkDeviceActionType.UpdateHMACKeys).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY);
+                        break;
+                    }
+                    case ConsoleKey.V:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [SLOT]");
+                        await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
                         await Task.Delay(COMMAND_WAIT_DELAY);
                         break;
                     }
@@ -68,7 +96,7 @@ namespace DEVICE_CORE
 
         static private ConsoleKey GetKeyPressed()
         {
-            Console.WriteLine("\nCOMMANDS: [l=LOAD, t=TEST, s=STATUS, q=QUIT]\r\n");
+            Console.WriteLine("\nCOMMANDS: [k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
             return Console.ReadKey(true).Key;
         }
     }

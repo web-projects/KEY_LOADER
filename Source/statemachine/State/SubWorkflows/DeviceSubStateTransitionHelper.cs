@@ -13,21 +13,14 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeGetActiveKeySlotStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeGetSecurityConfigurationStateTransition(bool exception) =>
-            exception switch
-            {
-                true => SanityCheck,
-                false => SanityCheck
-            };
-
-        private static DeviceSubWorkflowState ComputeGetLoadHMACKeysStateTransition(bool exception) =>
-            exception switch
-            {
-                true => SanityCheck,
-                false => SanityCheck
-            };
-
-        private static DeviceSubWorkflowState ComputeGetGenerateHMACStateTransition(bool exception) =>
             exception switch
             {
                 true => SanityCheck,
@@ -42,6 +35,41 @@ namespace StateMachine.State.SubWorkflows
             };
 
         private static DeviceSubWorkflowState ComputeDeviceResetStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeDeviceRebootStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeUnlockDeviceConfigStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeLockDeviceConfigStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeGetLoadHMACKeysStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeGetGenerateHMACStateTransition(bool exception) =>
             exception switch
             {
                 true => SanityCheck,
@@ -66,11 +94,15 @@ namespace StateMachine.State.SubWorkflows
             state switch
             {
                 GetStatus => ComputeGetStatusStateTransition(exception),
+                GetActiveKeySlot => ComputeGetActiveKeySlotStateTransition(exception),
                 GetSecurityConfiguration => ComputeGetSecurityConfigurationStateTransition(exception),
-                LoadHMACKeys => ComputeGetLoadHMACKeysStateTransition(exception),
-                GenerateHMAC => ComputeGetGenerateHMACStateTransition(exception),
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),
+                RebootDevice => ComputeDeviceRebootStateTransition(exception),
+                UnlockDeviceConfig => ComputeUnlockDeviceConfigStateTransition(exception),
+                LockDeviceConfig => ComputeLockDeviceConfigStateTransition(exception),
+                UpdateHMACKeys => ComputeGetLoadHMACKeysStateTransition(exception),
+                GenerateHMAC => ComputeGetGenerateHMACStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),
                 RequestComplete => ComputeRequestCompletedStateTransition(exception),
                 _ => throw new StateException($"Invalid state transition '{state}' requested.")

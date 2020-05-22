@@ -14,9 +14,13 @@ namespace XO.Requests
         GetStatus,
         AbortCommand,
         ResetCommand,
+        RebootDevice,
         GetIdentifier,
+        GetActiveKeySlot,
         GetSecurityConfiguration,
-        LoadHMACKeys,
+        LockDeviceConfig,
+        UnlockDeviceConfig,
+        UpdateHMACKeys,
         GenerateHMAC
     }
 }

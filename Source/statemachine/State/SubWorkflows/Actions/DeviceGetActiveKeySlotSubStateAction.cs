@@ -10,11 +10,11 @@ using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
-    internal class DeviceLoadHMACKeysSubStateAction : DeviceBaseSubStateAction
+    internal class DeviceGetActiveKeySlotSubStateAction : DeviceBaseSubStateAction
     {
-        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.LoadHMACKeys;
+        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.GetActiveKeySlot;
 
-        public DeviceLoadHMACKeysSubStateAction(IDeviceSubStateController _) : base(_) { }
+        public DeviceGetActiveKeySlotSubStateAction(IDeviceSubStateController _) : base(_) { }
 
         public override SubStateActionLaunchRules LaunchRules => new SubStateActionLaunchRules
         {
@@ -25,8 +25,8 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to get device status.");
-                Console.WriteLine("Unable to find a state object while attempting to load HMAC keys.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to get active ADE key slot.");
+                Console.WriteLine("Unable to find a state object while attempting to get active ADE key slot.");
                 _ = Error(this);
             }
             else
@@ -41,14 +41,14 @@ namespace StateMachine.State.SubWorkflows.Actions
                     devicesRequest.Add(JsonConvert.DeserializeObject<LinkRequest>(JsonConvert.SerializeObject(linkRequest)));
 
                     var timeoutPolicy = await cancellationBroker.ExecuteWithTimeoutAsync<LinkRequest>(
-                        _ => device.LoadHMACKeys(devicesRequest.Last()),
+                        _ => device.GetActiveKeySlot(devicesRequest.Last()),
                         DeviceConstants.CardCaptureTimeout,
                         System.Threading.CancellationToken.None);
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
-                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to obtain device status - '{Controller.DeviceEvent}'.");
-                        Console.WriteLine($"Unable to load HMAC keys - '{Controller.DeviceEvent}'.");
+                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to obtain device active ADE key slot - '{Controller.DeviceEvent}'.");
+                        Console.WriteLine($"Unable to obtain device active ADE key slot - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }
                 }

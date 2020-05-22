@@ -10,11 +10,11 @@ using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
-    internal class DeviceGenerateHMACSubStateAction : DeviceBaseSubStateAction
+    internal class DeviceUpdateHMACKeysSubStateAction : DeviceBaseSubStateAction
     {
-        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.GenerateHMAC;
+        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.UpdateHMACKeys;
 
-        public DeviceGenerateHMACSubStateAction(IDeviceSubStateController _) : base(_) { }
+        public DeviceUpdateHMACKeysSubStateAction(IDeviceSubStateController _) : base(_) { }
 
         public override SubStateActionLaunchRules LaunchRules => new SubStateActionLaunchRules
         {
@@ -25,8 +25,8 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to generate HMAC.");
-                Console.WriteLine("Unable to find a state object while attempting to generate HMAC.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to update HMAC keys.");
+                Console.WriteLine("Unable to find a state object while attempting to update HMAC keys.");
                 _ = Error(this);
             }
             else
@@ -41,14 +41,14 @@ namespace StateMachine.State.SubWorkflows.Actions
                     devicesRequest.Add(JsonConvert.DeserializeObject<LinkRequest>(JsonConvert.SerializeObject(linkRequest)));
 
                     var timeoutPolicy = await cancellationBroker.ExecuteWithTimeoutAsync<LinkRequest>(
-                        _ => device.GenerateHMAC(devicesRequest.Last()),
+                        _ => device.UpdateHMACKeys(devicesRequest.Last()),
                         DeviceConstants.CardCaptureTimeout,
                         System.Threading.CancellationToken.None);
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
-                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to generate HMAC - '{Controller.DeviceEvent}'.");
-                        Console.WriteLine($"Unable to generate HMAC - '{Controller.DeviceEvent}'.");
+                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to update HMAC keys - '{Controller.DeviceEvent}'.");
+                        Console.WriteLine($"Unable to update HMAC keys - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }
                 }

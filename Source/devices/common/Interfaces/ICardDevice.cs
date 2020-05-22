@@ -40,10 +40,12 @@ namespace Devices.Common.Interfaces
         // Methods that are mapped for usage in their respective sub-workflows.
         // ------------------------------------------------------------------------
         LinkRequest GetStatus(LinkRequest linkRequest);
+        LinkRequest GetActiveKeySlot(LinkRequest linkRequest);
         LinkRequest GetSecurityConfiguration(LinkRequest linkRequest);
-        LinkRequest LoadHMACKeys(LinkRequest linkRequest);
-        LinkRequest GenerateHMAC(LinkRequest linkRequest);
         LinkRequest AbortCommand(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);
+        LinkRequest RebootDevice(LinkRequest linkRequest);
+        LinkRequest UpdateHMACKeys(LinkRequest linkRequest);
+        LinkRequest GenerateHMAC(LinkRequest linkRequest);
     }
 }

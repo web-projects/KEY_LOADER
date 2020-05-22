@@ -3,10 +3,12 @@ using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.TLV;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using XO.Private;
@@ -61,6 +63,7 @@ namespace Devices.Verifone.VIPA
         public TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)> DeviceSecurityConfiguration = null;
 
         public TaskCompletionSource<(string HMAC, int VipaResponse)> DeviceGenerateHMAC = null;
+        public TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)> DeviceBinaryStatusInformation = null;
 
         #endregion --- attributes ---
 
@@ -168,6 +171,83 @@ namespace Devices.Verifone.VIPA
             return deviceResponse;
         }
 
+        public int DeviceReboot()
+        {
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
+
+            Debug.WriteLine(ConsoleMessages.RebootDevice.GetStringValue());
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 000, p1 = 0x01, p2 = 0x00 };
+            WriteSingleCmd(command);
+
+            int deviceResponse = ResponseCodeResult.Task.Result;
+
+            ResponseTagsHandler -= ResponseCodeHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceResponse;
+        }
+
+        public (int VipaResult, int VipaResponse) GetActiveKeySlot()
+        {
+            // check for access to the file
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(BinaryStatusObject.MAPP_SRED_CONFIG);
+
+            // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+            if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+            {
+                Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    BinaryStatusObject.MAPP_SRED_CONFIG, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                return (-1, fileStatus.VipaResponse);
+            }
+
+            // Setup for FILE OPERATIONS
+            fileStatus = SelectFileForOps(BinaryStatusObject.MAPP_SRED_CONFIG);
+            if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+            {
+                Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    BinaryStatusObject.MAPP_SRED_CONFIG, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                return (-1, fileStatus.VipaResponse);
+            }
+
+            // Read File Contents at OFFSET 250
+            fileStatus = ReadBinaryDataFromSelectedFile(0xFA, 0x0A);
+            if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+            {
+                Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    BinaryStatusObject.MAPP_SRED_CONFIG, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+
+                // Clean up pool allocation, clearing the array
+                if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
+                {
+                    ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
+                }
+
+                return (-1, fileStatus.VipaResponse);
+            }
+
+            (int VipaResult, int VipaResponse) response = (-1, (int)VipaSW1SW2Codes.Success);
+
+            // Obtain SLOT number
+            string slotReported = Encoding.UTF8.GetString(fileStatus.binaryStatusObject.ReadResponseBytes);
+            MatchCollection match = Regex.Matches(slotReported, "slot=[0-9]", RegexOptions.Compiled);
+            if (match.Count == 1)
+            {
+                string[] result = match[0].Value.Split('=');
+                if (result.Length == 2)
+                {
+                    response.VipaResult = Convert.ToInt32(result[1]);
+                }
+            }
+
+            // Clean up pool allocation, clearing the array
+            ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
+
+            return response;
+        }
+
         public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot)
         {
             CancelResponseHandlers();
@@ -269,7 +349,7 @@ namespace Devices.Verifone.VIPA
             return deviceSecurityConfigurationInfo;
         }
 
-        public int LoadHMACKeys()
+        public int UpdateHMACKeys()
         {
             string generatedHMAC = GetCurrentKSNHMAC();
 
@@ -366,7 +446,7 @@ namespace Devices.Verifone.VIPA
             TLV.TLV tlv = new TLV.TLV();
             byte[] dataForHMACData = tlv.Encode(dataForHMAC);
 
-            Debug.WriteLine(ConsoleMessages.LoadHMACKeys.GetStringValue());
+            Debug.WriteLine(ConsoleMessages.UpdateHMACKeys.GetStringValue());
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = dataForHMACData };
             WriteSingleCmd(command);
 
@@ -385,7 +465,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            Debug.WriteLine(ConsoleMessages.LoadHMACKeys.GetStringValue());
+            Debug.WriteLine(ConsoleMessages.UpdateHMACKeys.GetStringValue());
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x0A, p1 = keyId, p2 = 0x01, data = dataForHMACData };
             WriteSingleCmd(command);
 
@@ -395,6 +475,83 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed--;
 
             return vipaResponse;
+        }
+
+        private int PutFile()
+        {
+            return 0;
+        }
+
+        private (BinaryStatusObject binaryStatusObject, int VipaResponse) GetBinaryStatus(string fileName)
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += GetBinaryStatusResponseHandler;
+
+            DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
+
+            var data = Encoding.ASCII.GetBytes(fileName);
+            byte reportMD5 = 0x80;
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xC0, p1 = 0x00, p2 = reportMD5, data = Encoding.ASCII.GetBytes(fileName) };
+            WriteSingleCmd(command);
+
+            var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
+
+            ResponseTagsHandler -= GetBinaryStatusResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceBinaryStatus;
+        }
+
+        private (BinaryStatusObject binaryStatusObject, int VipaResponse) SelectFileForOps(string fileName)
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += GetBinaryStatusResponseHandler;
+
+            // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+            DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
+
+            var data = Encoding.ASCII.GetBytes(fileName);
+
+            // Bit 2:  1 - Selection by DF name
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xA4, p1 = 0x04, p2 = 0x00, data = Encoding.ASCII.GetBytes(fileName) };
+            WriteSingleCmd(command);
+
+            var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
+
+            ResponseTagsHandler -= GetBinaryStatusResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceBinaryStatus;
+        }
+
+        private (BinaryStatusObject binaryStatusObject, int VipaResponse) ReadBinaryDataFromSelectedFile(byte readOffset, byte bytesToRead)
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTaglessHandler += GetBinaryDataResponseHandler;
+
+            // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+            DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
+
+            // P1 bit 8 = 0: P1 and P2 are the offset at which to read the data from (15-bit addressing)
+            // P1 bit 8 = 1: data size 2 bytes, first byte is low-order offset byte, 2nd byte is number of bytes to read
+            // DATA - If P1 bit 8 = 0, data size 1 byte, contains the number of bytes to read
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xB0, p1 = 0x00, p2 = readOffset };
+            command.includeLE = true;
+            command.le = bytesToRead;
+            WriteSingleCmd(command);
+
+            var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
+
+            ResponseTaglessHandler -= GetBinaryDataResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceBinaryStatus;
         }
 
         #endregion --- VIPA commands ---
@@ -629,6 +786,85 @@ namespace Devices.Verifone.VIPA
             {
                 DeviceSecurityConfiguration?.TrySetResult((null, responseCode));
             }
+        }
+
+        public void GetBinaryStatusResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
+        {
+            var _6fTemplateTag = new byte[] { 0x6F };       // 6F Template tag
+            var fileSizeTag = new byte[] { 0x80 };
+            var fileCheckSumTag = new byte[] { 0x88 };
+            var securityStatusTag = new byte[] { 0x89 };
+
+            if (cancelled || tags == null)
+            {
+                DeviceBinaryStatusInformation?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            var deviceResponse = new BinaryStatusObject();
+
+            foreach (var tag in tags)
+            {
+                if (tag.Tag.SequenceEqual(_6fTemplateTag))
+                {
+                    TLV.TLV tlv = new TLV.TLV();
+                    var _tags = tlv.Decode(tag.Data, 0, tag.Data.Length);
+
+                    foreach (var dataTag in _tags)
+                    {
+                        if (dataTag.Tag.SequenceEqual(fileSizeTag))
+                        {
+                            deviceResponse.FileSize = BCDConversion.BCDToInt(dataTag.Data);
+                        }
+                        else if (dataTag.Tag.SequenceEqual(fileCheckSumTag))
+                        {
+                            deviceResponse.FileCheckSum = BitConverter.ToString(dataTag.Data, 0).Replace("-", "");
+                        }
+                        else if (dataTag.Tag.SequenceEqual(securityStatusTag))
+                        {
+                            deviceResponse.SecurityStatus = BCDConversion.BCDToInt(dataTag.Data);
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            if (responseCode == (int)VipaSW1SW2Codes.Success)
+            {
+                if (tags.Count > 0)
+                {
+                    DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
+                }
+            }
+            else
+            {
+                deviceResponse.FileNotFound = true;
+                DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
+            }
+        }
+
+        public void GetBinaryDataResponseHandler(byte[] data, int responseCode, bool cancelled = false)
+        {
+            if (cancelled)
+            {
+                DeviceBinaryStatusInformation?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            var deviceResponse = new BinaryStatusObject();
+
+            if (responseCode == (int)VipaSW1SW2Codes.Success && data?.Length > 0)
+            {
+                deviceResponse.ReadResponseBytes = ArrayPool<byte>.Shared.Rent(data.Length);
+                Array.Copy(data, 0, deviceResponse.ReadResponseBytes, 0, data.Length);
+            }
+            else
+            {
+                deviceResponse.FileNotFound = true;
+            }
+
+            DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
         }
 
         #endregion --- response handlers ---

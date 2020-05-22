@@ -18,10 +18,14 @@ namespace Devices.Verifone.VIPA
 
         (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceCommandReset();
 
+        int DeviceReboot();
+
+        (int VipaResult, int VipaResponse) GetActiveKeySlot();
+
         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot);
 
         (string HMAC, int VipaResponse) GenerateHMAC();
 
-        int LoadHMACKeys();
+        int UpdateHMACKeys();
     }
 }

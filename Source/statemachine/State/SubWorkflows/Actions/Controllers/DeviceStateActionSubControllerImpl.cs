@@ -16,11 +16,13 @@ namespace StateMachine.State.SubWorkflows.Actions.Controllers
                 new Dictionary<DeviceSubWorkflowState, Func<IDeviceSubStateController, IDeviceSubStateAction>>
                 {
                     [GetStatus] = (IDeviceSubStateController _) => new DeviceGetStatusSubStateAction(_),
+                    [GetActiveKeySlot] = (IDeviceSubStateController _) => new DeviceGetActiveKeySlotSubStateAction(_),
                     [GetSecurityConfiguration] = (IDeviceSubStateController _) => new DeviceGetSecurityConfigurationSubStateAction(_),
-                    [LoadHMACKeys] = (IDeviceSubStateController _) => new DeviceLoadHMACKeysSubStateAction(_),
-                    [GenerateHMAC] = (IDeviceSubStateController _) => new DeviceGenerateHMACSubStateAction(_),
                     [AbortCommand] = (IDeviceSubStateController _) => new DeviceAbortCommandSubStateAction(_),
                     [ResetCommand] = (IDeviceSubStateController _) => new DeviceResetCommandSubStateAction(_),
+                    [RebootDevice] = (IDeviceSubStateController _) => new DeviceRebootSubStateAction(_),
+                    [UpdateHMACKeys] = (IDeviceSubStateController _) => new DeviceUpdateHMACKeysSubStateAction(_),
+                    [GenerateHMAC] = (IDeviceSubStateController _) => new DeviceGenerateHMACSubStateAction(_),
                     [SanityCheck] = (IDeviceSubStateController _) => new DeviceSanityCheckSubStateAction(_),
                     [RequestComplete] = (IDeviceSubStateController _) => new DeviceRequestCompleteSubStateAction(_)
                 }

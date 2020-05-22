@@ -25,7 +25,7 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to get device status.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to get security configuration.");
                 Console.WriteLine("Unable to find a state object while attempting to get security configuration.");
                 _ = Error(this);
             }
@@ -47,7 +47,7 @@ namespace StateMachine.State.SubWorkflows.Actions
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
-                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to obtain device status - '{Controller.DeviceEvent}'.");
+                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to obtain security configuration - '{Controller.DeviceEvent}'.");
                         Console.WriteLine($"Unable to obtain security configuration - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }

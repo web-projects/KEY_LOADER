@@ -18,11 +18,15 @@ namespace StateMachine.State.SubWorkflows.Providers
             DeviceSubWorkflowState proposedState = ((linkActionRequest.DeviceActionRequest?.DeviceAction) switch
             {
                 LinkDeviceActionType.GetStatus => DeviceSubWorkflowState.GetStatus,
+                LinkDeviceActionType.GetActiveKeySlot => DeviceSubWorkflowState.GetActiveKeySlot,
                 LinkDeviceActionType.GetSecurityConfiguration => DeviceSubWorkflowState.GetSecurityConfiguration,
-                LinkDeviceActionType.LoadHMACKeys => DeviceSubWorkflowState.LoadHMACKeys,
-                LinkDeviceActionType.GenerateHMAC => DeviceSubWorkflowState.GenerateHMAC,
                 LinkDeviceActionType.AbortCommand => DeviceSubWorkflowState.AbortCommand,
                 LinkDeviceActionType.ResetCommand => DeviceSubWorkflowState.ResetCommand,
+                LinkDeviceActionType.RebootDevice => DeviceSubWorkflowState.RebootDevice,
+                LinkDeviceActionType.UnlockDeviceConfig => DeviceSubWorkflowState.UnlockDeviceConfig,
+                LinkDeviceActionType.LockDeviceConfig => DeviceSubWorkflowState.LockDeviceConfig,
+                LinkDeviceActionType.GenerateHMAC => DeviceSubWorkflowState.GenerateHMAC,
+                LinkDeviceActionType.UpdateHMACKeys => DeviceSubWorkflowState.UpdateHMACKeys,
                 _ => DeviceSubWorkflowState.Undefined
             });
 
