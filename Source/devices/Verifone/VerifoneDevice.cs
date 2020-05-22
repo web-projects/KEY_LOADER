@@ -205,6 +205,35 @@ namespace Devices.Verifone
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
 
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.LoadHMACKeys();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: HMAC KEYS LOADED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED HMAC KEYS LOADING WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                        DeviceSetIdle();
+                    }
+                }
+            }
+
             return linkRequest;
         }
 

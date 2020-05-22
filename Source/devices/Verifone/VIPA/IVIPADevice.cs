@@ -22,5 +22,6 @@ namespace Devices.Verifone.VIPA
 
         (string HMAC, int VipaResponse) GenerateHMAC();
 
+        int LoadHMACKeys();
     }
 }

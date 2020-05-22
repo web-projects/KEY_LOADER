@@ -121,7 +121,7 @@ namespace Devices.Verifone.VIPA
                 ResponseTagsHandlerSubscribed++;
                 ResponseTagsHandler += ResponseCodeHandler;
 
-                System.Diagnostics.Debug.WriteLine(ConsoleMessages.AbortCommand.GetStringValue());
+                Debug.WriteLine(ConsoleMessages.AbortCommand.GetStringValue());
                 VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
                 WriteSingleCmd(command);
 
@@ -213,12 +213,12 @@ namespace Devices.Verifone.VIPA
                         }
                         else
                         {
-                            Console.WriteLine(string.Format("DEVICE: HMAC SECONDARY SLOT MISMATCH=0x{0}", securityConfig.securityConfigurationObject.GeneratedHMAC));
+                            Console.WriteLine(string.Format("DEVICE: HMAC SECONDARY SLOT MISMATCH=0x{0:X}", securityConfig.securityConfigurationObject.GeneratedHMAC));
                         }
                     }
                     else
                     {
-                        Console.WriteLine(string.Format("DEVICE: HMAC PRIMARY SLOT MISMATCH=0x{0}", securityConfig.securityConfigurationObject.GeneratedHMAC));
+                        Console.WriteLine(string.Format("DEVICE: HMAC PRIMARY SLOT MISMATCH=0x{0:X}", securityConfig.securityConfigurationObject.GeneratedHMAC));
                     }
                 }
             }
@@ -226,7 +226,7 @@ namespace Devices.Verifone.VIPA
             return (securityConfig.securityConfigurationObject.GeneratedHMAC, securityConfig.VipaResponse);
         }
 
-        public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetGeneratedHMAC(int hostID, string MAC)
+        private (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetGeneratedHMAC(int hostID, string MAC)
         {
             CancelResponseHandlers();
 
@@ -235,7 +235,7 @@ namespace Devices.Verifone.VIPA
 
             DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
 
-            var messageForHMAC = new List<TLV.TLV>
+            var dataForHMAC = new List<TLV.TLV>
             {
                 new TLV.TLV
                 {
@@ -256,9 +256,9 @@ namespace Devices.Verifone.VIPA
                 }
             };
             TLV.TLV tlv = new TLV.TLV();
-            var messageForHMACData = tlv.Encode(messageForHMAC);
+            var dataForHMACData = tlv.Encode(dataForHMAC);
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = messageForHMACData };
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = dataForHMACData };
             WriteSingleCmd(command);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
@@ -267,6 +267,134 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed--;
 
             return deviceSecurityConfigurationInfo;
+        }
+
+        public int LoadHMACKeys()
+        {
+            string generatedHMAC = GetCurrentKSNHMAC();
+
+            // KEY 06 Generation
+            byte[] hmac_generated_key = ConversionHelper.HexToByteArray(generatedHMAC);
+
+            // Signature = HMAC_old(old XOR new) - array1 is smaller or equal in size as array2
+            byte[] hmac_signature_06 = ConversionHelper.XORArrays(hmac_generated_key, HMACValidator.HMACKEY06);
+
+            var dataKey06HMAC = FormatE0Tag(hmac_signature_06);
+            TLV.TLV tlv = new TLV.TLV();
+            byte[] dataForHMACData = tlv.Encode(dataKey06HMAC);
+
+            // key slot 06
+            int vipaResponse = UpdateHMACKey(0x06, dataForHMACData);
+
+            if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                // KEY 07 Generation
+                byte[] hmac_signature_07 = ConversionHelper.XORArrays(hmac_generated_key, HMACValidator.HMACKEY07);
+
+                var dataKey07HMAC = FormatE0Tag(hmac_signature_07);
+                tlv = new TLV.TLV();
+                dataForHMACData = tlv.Encode(dataKey07HMAC);
+
+                // key slot 07
+                vipaResponse = UpdateHMACKey(0x07, dataForHMACData);
+            }
+
+            return vipaResponse;
+        }
+
+        private List<TLV.TLV> FormatE0Tag(byte[] hmackey)
+        {
+            return new List<TLV.TLV>
+            {
+                new TLV.TLV
+                {
+                    Tag = new byte[] { 0xE0 },
+                    InnerTags = new List<TLV.TLV>
+                    {
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xEC, 0x46 },
+                            Data = new byte[] { 0x03 }
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xEC, 0x2E },
+                            Data = hmackey
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xED, 0x15 },
+                            Data = hmackey
+                        }
+                    }
+                }
+            };
+        }
+
+        private string GetCurrentKSNHMAC()
+        {
+            DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += GetGeneratedHMACResponseHandler;
+
+            var dataForHMAC = new List<TLV.TLV>
+            {
+                new TLV.TLV
+                {
+                    Tag = new byte[] { 0xE0 },
+                    InnerTags = new List<TLV.TLV>
+                    {
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xEC, 0x0E },
+                            Data = new byte[] { 0x00 }
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xEC, 0x23 },
+                            Data = new byte[] { 0x06 }
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0xEC, 0x23 },
+                            Data = new byte[] { 0x07 }
+                        }
+                    }
+                }
+            };
+            TLV.TLV tlv = new TLV.TLV();
+            byte[] dataForHMACData = tlv.Encode(dataForHMAC);
+
+            Debug.WriteLine(ConsoleMessages.LoadHMACKeys.GetStringValue());
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = dataForHMACData };
+            WriteSingleCmd(command);
+
+            var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
+
+            ResponseTagsHandler -= GetGeneratedHMACResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceSecurityConfigurationInfo.securityConfigurationObject.GeneratedHMAC;
+        }
+
+        private int UpdateHMACKey(byte keyId, byte[] dataForHMACData)
+        {
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
+
+            Debug.WriteLine(ConsoleMessages.LoadHMACKeys.GetStringValue());
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x0A, p1 = keyId, p2 = 0x01, data = dataForHMACData };
+            WriteSingleCmd(command);
+
+            int vipaResponse = ResponseCodeResult.Task.Result;
+
+            ResponseTagsHandler -= ResponseCodeHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return vipaResponse;
         }
 
         #endregion --- VIPA commands ---
@@ -471,7 +599,9 @@ namespace Devices.Verifone.VIPA
             {
                 DeviceSecurityConfiguration?.TrySetResult((null, responseCode));
             }
-        }        public void GetGeneratedHMACResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
+        }
+
+        public void GetGeneratedHMACResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
             var MACTag = new byte[] { 0xDF, 0xEC, 0x7B };
 
