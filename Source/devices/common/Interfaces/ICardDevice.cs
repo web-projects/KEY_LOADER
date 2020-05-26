@@ -31,8 +31,8 @@ namespace Devices.Common.Interfaces
         void DeviceSetIdle();
 
 		bool DeviceRecovery();
-		
-        void Dispose();
+
+        void Disconnect();
 
         List<LinkRequest> GetDeviceResponse(LinkRequest deviceInfo);
 

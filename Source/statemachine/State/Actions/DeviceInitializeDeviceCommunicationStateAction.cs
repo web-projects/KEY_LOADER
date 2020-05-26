@@ -117,7 +117,7 @@ namespace StateMachine.State.Actions
                             {
                                 Console.WriteLine($"Unable to obtain device status for - '{device.Name}'.");
                                 device.DeviceEventOccured -= Controller.DeviceEventReceived;
-                                device?.Dispose();
+                                device?.Disconnect();
                                 LastException = new StateException("Unable to find a valid device to connect to.");
                                 _ = Error(this);
                                 return Task.CompletedTask;

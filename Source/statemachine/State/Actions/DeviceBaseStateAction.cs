@@ -35,7 +35,7 @@ namespace StateMachine.State.Actions
                 {
                     foreach (var device in Controller.TargetDevices)
                     {
-                        device.Dispose();
+                        device.Disconnect();
                     }
                 }
                 Controller.RequestReceived -= RequestReceived;

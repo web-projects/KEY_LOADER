@@ -58,6 +58,12 @@ namespace Devices.Verifone
             IsConnected = false;
         }
 
+        public void Disconnect()
+        {
+            SerialConnection?.Disconnect();
+            IsConnected = false;
+        }
+
         bool ICardDevice.IsConnected(object request)
         {
             return IsConnected;
@@ -378,14 +384,15 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.DeviceReboot();
-                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        (DevicePTID devicePTID, int VipaResponse) response = vipaDevice.DeviceReboot();
+                        if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                            Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY\n");
+                            //Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
+                            Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY");
                         }
                         else
                         {
-                            Console.WriteLine(string.Format("DEVICE: FAILED REBOOT REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                            Console.WriteLine(string.Format("DEVICE: FAILED REBOOT REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
                         }
                     }
                 }

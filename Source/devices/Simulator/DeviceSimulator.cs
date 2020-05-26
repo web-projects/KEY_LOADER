@@ -90,6 +90,11 @@ namespace Devices.Simulator
             return deviceInformation;
         }
 
+        public void Disconnect()
+        {
+
+        }
+
         public List<LinkErrorValue> Probe(DeviceConfig config, DeviceInformation deviceInfo, out bool active)
         {
             DeviceInformation = new DeviceInformation()

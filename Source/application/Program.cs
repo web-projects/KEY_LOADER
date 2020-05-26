@@ -27,10 +27,12 @@ namespace DEVICE_CORE
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
             //await Task.Delay(4096);
 
-            ConsoleKey keypressed = GetKeyPressed();
+            ConsoleKey keypressed = GetKeyPressed(true);
 
             while (keypressed != ConsoleKey.Q)
             {
+                bool redisplay = true;
+
                 switch (keypressed)
                 {
                     case ConsoleKey.C:
@@ -81,10 +83,16 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
                         break;
                     }
+
+                    default:
+                    {
+                        redisplay = false;
+                        break;
+                    }
                 }
 
                 await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
-                keypressed = GetKeyPressed();
+                keypressed = GetKeyPressed(redisplay);
             }
 
             Console.WriteLine("\r\nCOMMAND: [QUIT]\r\n");
@@ -92,9 +100,12 @@ namespace DEVICE_CORE
             application.Shutdown();
         }
 
-        static private ConsoleKey GetKeyPressed()
+        static private ConsoleKey GetKeyPressed(bool redisplay)
         {
-            Console.WriteLine("\nCOMMANDS: [c=CONFIG, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+            if (redisplay)
+            { 
+                Console.WriteLine("\nCOMMANDS: [c=CONFIG, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+            }
             return Console.ReadKey(true).Key;
         }
     }

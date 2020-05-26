@@ -18,7 +18,7 @@ namespace Devices.Verifone.VIPA
 
         (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceCommandReset();
 
-        int DeviceReboot();
+        (DevicePTID devicePTID, int VipaResponse) DeviceReboot();
 
         (int VipaResult, int VipaResponse) GetActiveKeySlot();
 

@@ -35,4 +35,5 @@ This an application to load HMAC KEYS.
 * 20200522 - Added HMAC Loader
            - Added ADE Active Key Slot Reporting
            - Added Configs Updater
+* 20200525 - Enhanced Configs Updater
            

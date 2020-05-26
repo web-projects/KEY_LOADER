@@ -100,9 +100,9 @@ namespace StateMachine.State.Management
         public void Initialize()
         {
             DeviceEventReceived = OnDeviceEventReceived;
-            ComPortEventReceived = OnComPortEventReceived;
+            ComPortEventReceived = OnComPortEventReceivedAsync;
 
-            SerialPortMonitor.ComportEventOccured += OnComPortEventReceived;
+            SerialPortMonitor.ComportEventOccured += OnComPortEventReceivedAsync;
             SerialPortMonitor.StartMonitoring();
 
             StateActionRules = new StateActionRules();
@@ -125,7 +125,7 @@ namespace StateMachine.State.Management
             {
                 foreach (var device in TargetDevices)
                 {
-                    device?.Dispose();
+                    device?.Disconnect();
                 }
             }
             TargetDevices = targetDevices;
@@ -195,75 +195,79 @@ namespace StateMachine.State.Management
             }
         }
 
-        private void OnComPortEventReceived(PortEventType comPortEvent, string portNumber)
+        private bool DisconnectAllDevices(PortEventType comPortEvent, string portNumber)
+        {
+            bool peformDeviceDiscovery = false;
+
+            if (TargetDevices != null)
+            {
+                // dispose of all existing connections so that device recovery re-validates them
+                ICardDevice deviceDisconnected = TargetDevices.Where(a => a.DeviceInformation.ComPort.Equals(portNumber, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                if (deviceDisconnected != null)
+                {
+                    deviceDisconnected.Disconnect();
+                    peformDeviceDiscovery = true;
+                    foreach (var device in TargetDevices)
+                    {
+                        if (comPortEvent == PortEventType.Removal)
+                        {
+                            if (device == deviceDisconnected)
+                            {
+                                Console.WriteLine($"DEVICE: Comport unplugged: '{portNumber}', " +
+                                    $"DeviceType '{device.ManufacturerConfigID}', SerialNumber '{device.DeviceInformation?.SerialNumber}'");
+
+                                //PublishDeviceDisconnectEvent(device, portNumber);
+                            }
+                        }
+                        device.Disconnect();
+                    }
+                }
+            }
+            return peformDeviceDiscovery;
+        }
+
+        private void OnComPortEventReceivedAsync(PortEventType comPortEvent, string portNumber)
         {
             bool peformDeviceDiscovery = false;
 
             if (comPortEvent == PortEventType.Insertion)
             {
-                peformDeviceDiscovery = true;
-                //_ = LoggingClient.LogInfoAsync($"Comport Plugged. ComportNumber '{portNumber}'. Detecting a new connection...");
-                Console.WriteLine($"Comport Plugged. ComportNumber '{portNumber}'. Detecting a new connection...");
+                Console.WriteLine($"DEVICE: Comport Plugged. ComportNumber '{portNumber}'. Detecting a new connection...");
+                peformDeviceDiscovery = DisconnectAllDevices(comPortEvent, portNumber);
             }
             else if (comPortEvent == PortEventType.Removal)
             {
-                if (TargetDevices != null)
-                {
-                    // dispose of all existing connections so that device recovery re-validates them
-                    var deviceDisconnected = TargetDevices.Where(a => a.DeviceInformation.ComPort.Equals(portNumber, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                    if (deviceDisconnected != null)
-                    {
-                        peformDeviceDiscovery = true;
-
-                        // dispose of all connections so that device recovery re-validates them
-                        foreach (var device in TargetDevices)
-                        {
-                            if (string.Equals(portNumber, device.DeviceInformation.ComPort, StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                //_ = LoggingClient.LogInfoAsync($"Comport unplugged. ComportNumber '{portNumber}', " +
-                                //    $"DeviceType '{device.ManufacturerConfigID}', SerialNumber '{device.DeviceInformation?.SerialNumber}'");
-                                Console.WriteLine($"Comport unplugged. ComportNumber '{portNumber}', " +
-                                    $"DeviceType '{device.ManufacturerConfigID}', SerialNumber '{device.DeviceInformation?.SerialNumber}'");
-                            }
-                            device.Dispose();
-                        }
-                    }
-                }
-                //else
-                //{
-                //_ = LoggingClient.LogInfoAsync($"Comport unplugged. ComportNumber '{portNumber}', " +
-                //    $"DeviceType '{TargetDevice?.ManufacturerConfigID}', SerialNumber '{TargetDevice?.DeviceInformation?.SerialNumber}'");
-                //TargetDevice?.Dispose();
-                //}
-
-                Console.WriteLine($"Comport unplugged. ComportNumber '{portNumber}'");
+                peformDeviceDiscovery = DisconnectAllDevices(comPortEvent, portNumber);
             }
             else
             {
-                //_ = LoggingClient.LogInfoAsync($"Comport Event '{comPortEvent}' is not implemented ");
-                Console.WriteLine($"Comport Event '{comPortEvent}' is not implemented ");
+                Console.WriteLine($"DEVICE: Comport Event '{comPortEvent}' is not implemented ");
             }
 
             // only perform discovery when an existing device is disconnected or a new connection is detected
             if (peformDeviceDiscovery)
             {
-                //LoggingClient.LogInfoAsync($"Device recovery in progress...");
-                Console.WriteLine($"Device recovery in progress...");
-
-                if (currentStateAction.WorkflowStateType == DeviceWorkflowState.Manage)
+                if (currentStateAction.WorkflowStateType == DeviceWorkflowState.Manage ||
+                    currentStateAction.WorkflowStateType == DeviceWorkflowState.ProcessRequest)
                 {
+                    Console.WriteLine($"DEVICE: discovery in progress...");
+
+                    // wait for USB driver to detach/reattach device
+                    //await Task.Delay(Configuration.DeviceDiscoveryDelay * 1024);
+                    Task.Delay(5000);
+
                     currentStateAction.DoDeviceDiscovery();
                 }
-                else
-                {
-                    StateActionRules.NeedsDeviceRecovery = true;
+                //else
+                //{
+                //    StateActionRules.NeedsDeviceRecovery = true;
 
-                    if (subStateController != null)
-                    {
-                        IDeviceSubStateManager subStateManager = subStateController as IDeviceSubStateManager;
-                        subStateManager.ComportEventReceived(comPortEvent, portNumber);
-                    }
-                }
+                //    if (subStateController != null)
+                //    {
+                //        IDALSubStateManager subStateManager = subStateController as IDALSubStateManager;
+                //        _ = subStateManager.ComportEventReceived(comPortEvent, portNumber);
+                //    }
+                //}
             }
         }
 
@@ -340,7 +344,7 @@ namespace StateMachine.State.Management
         {
             if (SerialPortMonitor != null)
             {
-                SerialPortMonitor.ComportEventOccured -= OnComPortEventReceived;
+                SerialPortMonitor.ComportEventOccured -= OnComPortEventReceivedAsync;
                 SerialPortMonitor.StopMonitoring();
             }
         }

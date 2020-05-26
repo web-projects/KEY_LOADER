@@ -63,6 +63,8 @@ namespace Devices.Verifone.VIPA
         public delegate void ResponseCLessHandlerDelegate(List<TLV.TLV> tags, int responseCode, int pcb, bool cancelled = false);
         internal ResponseCLessHandlerDelegate ResponseCLessHandler = null;
 
+        public TaskCompletionSource<(DevicePTID devicePTID, int VipaResponse)> DeviceResetConfiguration = null;
+
         public TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)> DeviceIdentifier = null;
         public TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)> DeviceSecurityConfiguration = null;
 
@@ -165,7 +167,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += GetDeviceInfoResponseHandler;
 
-            System.Diagnostics.Debug.WriteLine(ConsoleMessages.DeviceReset.GetStringValue());
+            Debug.WriteLine(ConsoleMessages.DeviceReset.GetStringValue());
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
             WriteSingleCmd(command);
 
@@ -180,23 +182,50 @@ namespace Devices.Verifone.VIPA
             return deviceResponse;
         }
 
-        public int DeviceReboot()
+        private (DevicePTID devicePTID, int VipaResponse) DeviceRebootWithResponse()
         {
-            ResponseCodeResult = new TaskCompletionSource<int>();
+            (DevicePTID devicePTID, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
+            DeviceResetConfiguration = new TaskCompletionSource<(DevicePTID devicePTID, int VipaResponse)>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += DeviceResetResponseHandler;
+
+            Debug.WriteLine(ConsoleMessages.RebootDevice.GetStringValue());
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x01, p2 = 0x03 };
+            WriteSingleCmd(command);
+
+            deviceResponse = DeviceResetConfiguration.Task.Result;
+
+            ResponseTagsHandler -= DeviceResetResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceResponse;
+        }
+
+        private (DevicePTID devicePTID, int VipaResponse) DeviceRebootWithoutResponse()
+        {
+            (DevicePTID devicePTID, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
 
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
             Debug.WriteLine(ConsoleMessages.RebootDevice.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 000, p1 = 0x01, p2 = 0x00 };
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x01, p2 = 0x00 };
             WriteSingleCmd(command);
 
-            int deviceResponse = ResponseCodeResult.Task.Result;
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            deviceResponse = (null, (int)VipaSW1SW2Codes.Success);
 
             ResponseTagsHandler -= ResponseCodeHandler;
             ResponseTagsHandlerSubscribed--;
 
             return deviceResponse;
+        }
+
+        public (DevicePTID devicePTID, int VipaResponse) DeviceReboot()
+        {
+            return DeviceRebootWithoutResponse();
         }
 
         public (int VipaResult, int VipaResponse) GetActiveKeySlot()
@@ -281,19 +310,82 @@ namespace Devices.Verifone.VIPA
         public int LockDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            return PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE);
+            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            {
+                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG_SIZE)
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
+                }
+
+                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.LOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MISMATCH!");
+                }
+            }
+            return fileStatus.VipaResponse;
         }
 
         public int UnlockDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.UnlockDeviceUpdate.GetStringValue());
-            return PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
+            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            {
+                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.UNLOCK_CONFIG_SIZE)
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
+                }
+
+                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.UNLOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MISMATCH!");
+                }
+            }
+            return fileStatus.VipaResponse;
         }
 
         public int UpdateDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
-            return PutFile(BinaryStatusObject.CONFIG_SLOT_8_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.CONFIG_SLOT_8_BUNDLE);
+            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            {
+                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.CONFIG_SLOT_8_SIZE)
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} SIZE MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} SIZE MISMATCH!");
+                }
+
+                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.CONFIG_SLOT_8_HASH, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} HASH MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} HASH MISMATCH!");
+                }
+            }
+            return fileStatus.VipaResponse;
         }
 
         public (string HMAC, int VipaResponse) GenerateHMAC()
@@ -504,20 +596,20 @@ namespace Devices.Verifone.VIPA
             return vipaResponse;
         }
 
-        private int PutFile(string fileName)
+        private (BinaryStatusObject binaryStatusObject, int VipaResponse) PutFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
             {
-                return (int)VipaSW1SW2Codes.Failure;
+                return (null, (int)VipaSW1SW2Codes.Failure);
             }
 
-            int vipaResponse = (int)VipaSW1SW2Codes.Failure;
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) deviceBinaryStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
             string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), fileName);
             if (File.Exists(targetFile))
             {
                 ResponseTagsHandlerSubscribed++;
-                ResponseTagsHandler += ResponseCodeHandler;
+                ResponseTagsHandler += GetBinaryStatusResponseHandler;
 
                 FileInfo fileInfo = new FileInfo(targetFile);
                 long fileLength = fileInfo.Length;
@@ -549,17 +641,16 @@ namespace Devices.Verifone.VIPA
                 TLV.TLV tlv = new TLV.TLV();
                 byte[] fileInformationData = tlv.Encode(fileInformation);
 
-                ResponseCodeResult = new TaskCompletionSource<int>();
+                DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
                 VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xA5, p1 = 0x05, p2 = 0x81, data = fileInformationData };
                 WriteSingleCmd(command);
 
-                vipaResponse = ResponseCodeResult.Task.Result;
+                // Tag 6F with size and checksum is returned on success
+                deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
 
-                if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                //if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                if (deviceBinaryStatus.VipaResponse == (int)VipaSW1SW2Codes.Success)
                 {
-                    ResponseCodeResult = new TaskCompletionSource<int>();
-                    vipaResponse = (int)VipaSW1SW2Codes.Success;
-
                     using (FileStream fs = File.OpenRead(targetFile))
                     {
                         int numBytesToRead = (int)fs.Length;
@@ -573,14 +664,16 @@ namespace Devices.Verifone.VIPA
                         }
                     }
 
-                    vipaResponse = ResponseCodeResult.Task.Result;
+                    // wait for device reponse
+                    DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
+                    deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
                 }
 
-                ResponseTagsHandler -= ResponseCodeHandler;
+                ResponseTagsHandler -= GetBinaryStatusResponseHandler;
                 ResponseTagsHandlerSubscribed--;
             }
 
-            return vipaResponse;
+            return deviceBinaryStatus;
         }
 
         private (BinaryStatusObject binaryStatusObject, int VipaResponse) GetBinaryStatus(string fileName)
@@ -692,6 +785,36 @@ namespace Devices.Verifone.VIPA
         public void ResponseCodeHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
             ResponseCodeResult?.TrySetResult(cancelled ? -1 : responseCode);
+        }
+
+        public void DeviceResetResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
+        {
+            var ptidTag = new byte[] { 0x9F, 0x1E };
+
+            if (cancelled || tags == null)
+            {
+                DeviceResetConfiguration?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            var deviceResponse = new DevicePTID();
+
+            if (tags.FirstOrDefault().Tag.SequenceEqual(ptidTag))
+            {
+                deviceResponse.PTID = BitConverter.ToString(tags.FirstOrDefault().Data).Replace("-", "");
+            }
+
+            if (responseCode == (int)VipaSW1SW2Codes.Success)
+            {
+                if (tags.Count == 1)
+                {
+                    DeviceResetConfiguration?.TrySetResult((deviceResponse, responseCode));
+                }
+            }
+            else
+            {
+                DeviceResetConfiguration?.TrySetResult((null, responseCode));
+            }
         }
 
         private void GetDeviceInfoResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
@@ -933,10 +1056,8 @@ namespace Devices.Verifone.VIPA
 
             if (responseCode == (int)VipaSW1SW2Codes.Success)
             {
-                if (tags.Count > 0)
-                {
-                    DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
-                }
+                // command could return just a response without tags
+                DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
             }
             else
             {
