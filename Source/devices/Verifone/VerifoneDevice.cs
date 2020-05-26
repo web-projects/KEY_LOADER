@@ -84,6 +84,20 @@ namespace Devices.Verifone
 
                 if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                 {
+                    // check for power on notification: reissue reset command to obtain device information
+                    if (deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification != null)
+                    {
+                        Console.WriteLine($"\nDEVICE EVENT: Terminal ID={deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification?.TerminalID}," +
+                            $" EVENT='{deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification?.TransactionStatusMessage}'");
+
+                        deviceIdentifier = vipaDevice.DeviceCommandReset();
+                        
+                        if (deviceIdentifier.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                        {
+                            return null;
+                        } 
+                    }
+
                     if (DeviceInformation != null)
                     {
                         DeviceInformation.Manufacturer = ManufacturerConfigID;
@@ -242,6 +256,42 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest FeatureEnablementToken(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: FEATURE ENABLEMENT TOKEN for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.FeatureEnablementToken();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: FET UPDATED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED FET REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
@@ -314,42 +364,6 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
-        public LinkRequest UpdateDeviceConfiguration(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: UPDATE DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
-
-            if (vipaDevice != null)
-            {
-                if (!IsConnected)
-                {
-                    vipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
-                }
-
-                if (IsConnected)
-                {
-                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
-
-                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                    {
-                        int vipaResponse = vipaDevice.UpdateDeviceConfiguration();
-                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
-                        {
-                            Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
-                        }
-                        else
-                        {
-                            Console.WriteLine(string.Format("DEVICE: FAILED UPDATE CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
-                        }
-                    }
-                }
-            }
-
-            return linkRequest;
-        }
-
         public LinkRequest AbortCommand(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
@@ -388,7 +402,7 @@ namespace Devices.Verifone
                         if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             //Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
-                            Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY");
+                            Console.WriteLine($"DEVICE: REBOOT REQUEST RECEIVED SUCCESSFULLY");
                         }
                         else
                         {

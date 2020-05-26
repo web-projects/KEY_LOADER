@@ -10,11 +10,11 @@ using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
-    internal class DeviceUpdateConfigurationSubStateAction : DeviceBaseSubStateAction
+    internal class DeviceFeatureEnablementTokenSubStateAction : DeviceBaseSubStateAction
     {
-        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.UpdateDeviceConfig;
+        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.FeatureEnablementToken;
 
-        public DeviceUpdateConfigurationSubStateAction(IDeviceSubStateController _) : base(_) { }
+        public DeviceFeatureEnablementTokenSubStateAction(IDeviceSubStateController _) : base(_) { }
 
         public override SubStateActionLaunchRules LaunchRules => new SubStateActionLaunchRules
         {
@@ -25,8 +25,8 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to update device configuration.");
-                Console.WriteLine("Unable to find a state object while attempting to update device configuration.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to update device with FET.");
+                Console.WriteLine("Unable to find a state object while attempting to update device with FET.");
                 _ = Error(this);
             }
             else
@@ -41,14 +41,14 @@ namespace StateMachine.State.SubWorkflows.Actions
                     devicesRequest.Add(JsonConvert.DeserializeObject<LinkRequest>(JsonConvert.SerializeObject(linkRequest)));
 
                     var timeoutPolicy = await cancellationBroker.ExecuteWithTimeoutAsync<LinkRequest>(
-                        _ => device.UpdateDeviceConfiguration(devicesRequest.Last()),
+                        _ => device.FeatureEnablementToken(devicesRequest.Last()),
                         DeviceConstants.CardCaptureTimeout,
                         System.Threading.CancellationToken.None);
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
-                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to update device configuration - '{Controller.DeviceEvent}'.");
-                        Console.WriteLine($"Unable to update device configuration - '{Controller.DeviceEvent}'.");
+                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to update device with FET - '{Controller.DeviceEvent}'.");
+                        Console.WriteLine($"Unable to update device with FET - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }
                 }

@@ -20,6 +20,13 @@ namespace StateMachine.State.Actions
 
         public DeviceInitializeDeviceCommunicationStateAction(IDeviceStateController _) : base(_) { }
 
+        public override bool DoDeviceDiscovery()
+        {
+            LastException = new StateException("device recovery is needed");
+            _ = Error(this);
+            return true;
+        }
+
         public override Task DoWork()
         {
             string pluginPath = Controller.PluginPath;
@@ -110,8 +117,8 @@ namespace StateMachine.State.Actions
                             IDeviceCancellationBroker cancellationBroker = Controller.GetCancellationBroker();
                             var timeoutPolicy = cancellationBroker.ExecuteWithTimeoutAsync<List<LinkErrorValue>>(
                                 _ => device.Probe(deviceConfig, deviceInfo, out success),
-                                Timeouts.DALGetStatusTimeout,
-                                CancellationToken.None);
+                                Timeouts.DALDeviceRecoveryTimeout,
+                                cancellationTokenSource.Token);
 
                             if (timeoutPolicy.Result.Outcome == Polly.OutcomeType.Failure)
                             {

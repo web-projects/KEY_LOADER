@@ -55,6 +55,11 @@ namespace StateMachine.State.Enums
         RebootDevice,
 
         /// <summary>
+        /// Represents a state when DAL updates Feature Enablement Token to device
+        /// </summary>
+        FeatureEnablementToken,
+
+        /// <summary>
         /// Represents a state when DAL unlocks key updates on the device
         /// </summary>
         UnlockDeviceConfig,
@@ -63,11 +68,6 @@ namespace StateMachine.State.Enums
         /// Represents a state when DAL locks key updates on the device
         /// </summary>
         LockDeviceConfig,
-
-        /// <summary>
-        /// Represents a state when DAL updates device configuration
-        /// </summary>
-        UpdateDeviceConfig,
 
         /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL

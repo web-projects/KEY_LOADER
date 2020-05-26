@@ -24,9 +24,9 @@ namespace DEVICE_CORE
 
         public Task Command(LinkDeviceActionType action)
         {
-            Console.WriteLine($"\n===========================================================================");
+            Console.WriteLine($"\n==========================================================================================");
             Console.WriteLine($"DAL COMMAND: {action}");
-            Console.WriteLine($"===========================================================================");
+            Console.WriteLine($"==========================================================================================");
             DeviceStateManager.SetWorkflow(action);
             return Task.CompletedTask;
         }

@@ -129,31 +129,18 @@ namespace Devices.Verifone.VIPA
 
             ResponseCodeResult = new TaskCompletionSource<int>();
 
-            try
-            {
-                DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
-                ResponseTagsHandlerSubscribed++;
-                ResponseTagsHandler += ResponseCodeHandler;
+            DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
 
-                Debug.WriteLine(ConsoleMessages.AbortCommand.GetStringValue());
-                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
-                WriteSingleCmd(command);
+            Debug.WriteLine(ConsoleMessages.AbortCommand.GetStringValue());
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
+            WriteSingleCmd(command);
 
-                deviceResponse = ((int)VipaSW1SW2Codes.Success, ResponseCodeResult.Task.Result);
+            deviceResponse = ((int)VipaSW1SW2Codes.Success, ResponseCodeResult.Task.Result);
 
-                ResponseTagsHandler -= ResponseCodeHandler;
-                ResponseTagsHandlerSubscribed--;
-            }
-            catch (TimeoutException e)
-            {
-                Console.WriteLine("\r\n=========================== RESETDEVICE ERROR ===========================");
-                Console.WriteLine($"{DateTime.Now.ToString("yyyyMMdd:HHmmss")}: {e.Message}");
-                Console.WriteLine("===============================================================================\r\n");
-            }
-            catch (OperationCanceledException op)
-            {
-                Console.WriteLine("{0}: (1) DeviceManager::ResetDevice - EXCEPTION=[{1}]", DateTime.Now.ToString("yyyyMMdd:HHmmss"), op.Message);
-            }
+            ResponseTagsHandler -= ResponseCodeHandler;
+            ResponseTagsHandlerSubscribed--;
 
             return deviceResponse;
         }
@@ -162,22 +149,25 @@ namespace Devices.Verifone.VIPA
         {
             (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
 
-            DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
+            // abort previous user entries in progress
+            (int VipaData, int VipaResponse) vipaResult = DeviceCommandAbort();
 
-            ResponseTagsHandlerSubscribed++;
-            ResponseTagsHandler += GetDeviceInfoResponseHandler;
+            if (vipaResult.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            Debug.WriteLine(ConsoleMessages.DeviceReset.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
-            WriteSingleCmd(command);
+                ResponseTagsHandlerSubscribed++;
+                ResponseTagsHandler += GetDeviceInfoResponseHandler;
 
-            command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x00, p2 = (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnAfterCardRemoval | ResetDeviceCfg.ReturnPinpadConfiguration) };
-            WriteSingleCmd(command);   // Device Info [D0, 00]
+                Debug.WriteLine(ConsoleMessages.DeviceReset.GetStringValue());
+                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x00, p2 = (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnAfterCardRemoval | ResetDeviceCfg.ReturnPinpadConfiguration) };
+                WriteSingleCmd(command);   // Device Info [D0, 00]
 
-            deviceResponse = DeviceIdentifier.Task.Result;
+                deviceResponse = DeviceIdentifier.Task.Result;
 
-            ResponseTagsHandler -= GetDeviceInfoResponseHandler;
-            ResponseTagsHandlerSubscribed--;
+                ResponseTagsHandler -= GetDeviceInfoResponseHandler;
+                ResponseTagsHandlerSubscribed--;
+            }
 
             return deviceResponse;
         }
@@ -307,6 +297,33 @@ namespace Devices.Verifone.VIPA
             return deviceSecurityConfigurationInfo;
         }
 
+        public int FeatureEnablementToken()
+        {
+            Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.FET_BUNDLE);
+            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            {
+                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.FET_SIZE)
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MISMATCH!");
+                }
+
+                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.FET_HASH, StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MATCH");
+                }
+                else
+                {
+                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MISMATCH!");
+                }
+            }
+            return fileStatus.VipaResponse;
+        }
+
         public int LockDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
@@ -356,33 +373,6 @@ namespace Devices.Verifone.VIPA
                 else
                 {
                     Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MISMATCH!");
-                }
-            }
-            return fileStatus.VipaResponse;
-        }
-
-        public int UpdateDeviceConfiguration()
-        {
-            Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.CONFIG_SLOT_8_BUNDLE);
-            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
-            {
-                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.CONFIG_SLOT_8_SIZE)
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} SIZE MATCH");
-                }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} SIZE MISMATCH!");
-                }
-
-                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.CONFIG_SLOT_8_HASH, StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} HASH MATCH");
-                }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.CONFIG_SLOT_8_BUNDLE} HASH MISMATCH!");
                 }
             }
             return fileStatus.VipaResponse;
@@ -829,6 +819,11 @@ namespace Devices.Verifone.VIPA
             var efTemplateTag = new byte[] { 0xEF };                // EF Template tag
             var whiteListHash = new byte[] { 0xDF, 0xDB, 0x09 };    // Whitelist tag
 
+            // power notification handling
+            var e6TemplateTag = new byte[] { 0xE6 };
+            var c3TemplateTag = new byte[] { 0xC3 };
+            var c4TemplateTag = new byte[] { 0xC4 };
+
             if (cancelled)
             {
                 DeviceIdentifier?.TrySetResult((null, responseCode));
@@ -897,6 +892,29 @@ namespace Devices.Verifone.VIPA
                         if (dataTag.Tag.SequenceEqual(whiteListHash))
                         {
                             //cardInfo.WhiteListHash = BitConverter.ToString(dataTag.Data).Replace("-", "");
+                        }
+                    }
+                }
+                else if (tag.Tag.SequenceEqual(e6TemplateTag))
+                {
+                    deviceResponse.PowerOnNotification = new XO.Responses.Device.LinkDevicePowerOnNotification();
+
+                    TLV.TLV tlv = new TLV.TLV();
+                    var _tags = tlv.Decode(tag.Data, 0, tag.Data.Length);
+
+                    foreach (var dataTag in _tags)
+                    {
+                        if (dataTag.Tag.SequenceEqual(c3TemplateTag))
+                        {
+                            deviceResponse.PowerOnNotification.TransactionStatus = BCDConversion.BCDToInt(dataTag.Data);
+                        }
+                        else if (dataTag.Tag.SequenceEqual(c4TemplateTag))
+                        {
+                            deviceResponse.PowerOnNotification.TransactionStatusMessage = Encoding.UTF8.GetString(dataTag.Data);
+                        }
+                        else if (dataTag.Tag.SequenceEqual(terminalIdTag))
+                        {
+                            deviceResponse.PowerOnNotification.TerminalID = Encoding.UTF8.GetString(dataTag.Data);
                         }
                     }
                 }

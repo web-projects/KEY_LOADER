@@ -23,9 +23,9 @@ namespace StateMachine.State.SubWorkflows.Providers
                 LinkDeviceActionType.AbortCommand => DeviceSubWorkflowState.AbortCommand,
                 LinkDeviceActionType.ResetCommand => DeviceSubWorkflowState.ResetCommand,
                 LinkDeviceActionType.RebootDevice => DeviceSubWorkflowState.RebootDevice,
+                LinkDeviceActionType.FeatureEnablementToken => DeviceSubWorkflowState.FeatureEnablementToken,
                 LinkDeviceActionType.LockDeviceConfig => DeviceSubWorkflowState.LockDeviceConfig,
                 LinkDeviceActionType.UnlockDeviceConfig => DeviceSubWorkflowState.UnlockDeviceConfig,
-                LinkDeviceActionType.UpdateDeviceConfig => DeviceSubWorkflowState.UpdateDeviceConfig,
                 LinkDeviceActionType.GenerateHMAC => DeviceSubWorkflowState.GenerateHMAC,
                 LinkDeviceActionType.UpdateHMACKeys => DeviceSubWorkflowState.UpdateHMACKeys,
                 _ => DeviceSubWorkflowState.Undefined

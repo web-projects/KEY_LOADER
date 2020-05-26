@@ -35,10 +35,10 @@ namespace DEVICE_CORE
 
                 switch (keypressed)
                 {
-                    case ConsoleKey.C:
+                    case ConsoleKey.F:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
-                        await application.Command(LinkDeviceActionType.UpdateDeviceConfig).ConfigureAwait(false);
+                        await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.K:
@@ -104,7 +104,7 @@ namespace DEVICE_CORE
         {
             if (redisplay)
             { 
-                Console.WriteLine("\nCOMMANDS: [c=CONFIG, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+                Console.WriteLine("\nCOMMANDS: [f=FET, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
             }
             return Console.ReadKey(true).Key;
         }

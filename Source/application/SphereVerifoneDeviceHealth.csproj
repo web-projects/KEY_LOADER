@@ -41,6 +41,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\1a.dl.zADE-Enablement-VfiDev.tar">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\dl.bundle.Sphere_Config3-s0.tar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

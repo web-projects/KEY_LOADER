@@ -24,11 +24,11 @@ namespace Devices.Verifone.VIPA
 
         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot);
 
+        int FeatureEnablementToken();
+
         int LockDeviceConfiguration();
 
         int UnlockDeviceConfiguration();
-
-        int UpdateDeviceConfiguration();
 
         (string HMAC, int VipaResponse) GenerateHMAC();
 

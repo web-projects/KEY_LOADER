@@ -45,9 +45,9 @@ namespace Devices.Common.Interfaces
         LinkRequest AbortCommand(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);
         LinkRequest RebootDevice(LinkRequest linkRequest);
+        LinkRequest FeatureEnablementToken(LinkRequest linkRequest);
         LinkRequest LockDeviceConfiguration(LinkRequest linkRequest);
         LinkRequest UnlockDeviceConfiguration(LinkRequest linkRequest);
-        LinkRequest UpdateDeviceConfiguration(LinkRequest linkRequest);
         LinkRequest UpdateHMACKeys(LinkRequest linkRequest);
         LinkRequest GenerateHMAC(LinkRequest linkRequest);
     }

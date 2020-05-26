@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using XO.Responses.Device;
 
 namespace XO.Responses
 {
@@ -8,6 +7,7 @@ namespace XO.Responses
     {
         public List<LinkErrorValue> Errors { get; set; }
 
+        public LinkDevicePowerOnNotification PowerOnNotification { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public string TerminalId { get; set; }

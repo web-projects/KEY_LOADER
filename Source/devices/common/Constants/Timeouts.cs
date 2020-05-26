@@ -9,7 +9,7 @@ namespace Devices.Common.Constants
         //TODO: Those are defaultTimeouts. DAL should also be receiving those defaults from the Config.
         public static int DALCardCaptureTimeout = 90;
         public static int DALGetStatusTimeout = 10;
-        public static int DALDeviceRecoveryTimeout = 15;
+        public static int DALDeviceRecoveryTimeout = 30;
 
         public static int ServicerRequestDefaultTimeout = 300;
     }

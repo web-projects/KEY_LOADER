@@ -141,6 +141,14 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest FeatureEnablementToken(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: UPDATE DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
@@ -154,14 +162,6 @@ namespace Devices.Simulator
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine("----------------------------------------------------------------------------------------------------");
             Console.WriteLine($"simulator: UNLOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
-            return linkRequest;
-        }
-
-        public LinkRequest UpdateDeviceConfiguration(LinkRequest linkRequest)
-        {
-            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"simulator: UPDATE DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 

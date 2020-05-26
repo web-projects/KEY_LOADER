@@ -195,7 +195,7 @@ namespace StateMachine.State.Management
             }
         }
 
-        private bool DisconnectAllDevices(PortEventType comPortEvent, string portNumber)
+        private async Task<bool> DisconnectAllDevices(PortEventType comPortEvent, string portNumber)
         {
             bool peformDeviceDiscovery = false;
 
@@ -221,6 +221,13 @@ namespace StateMachine.State.Management
                         }
                         device.Disconnect();
                     }
+
+                    // Is the device rebooting?
+                    //if (currentStateAction.WorkflowStateType != DeviceWorkflowState.Manage)
+                    //{
+                    //    Debug.WriteLine($"Currently in {currentStateAction.WorkflowStateType}: forcing state transition...");
+                    //    await Complete(currentStateAction);
+                    //}
                 }
             }
             return peformDeviceDiscovery;
@@ -228,7 +235,7 @@ namespace StateMachine.State.Management
 
         private void OnComPortEventReceivedAsync(PortEventType comPortEvent, string portNumber)
         {
-            bool peformDeviceDiscovery = false;
+            Task<bool> peformDeviceDiscovery = Task.FromResult(false);
 
             if (comPortEvent == PortEventType.Insertion)
             {
@@ -245,19 +252,16 @@ namespace StateMachine.State.Management
             }
 
             // only perform discovery when an existing device is disconnected or a new connection is detected
-            if (peformDeviceDiscovery)
+            if (peformDeviceDiscovery.Result)
             {
-                if (currentStateAction.WorkflowStateType == DeviceWorkflowState.Manage ||
-                    currentStateAction.WorkflowStateType == DeviceWorkflowState.ProcessRequest)
-                {
-                    Console.WriteLine($"DEVICE: discovery in progress...");
+                Console.WriteLine($"DEVICE: discovery in progress...");
 
-                    // wait for USB driver to detach/reattach device
-                    //await Task.Delay(Configuration.DeviceDiscoveryDelay * 1024);
-                    Task.Delay(5000);
+                // wait for USB driver to detach/reattach device
+                //await Task.Delay(Configuration.DeviceDiscoveryDelay * 1024);
+                Task.Delay(5000);
 
-                    currentStateAction.DoDeviceDiscovery();
-                }
+                currentStateAction.DoDeviceDiscovery();
+
                 //else
                 //{
                 //    StateActionRules.NeedsDeviceRecovery = true;

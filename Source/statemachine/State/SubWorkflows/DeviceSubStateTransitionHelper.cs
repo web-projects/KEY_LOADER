@@ -48,6 +48,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeFeatureEnablementTokenStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeLockDeviceConfigStateTransition(bool exception) =>
             exception switch
             {
@@ -56,13 +63,6 @@ namespace StateMachine.State.SubWorkflows
             };
 
         private static DeviceSubWorkflowState ComputeUnlockDeviceConfigStateTransition(bool exception) =>
-            exception switch
-            {
-                true => SanityCheck,
-                false => SanityCheck
-            };
-
-        private static DeviceSubWorkflowState ComputeUpdateDeviceConfigStateTransition(bool exception) =>
             exception switch
             {
                 true => SanityCheck,
@@ -106,9 +106,9 @@ namespace StateMachine.State.SubWorkflows
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),
                 RebootDevice => ComputeDeviceRebootStateTransition(exception),
+                FeatureEnablementToken => ComputeFeatureEnablementTokenStateTransition(exception),
                 LockDeviceConfig => ComputeLockDeviceConfigStateTransition(exception),
                 UnlockDeviceConfig => ComputeUnlockDeviceConfigStateTransition(exception),
-                UpdateDeviceConfig => ComputeUpdateDeviceConfigStateTransition(exception),
                 UpdateHMACKeys => ComputeGetLoadHMACKeysStateTransition(exception),
                 GenerateHMAC => ComputeGetGenerateHMACStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),
