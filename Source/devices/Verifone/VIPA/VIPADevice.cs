@@ -468,7 +468,7 @@ namespace Devices.Verifone.VIPA
             // Signature = HMAC_old(old XOR new) - array1 is smaller or equal in size as array2
             byte[] hmac_signature_06 = ConversionHelper.XORArrays(hmac_generated_key, HMACValidator.HMACKEY06);
 
-            var dataKey06HMAC = FormatE0Tag(hmac_signature_06);
+            var dataKey06HMAC = FormatE0Tag(HMACValidator.HMACKEY06, hmac_signature_06);
             TLV.TLV tlv = new TLV.TLV();
             byte[] dataForHMACData = tlv.Encode(dataKey06HMAC);
 
@@ -480,7 +480,7 @@ namespace Devices.Verifone.VIPA
                 // KEY 07 Generation
                 byte[] hmac_signature_07 = ConversionHelper.XORArrays(hmac_generated_key, HMACValidator.HMACKEY07);
 
-                var dataKey07HMAC = FormatE0Tag(hmac_signature_07);
+                var dataKey07HMAC = FormatE0Tag(HMACValidator.HMACKEY07, hmac_signature_07);
                 tlv = new TLV.TLV();
                 dataForHMACData = tlv.Encode(dataKey07HMAC);
 
@@ -491,7 +491,7 @@ namespace Devices.Verifone.VIPA
             return vipaResponse;
         }
 
-        private List<TLV.TLV> FormatE0Tag(byte[] hmackey)
+        private List<TLV.TLV> FormatE0Tag(byte[] hmackey, byte[] generated_hmackey)
         {
             return new List<TLV.TLV>
             {
@@ -513,7 +513,7 @@ namespace Devices.Verifone.VIPA
                         new TLV.TLV
                         {
                             Tag = new byte[] { 0xDF, 0xED, 0x15 },
-                            Data = hmackey
+                            Data = generated_hmackey
                         }
                     }
                 }

@@ -418,7 +418,7 @@ namespace Devices.Verifone
         public LinkRequest UpdateHMACKeys(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: UPDATE HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
 
             if (vipaDevice != null)
             {
@@ -438,11 +438,11 @@ namespace Devices.Verifone
                         int vipaResponse = vipaDevice.UpdateHMACKeys();
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                            Console.WriteLine($"DEVICE: HMAC KEYS LOADED SUCCESSFULLY\n");
+                            Console.WriteLine($"DEVICE: HMAC KEYS UPDATED SUCCESSFULLY\n");
                         }
                         else
                         {
-                            Console.WriteLine(string.Format("DEVICE: FAILED HMAC KEYS LOADING WITH ERROR=0x{0:X4}\n", vipaResponse));
+                            Console.WriteLine(string.Format("DEVICE: FAILED HMAC KEYS UPDATE WITH ERROR=0x{0:X4}\n", vipaResponse));
                         }
                         DeviceSetIdle();
                     }
@@ -486,27 +486,5 @@ namespace Devices.Verifone
         }
 
         #endregion --- subworkflow mapping
-
-        //internal (DeviceInfoObject deviceInfoObject, int VipaResponse) WriteCommand(ReadCommands command)
-        //{
-        //    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
-
-        //    switch (command)
-        //    {
-        //        case ReadCommands.DEVICE_ABORT:
-        //            {
-        //                var response = DeviceCommandAbort();
-        //                deviceResponse = (null, response.VipaResponse);
-        //                break;
-        //            }
-        //        case ReadCommands.DEVICE_RESET:
-        //            {
-        //                deviceResponse = DeviceCommandReset();
-        //                break;
-        //            }
-        //    }
-
-        //    return deviceResponse;
-        //}
     }
 }
