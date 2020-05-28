@@ -38,4 +38,5 @@ This an application to load HMAC KEYS.
 * 20200525 - Enhanced Configs Updater
 * 20200526 - Added Feature Enablement Token to Updater
            - Corrected Key Generation
+* 20200527 - Updated locking configs
            

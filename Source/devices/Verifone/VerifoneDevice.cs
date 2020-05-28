@@ -239,14 +239,16 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        byte vssSlot = 0x02;
-                        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = vipaDevice.GetSecurityConfiguration(vssSlot);
+                        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
+                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: KEY SLOT NUMBER  ={config.securityConfigurationObject.KeySlotNumber}");
                             Console.WriteLine($"DEVICE: VSS SCRIPT NUMBER={config.securityConfigurationObject.VSSPrimarySlot}");
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
+                            Console.WriteLine($"DEVICE: SRED PIN KSN     ={config.securityConfigurationObject.SRedCardKSN}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                            Console.WriteLine("");
                         }
                         DeviceSetIdle();
                     }

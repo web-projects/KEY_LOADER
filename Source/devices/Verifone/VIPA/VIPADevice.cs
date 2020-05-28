@@ -942,9 +942,9 @@ namespace Devices.Verifone.VIPA
         {
             var E0TemplateTag = new byte[] { 0xe0 };                    // E0 Template tag
             var onlinePINKSNTag = new byte[] { 0xDF, 0xED, 0x03 };
-            var initVectorTag = new byte[] { 0xDF, 0xDF, 0x12 };
-            var sRedCardKSNTag = new byte[] { 0xDF, 0xDF, 0x11 };
             var encryptedKeyCheckTag = new byte[] { 0xDF, 0xDF, 0x10 };
+            var sRedCardKSNTag = new byte[] { 0xDF, 0xDF, 0x11 };
+            var initVectorTag = new byte[] { 0xDF, 0xDF, 0x12 };
             var keySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x2E };
 
             if (cancelled || tags == null)
@@ -982,8 +982,6 @@ namespace Devices.Verifone.VIPA
                             deviceResponse.EncryptedKeyCheck = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
                     }
-
-                    break;
                 }
             }
 

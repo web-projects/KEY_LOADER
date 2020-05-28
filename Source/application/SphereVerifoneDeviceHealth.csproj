@@ -44,13 +44,10 @@
     <None Update="Assets\1a.dl.zADE-Enablement-VfiDev.tar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\dl.bundle.Sphere_Config3-s0.tar">
+    <None Update="Assets\dl.bundle.Sphere_Config4-s0.tar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\dl.bundle.Sphere_Config3-s8.tar">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\dl.bundle.Sphere_UpdKeyCmd_Disable.tar">
+    <None Update="Assets\dl.bundle.Sphere_Config4-s8.tar">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar">
