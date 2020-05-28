@@ -45,6 +45,7 @@ namespace Devices.Common.Interfaces
         LinkRequest AbortCommand(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);
         LinkRequest RebootDevice(LinkRequest linkRequest);
+        LinkRequest Configuration(LinkRequest linkRequest);
         LinkRequest FeatureEnablementToken(LinkRequest linkRequest);
         LinkRequest LockDeviceConfiguration(LinkRequest linkRequest);
         LinkRequest UnlockDeviceConfiguration(LinkRequest linkRequest);

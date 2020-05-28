@@ -297,10 +297,37 @@ namespace Devices.Verifone.VIPA
             return deviceSecurityConfigurationInfo;
         }
 
+        public int Configuration()
+        {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
+
+            Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
+
+            foreach (var configFile in BinaryStatusObject.binaryStatus)
+            {
+                string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Config"), configFile.Value.fileName);
+                fileStatus = PutFile(configFile.Value.fileName, targetFile);
+                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                {
+                    string formattedStr = configFile.Value.fileName.PadRight(13);
+                    Console.WriteLine($"VIPA: '{formattedStr}' TRANSFERRED SUCCESSFULLY");
+                }
+                else
+                {
+                    string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
+                        configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
+                    Console.WriteLine(formattedStr);
+                }
+            }
+
+            return fileStatus.VipaResponse;
+        }
+
         public int FeatureEnablementToken()
         {
             Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.FET_BUNDLE);
+            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.FET_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.FET_BUNDLE, targetFile);
             if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
             {
                 if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.FET_SIZE)
@@ -327,7 +354,8 @@ namespace Devices.Verifone.VIPA
         public int LockDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE);
+            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.LOCK_CONFIG_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE, targetFile);
             if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
             {
                 if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG_SIZE)
@@ -354,7 +382,8 @@ namespace Devices.Verifone.VIPA
         public int UnlockDeviceConfiguration()
         {
             Debug.WriteLine(ConsoleMessages.UnlockDeviceUpdate.GetStringValue());
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
+            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE, targetFile);
             if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
             {
                 if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.UNLOCK_CONFIG_SIZE)
@@ -586,7 +615,7 @@ namespace Devices.Verifone.VIPA
             return vipaResponse;
         }
 
-        private (BinaryStatusObject binaryStatusObject, int VipaResponse) PutFile(string fileName)
+        private (BinaryStatusObject binaryStatusObject, int VipaResponse) PutFile(string fileName, string targetFile)
         {
             if (string.IsNullOrEmpty(fileName))
             {
@@ -595,7 +624,6 @@ namespace Devices.Verifone.VIPA
 
             (BinaryStatusObject binaryStatusObject, int VipaResponse) deviceBinaryStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
-            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), fileName);
             if (File.Exists(targetFile))
             {
                 ResponseTagsHandlerSubscribed++;

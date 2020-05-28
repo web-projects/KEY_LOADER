@@ -48,6 +48,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeConfigurationStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeFeatureEnablementTokenStateTransition(bool exception) =>
             exception switch
             {
@@ -106,6 +113,7 @@ namespace StateMachine.State.SubWorkflows
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),
                 RebootDevice => ComputeDeviceRebootStateTransition(exception),
+                Configuration => ComputeConfigurationStateTransition(exception),
                 FeatureEnablementToken => ComputeFeatureEnablementTokenStateTransition(exception),
                 LockDeviceConfig => ComputeLockDeviceConfigStateTransition(exception),
                 UnlockDeviceConfig => ComputeUnlockDeviceConfigStateTransition(exception),

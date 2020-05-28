@@ -23,6 +23,7 @@ namespace StateMachine.State.SubWorkflows.Providers
                 LinkDeviceActionType.AbortCommand => DeviceSubWorkflowState.AbortCommand,
                 LinkDeviceActionType.ResetCommand => DeviceSubWorkflowState.ResetCommand,
                 LinkDeviceActionType.RebootDevice => DeviceSubWorkflowState.RebootDevice,
+                LinkDeviceActionType.Configuration => DeviceSubWorkflowState.Configuration,
                 LinkDeviceActionType.FeatureEnablementToken => DeviceSubWorkflowState.FeatureEnablementToken,
                 LinkDeviceActionType.LockDeviceConfig => DeviceSubWorkflowState.LockDeviceConfig,
                 LinkDeviceActionType.UnlockDeviceConfig => DeviceSubWorkflowState.UnlockDeviceConfig,

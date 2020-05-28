@@ -55,6 +55,11 @@ namespace StateMachine.State.Enums
         RebootDevice,
 
         /// <summary>
+        /// Represents a state when DAL updates Payment workflow configuration files on the device
+        /// </summary>
+        Configuration,
+
+        /// <summary>
         /// Represents a state when DAL updates Feature Enablement Token to device
         /// </summary>
         FeatureEnablementToken,

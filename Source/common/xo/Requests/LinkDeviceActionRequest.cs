@@ -11,6 +11,7 @@ namespace XO.Requests
     [JsonConverter(typeof(StringEnumConverter))]
     public enum LinkDeviceActionType
     {
+        Configuration,
         GetStatus,
         AbortCommand,
         ResetCommand,

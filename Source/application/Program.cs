@@ -35,18 +35,24 @@ namespace DEVICE_CORE
 
                 switch (keypressed)
                 {
-                    case ConsoleKey.F:
+                    case ConsoleKey.C:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
+                        await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
+                        break;
+                    }
+                    case ConsoleKey.F:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
                         await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
                         break;
                     }
-                    case ConsoleKey.K:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
-                        await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
-                        break;
-                    }
+                    //case ConsoleKey.K:
+                    //{
+                    //    //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
+                    //    await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
+                    //    break;
+                    //}
                     case ConsoleKey.L:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [LOCK]");
@@ -103,8 +109,9 @@ namespace DEVICE_CORE
         static private ConsoleKey GetKeyPressed(bool redisplay)
         {
             if (redisplay)
-            { 
-                Console.WriteLine("\nCOMMANDS: [f=FET, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+            {
+                //Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+                Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
             }
             return Console.ReadKey(true).Key;
         }
