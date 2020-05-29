@@ -28,9 +28,6 @@ namespace Devices.Verifone.Helpers
 
         // Payment Workflow Configuration
         // AIDS
-        //public const string AID_384C1_NAME = "a000000384.c1";
-        //public const string AID_384C1_HASH = "98D37F4911E8A0F8A542A9B7494ECF9E";
-        //public const int AID_384C1_SIZE = 0x14F;
         public const string AID_00392_NAME = "a000000003.92";
         public const string AID_00392_HASH = "98B8C420A5E79C61D1B5EFD511A84244";
         public const int AID_00392_SIZE = 0x018F;
@@ -64,6 +61,9 @@ namespace Devices.Verifone.Helpers
         public const string AID_1525D_NAME = "a000000152.5d";
         public const string AID_1525D_HASH = "14AF5206F20AE2E4BCCE3A6A0078D3E8";
         public const int AID_1525D_SIZE = 0x021F;
+        public const string AID_384C1_NAME = "a000000384.c1";
+        public const string AID_384C1_HASH = "98D37F4911E8A0F8A542A9B7494ECF9E";
+        public const int AID_384C1_SIZE = 0x14F;
 
         // CLESS CONFIG
         public const string CONTLEMV = "contlemv.cfg";
@@ -91,7 +91,6 @@ namespace Devices.Verifone.Helpers
             new Dictionary<string, (string configType, string fileName, string fileHash, int size)>()
             {
                 // AIDS
-                //[AID_384C1_NAME] = ("AID", AID_384C1_NAME, AID_384C1_HASH, AID_384C1_SIZE),
                 [AID_00392_NAME] = ("AID", AID_00392_NAME, AID_00392_HASH, AID_00392_SIZE),
                 [AID_00394_NAME] = ("AID", AID_00394_NAME, AID_00394_HASH, AID_00394_SIZE),
                 [AID_004EF_NAME] = ("AID", AID_004EF_NAME, AID_004EF_HASH, AID_004EF_SIZE),
@@ -103,6 +102,7 @@ namespace Devices.Verifone.Helpers
                 [AID_06513_NAME] = ("AID", AID_06513_NAME, AID_06513_HASH, AID_06513_SIZE),
                 [AID_1525C_NAME] = ("AID", AID_1525C_NAME, AID_1525C_HASH, AID_1525C_SIZE),
                 [AID_1525D_NAME] = ("AID", AID_1525D_NAME, AID_1525D_HASH, AID_1525D_SIZE),
+                [AID_384C1_NAME] = ("AID", AID_384C1_NAME, AID_384C1_HASH, AID_384C1_SIZE),
                 // CLESS CONFIG
                 [CONTLEMV] = ("CLESS", CONTLEMV, CONTLEMVHASH, CONTLEMVFILESIZE),
                 // EMV CONFIG
