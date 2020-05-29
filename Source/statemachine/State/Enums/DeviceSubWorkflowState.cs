@@ -70,9 +70,14 @@ namespace StateMachine.State.Enums
         UnlockDeviceConfig,
 
         /// <summary>
-        /// Represents a state when DAL locks key updates on the device
+        /// Represents a state when DAL locks key updates on the device with SLOT-0
         /// </summary>
-        LockDeviceConfig,
+        LockDeviceConfig0,
+
+        /// <summary>
+        /// Represents a state when DAL locks key updates on the device with SLOT-8
+        /// </summary>
+        LockDeviceConfig8,
 
         /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL

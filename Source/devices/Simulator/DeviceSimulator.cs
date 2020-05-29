@@ -157,11 +157,19 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
-        public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
+        public LinkRequest LockDeviceConfiguration0(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine("----------------------------------------------------------------------------------------------------");
-            Console.WriteLine($"simulator: LOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"simulator: LOCK DEVICE CONFIGURATION 0 for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest LockDeviceConfiguration8(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: LOCK DEVICE CONFIGURATION 8 for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 

@@ -10,11 +10,11 @@ using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
-    internal class DeviceLockConfigurationSubStateAction : DeviceBaseSubStateAction
+    internal class DeviceLockConfiguration0SubStateAction : DeviceBaseSubStateAction
     {
-        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.LockDeviceConfig;
+        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.LockDeviceConfig0;
 
-        public DeviceLockConfigurationSubStateAction(IDeviceSubStateController _) : base(_) { }
+        public DeviceLockConfiguration0SubStateAction(IDeviceSubStateController _) : base(_) { }
 
         public override SubStateActionLaunchRules LaunchRules => new SubStateActionLaunchRules
         {
@@ -25,8 +25,8 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to lock device configuration.");
-                Console.WriteLine("Unable to find a state object while attempting to lock device configuration.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to lock device configuration 0.");
+                Console.WriteLine("Unable to find a state object while attempting to lock device configuration 0.");
                 _ = Error(this);
             }
             else
@@ -41,14 +41,14 @@ namespace StateMachine.State.SubWorkflows.Actions
                     devicesRequest.Add(JsonConvert.DeserializeObject<LinkRequest>(JsonConvert.SerializeObject(linkRequest)));
 
                     var timeoutPolicy = await cancellationBroker.ExecuteWithTimeoutAsync<LinkRequest>(
-                        _ => device.LockDeviceConfiguration(devicesRequest.Last()),
+                        _ => device.LockDeviceConfiguration0(devicesRequest.Last()),
                         DeviceConstants.CardCaptureTimeout,
                         System.Threading.CancellationToken.None);
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
-                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to lock device configuration - '{Controller.DeviceEvent}'.");
-                        Console.WriteLine($"Unable to lock device configuration - '{Controller.DeviceEvent}'.");
+                        //_ = Controller.LoggingClient.LogErrorAsync($"Unable to lock device configuration 0 - '{Controller.DeviceEvent}'.");
+                        Console.WriteLine($"Unable to lock device configuration 0 - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }
                 }

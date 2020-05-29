@@ -330,10 +330,10 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
-        public LinkRequest LockDeviceConfiguration(LinkRequest linkRequest)
+        public LinkRequest LockDeviceConfiguration0(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOCK DEVICE CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOCK DEVICE CONFIGURATION 0 for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
 
             if (vipaDevice != null)
             {
@@ -350,7 +350,43 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.LockDeviceConfiguration();
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration0();
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED LOCK CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
+        public LinkRequest LockDeviceConfiguration8(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: LOCK DEVICE CONFIGURATION 8 for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration8();
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
