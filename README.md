@@ -40,4 +40,5 @@ This an application to load HMAC KEYS.
            - Corrected Key Generation
 * 20200527 - Updated locking configs
 * 20200528 - Added Device Configuration
+* 20200529 - Moved Assets to resources
            

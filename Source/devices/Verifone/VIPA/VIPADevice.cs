@@ -1,4 +1,5 @@
-﻿using Devices.Common.Helpers;
+﻿using Config.Config;
+using Devices.Common.Helpers;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.TLV;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -88,6 +90,39 @@ namespace Devices.Verifone.VIPA
         }
 
         #endregion --- connection ---
+
+        #region --- resources ---
+        private bool FindEmbeddedResourceByName(string fileName, string fileTarget)
+        {
+            bool result = false;
+
+            // Main Assembly contains embedded resources
+            Assembly mainAssembly = Assembly.GetEntryAssembly();
+            foreach (string name in mainAssembly.GetManifestResourceNames())
+            {
+                if (name.EndsWith(fileName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    using (Stream stream = mainAssembly.GetManifestResourceStream(name))
+                    {
+                        BinaryReader br = new BinaryReader(stream);
+                        // always create working file
+                        FileStream fs = File.Open(fileTarget, FileMode.Create);
+                        BinaryWriter bw = new BinaryWriter(fs);
+                        byte[] ba = new byte[stream.Length];
+                        stream.Read(ba, 0, ba.Length);
+                        bw.Write(ba);
+                        br.Close();
+                        bw.Close();
+                        stream.Close();
+                        result = true;
+                    }
+                    break;
+                }
+            }
+            return result;
+        }
+
+        #endregion --- resources ---
 
         private void WriteSingleCmd(VIPACommand command)
         {
@@ -305,18 +340,50 @@ namespace Devices.Verifone.VIPA
 
             foreach (var configFile in BinaryStatusObject.binaryStatus)
             {
-                string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Config"), configFile.Value.fileName);
-                fileStatus = PutFile(configFile.Value.fileName, targetFile);
-                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
+                if (FindEmbeddedResourceByName(configFile.Value.fileName, targetFile))
                 {
-                    string formattedStr = configFile.Value.fileName.PadRight(13);
-                    Console.WriteLine($"VIPA: '{formattedStr}' TRANSFERRED SUCCESSFULLY");
+                    fileStatus = PutFile(configFile.Value.fileName, targetFile);
+                    if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                    {
+                        if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                        {
+                            if (fileStatus.binaryStatusObject.FileSize == configFile.Value.size)
+                            {
+                                string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+                                //Console.WriteLine(formattedStr);
+                                Console.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+                            }
+                            else
+                            {
+                                Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                            }
+
+                            if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Console.WriteLine(", HASH MATCH");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
+                            configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
+                        Console.WriteLine(formattedStr);
+                    }
+                    // clean up
+                    if (File.Exists(targetFile))
+                    {
+                        File.Delete(targetFile);
+                    }
                 }
                 else
                 {
-                    string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
-                        configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
-                    Console.WriteLine(formattedStr);
+                    Console.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' NOT FOUND!");
                 }
             }
 
@@ -325,84 +392,118 @@ namespace Devices.Verifone.VIPA
 
         public int FeatureEnablementToken()
         {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
-            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.FET_BUNDLE);
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.FET_BUNDLE, targetFile);
-            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            string targetFile = Path.Combine(Constants.TargetDirectory, BinaryStatusObject.FET_BUNDLE);
+            if (FindEmbeddedResourceByName(BinaryStatusObject.FET_BUNDLE, targetFile))
             {
-                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.FET_SIZE)
+                fileStatus = PutFile(BinaryStatusObject.FET_BUNDLE, targetFile);
+                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                 {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MATCH");
-                }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MISMATCH!");
-                }
+                    if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.FET_SIZE)
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} SIZE MISMATCH!");
+                    }
 
-                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.FET_HASH, StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MATCH");
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.FET_HASH, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MISMATCH!");
+                    }
                 }
-                else
+                // clean up
+                if (File.Exists(targetFile))
                 {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.FET_BUNDLE} HASH MISMATCH!");
+                    File.Delete(targetFile);
                 }
+            }
+            else
+            {
+                Console.WriteLine($"VIPA: RESOURCE '{BinaryStatusObject.FET_BUNDLE}' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }
 
         public int LockDeviceConfiguration()
         {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.LOCK_CONFIG_BUNDLE);
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE, targetFile);
-            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            string targetFile = Path.Combine(Constants.TargetDirectory, BinaryStatusObject.LOCK_CONFIG_BUNDLE);
+            if (FindEmbeddedResourceByName(BinaryStatusObject.LOCK_CONFIG_BUNDLE, targetFile))
             {
-                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG_SIZE)
+                fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG_BUNDLE, targetFile);
+                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                 {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MATCH");
-                }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
-                }
+                    if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG_SIZE)
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
+                    }
 
-                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.LOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MATCH");
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.LOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MISMATCH!");
+                    }
                 }
-                else
+                // clean up
+                if (File.Exists(targetFile))
                 {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG_BUNDLE} HASH MISMATCH!");
+                    File.Delete(targetFile);
                 }
+            }
+            else
+            {
+                Console.WriteLine($"VIPA: RESOURCE '{BinaryStatusObject.LOCK_CONFIG_BUNDLE}' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }
 
         public int UnlockDeviceConfiguration()
         {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             Debug.WriteLine(ConsoleMessages.UnlockDeviceUpdate.GetStringValue());
-            string targetFile = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Assets"), BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE, targetFile);
-            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+            string targetFile = Path.Combine(Constants.TargetDirectory, BinaryStatusObject.UNLOCK_CONFIG_BUNDLE);
+            if (FindEmbeddedResourceByName(BinaryStatusObject.LOCK_CONFIG_BUNDLE, targetFile))
             {
-                if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.UNLOCK_CONFIG_SIZE)
+                fileStatus = PutFile(BinaryStatusObject.UNLOCK_CONFIG_BUNDLE, targetFile);
+                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                 {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MATCH");
-                }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
-                }
+                    if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.UNLOCK_CONFIG_SIZE)
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} SIZE MISMATCH!");
+                    }
 
-                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.UNLOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MATCH");
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.UNLOCK_CONFIG_HASH, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MATCH");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MISMATCH!");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine($"VIPA: {BinaryStatusObject.UNLOCK_CONFIG_BUNDLE} HASH MISMATCH!");
-                }
+            }
+            else
+            {
+                Console.WriteLine($"VIPA: RESOURCE '{BinaryStatusObject.UNLOCK_CONFIG_BUNDLE}' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }

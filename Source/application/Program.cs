@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Config.Config;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -16,6 +17,14 @@ namespace DEVICE_CORE
             Console.WriteLine($"\r\n==========================================================================================");
             Console.WriteLine($"{Assembly.GetEntryAssembly().GetName().Name} - Version {Assembly.GetEntryAssembly().GetName().Version}");
             Console.WriteLine($"==========================================================================================\r\n");
+
+             DirectoryInfo di = null;
+
+            // create working directory
+            if (!Directory.Exists(Constants.TargetDirectory))
+            {
+                di = Directory.CreateDirectory(Constants.TargetDirectory);
+            }
 
             string pluginPath = Path.Combine(Environment.CurrentDirectory, "DevicePlugins");
 
@@ -104,6 +113,16 @@ namespace DEVICE_CORE
             Console.WriteLine("\r\nCOMMAND: [QUIT]\r\n");
 
             application.Shutdown();
+
+            // delete working directory
+            if (di != null)
+            {
+                di.Delete();
+            }
+            else if (Directory.Exists(Constants.TargetDirectory))
+            {
+                Directory.Delete(Constants.TargetDirectory);
+            }
         }
 
         static private ConsoleKey GetKeyPressed(bool redisplay)
