@@ -42,4 +42,5 @@ This an application to load HMAC KEYS.
 * 20200528 - Added Device Configuration
 * 20200529 - Moved Assets to resources
 * 20200530 - Added Slot-0 and Slot-8 configuration updates
+           - Added missing configuration files
            

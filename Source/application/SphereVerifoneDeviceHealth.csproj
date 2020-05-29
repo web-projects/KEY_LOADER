@@ -28,9 +28,11 @@
     <None Remove="Assets\Config\a000000065.13" />
     <None Remove="Assets\Config\a000000152.5c" />
     <None Remove="Assets\Config\a000000152.5d" />
+    <None Remove="Assets\Config\cicapp.cfg" />
     <None Remove="Assets\Config\contlemv.cfg" />
     <None Remove="Assets\Config\iccdata.dat" />
     <None Remove="Assets\Config\icckeys.key" />
+    <None Remove="Assets\Config\mapp.cfg" />
     <None Remove="Assets\dl.bundle.Sphere_Config4-s0.tar" />
     <None Remove="Assets\dl.bundle.Sphere_Config4-s8.tar" />
     <None Remove="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar" />
@@ -73,6 +75,7 @@
     <EmbeddedResource Include="Assets\Config\a000000152.5d">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Config\cicapp.cfg" />
     <EmbeddedResource Include="Assets\Config\contlemv.cfg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -82,6 +85,7 @@
     <EmbeddedResource Include="Assets\Config\icckeys.key">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Config\mapp.cfg" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config4-s0.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -78,6 +78,15 @@ namespace Devices.Verifone.Helpers
         public const string ICCKEYSHASH = "544A6FCCF397D0D94B688A3AB7CC7512";
         public const int ICCKEYSFILESIZE = 0x29E8;
 
+        // GENERIC
+        public const string MAPPCFG = "mapp.cfg";
+        public const string MAPPCFG_HASH = "EAEC30E0790F0413178F9950CBCF8C4B";
+        public const int MAPPCFG_FILESIZE = 0x1158;
+
+        public const string CICAPPCFG = "cicapp.cfg";
+        public const string CICAPPCFG_HASH = "92DFBBDB39B270890347C3F1ED85C16C";
+        public const int CICAPPCFG_FILESIZE = 0x1703;
+
         public static Dictionary<string, (string configType, string fileName, string fileHash, int size)> binaryStatus =
             new Dictionary<string, (string configType, string fileName, string fileHash, int size)>()
             {
@@ -98,7 +107,10 @@ namespace Devices.Verifone.Helpers
                 [CONTLEMV] = ("CLESS", CONTLEMV, CONTLEMVHASH, CONTLEMVFILESIZE),
                 // EMV CONFIG
                 [ICCDATA] = ("EMV", ICCDATA, ICCDATAHASH, ICCDATAFILESIZE),
-                [ICCKEYS] = ("EMV", ICCKEYS, ICCKEYSHASH, ICCKEYSFILESIZE)
+                [ICCKEYS] = ("EMV", ICCKEYS, ICCKEYSHASH, ICCKEYSFILESIZE),
+                // GENERIC
+                [MAPPCFG] = ("CFG", MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE),
+                [CICAPPCFG] = ("CFG", CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE)
             };
 
         public bool FileNotFound { get; set; }
