@@ -502,10 +502,12 @@ namespace StateMachine.State.Management
 
         public void SetWorkflow(LinkDeviceActionType action)
         {
-            LinkRequest linkRequest = new LinkRequest()
+            if (TargetDevices != null)
             {
-                MessageID = RandomGenerator.BuildRandomString(12),
-                Actions = new List<LinkActionRequest>()
+                LinkRequest linkRequest = new LinkRequest()
+                {
+                    MessageID = RandomGenerator.BuildRandomString(12),
+                    Actions = new List<LinkActionRequest>()
                     {
                         new LinkActionRequest()
                         {
@@ -525,9 +527,14 @@ namespace StateMachine.State.Management
                             }
                         }
                     }
-            };
+                };
 
-            SendDeviceCommand(JsonConvert.SerializeObject(linkRequest));
+                SendDeviceCommand(JsonConvert.SerializeObject(linkRequest));
+            }
+            else
+            {
+                Console.WriteLine("NO TARGET DEVICE IDENTIFIED - CHECK USB/SERIAL CONNECTION SETUP");
+            }
         }
 
         public void LaunchWorkflow() => stateActionController.GetNextAction(DeviceWorkflowState.None).DoWork();

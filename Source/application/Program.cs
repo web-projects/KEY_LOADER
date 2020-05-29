@@ -48,6 +48,7 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
                         await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.F:
