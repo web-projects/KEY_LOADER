@@ -67,15 +67,15 @@ namespace Devices.Verifone.Helpers
 
         // CLESS CONFIG
         public const string CONTLEMV = "contlemv.cfg";
-        public const string CONTLEMVHASH = "4749D5D5C83E331A766B7F093FC5F407";
+        public const string CONTLEMVHASH = "C6A7064075AEE7E107C359D500B265F6";
         public const int CONTLEMVFILESIZE = 0x3F14;
 
         // EMV CONFIG
         public const string ICCDATA = "iccdata.dat";
-        public const string ICCDATAHASH = "27BD8502D8C9956511601AA047E1D716";
+        public const string ICCDATAHASH = "054E6E3186592B55EC8699FC9AC4B338";
         public const int ICCDATAFILESIZE = 0x24D;
         public const string ICCKEYS = "icckeys.key";
-        public const string ICCKEYSHASH = "544A6FCCF397D0D94B688A3AB7CC7512";
+        public const string ICCKEYSHASH = "01A246B4BA404232CB7E2375BECE158C";
         public const int ICCKEYSFILESIZE = 0x29E8;
 
         // GENERIC
