@@ -4,6 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>SphereVerifoneDeviceHealth</AssemblyName>
+    <AssemblyVersion>1.0.0.27</AssemblyVersion>
+    <FileVersion>1.0.0.27</FileVersion>
+    <PackageReleaseNotes>IPA5 Build 0.27 Compatible</PackageReleaseNotes>
+    <Version>1.0.27</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -76,18 +80,13 @@
     <EmbeddedResource Include="Assets\Config\a000000152.5d">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000384.c1" />
-    <EmbeddedResource Include="Assets\Config\cicapp.cfg" />
-    <EmbeddedResource Include="Assets\Config\contlemv.cfg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Config\contlemv.cfg" />
     <EmbeddedResource Include="Assets\Config\iccdata.dat">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\Config\icckeys.key">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\mapp.cfg" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config4-s0.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>

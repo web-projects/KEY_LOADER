@@ -44,4 +44,5 @@ This an application to load HMAC KEYS.
 * 20200530 - Added Slot-0 and Slot-8 configuration updates
            - Added missing configuration files
 * 20200602 - Configs update
+* 20200603 - Target Build 0.27
            
