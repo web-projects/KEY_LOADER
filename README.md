@@ -45,4 +45,5 @@ This an application to load HMAC KEYS.
            - Added missing configuration files
 * 20200602 - Configs update
 * 20200603 - Target Build 0.27
+* 20200604 - Target Build 0.30
            

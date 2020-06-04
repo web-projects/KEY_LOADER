@@ -4,8 +4,10 @@ namespace Devices.Verifone.Helpers
 {
     public class BinaryStatusObject
     {
-        public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
-
+	    public const string WHITELIST = "#whitelist.dat";
+        public const string WHITELISTHASH = "33514E07FFD021D98B80DC3990A9B8F0";
+        public const int WHITELISTFILESIZE = 0x131;
+		
         public const string FET_BUNDLE = "1a.dl.zADE-Enablement-VfiDev.tar";
         public const string FET_HASH = "1C261B56A83E30413786E809D5698579";
         public const int FET_SIZE = 0x2800;
@@ -67,8 +69,8 @@ namespace Devices.Verifone.Helpers
 
         // CLESS CONFIG
         public const string CONTLEMV = "contlemv.cfg";
-        public const string CONTLEMVHASH = "F6F279FC5F5C93A92357FCC7502CA4D8";
-        public const int CONTLEMVFILESIZE = 0x3BAF;
+        public const string CONTLEMVHASH = "4749D5D5C83E331A766B7F093FC5F407";
+        public const int CONTLEMVFILESIZE = 0x3F14;
 
         // EMV CONFIG
         public const string ICCDATA = "iccdata.dat";
@@ -90,6 +92,7 @@ namespace Devices.Verifone.Helpers
         public static Dictionary<string, (string configType, string fileName, string fileHash, int size)> binaryStatus =
             new Dictionary<string, (string configType, string fileName, string fileHash, int size)>()
             {
+                //[WHITELIST] = ("WHITELIST", WHITELIST, WHITELISTHASH, WHITELISTFILESIZE),
                 // AIDS
                 [AID_00392_NAME] = ("AID", AID_00392_NAME, AID_00392_HASH, AID_00392_SIZE),
                 [AID_00394_NAME] = ("AID", AID_00394_NAME, AID_00394_HASH, AID_00394_SIZE),
@@ -102,16 +105,18 @@ namespace Devices.Verifone.Helpers
                 [AID_06513_NAME] = ("AID", AID_06513_NAME, AID_06513_HASH, AID_06513_SIZE),
                 [AID_1525C_NAME] = ("AID", AID_1525C_NAME, AID_1525C_HASH, AID_1525C_SIZE),
                 [AID_1525D_NAME] = ("AID", AID_1525D_NAME, AID_1525D_HASH, AID_1525D_SIZE),
-                //[AID_384C1_NAME] = ("AID", AID_384C1_NAME, AID_384C1_HASH, AID_384C1_SIZE),
+                [AID_384C1_NAME] = ("AID", AID_384C1_NAME, AID_384C1_HASH, AID_384C1_SIZE),
                 // CLESS CONFIG
                 [CONTLEMV] = ("CLESS", CONTLEMV, CONTLEMVHASH, CONTLEMVFILESIZE),
                 // EMV CONFIG
                 [ICCDATA] = ("EMV", ICCDATA, ICCDATAHASH, ICCDATAFILESIZE),
                 [ICCKEYS] = ("EMV", ICCKEYS, ICCKEYSHASH, ICCKEYSFILESIZE),
                 // GENERIC
-                //[MAPPCFG] = ("CFG", MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE),
-                //[CICAPPCFG] = ("CFG", CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE)
+                [MAPPCFG] = ("CFG", MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE),
+                [CICAPPCFG] = ("CFG", CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE)
             };
+
+        public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
 
         public bool FileNotFound { get; set; }
         public int FileSize { get; set; }
