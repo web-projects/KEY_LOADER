@@ -219,6 +219,64 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest GetEMVKernelChecksum(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: GET KERNEL CHECKSUM for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) response = vipaDevice.GetEMVKernelChecksum();
+                        if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            string[] kernelInformation = response.kernelConfigurationObject.ApplicationKernelInformation.SplitByLength(8).ToArray();
+
+                            if (kernelInformation.Length == 4)
+                            {
+                                Console.WriteLine(string.Format("VIPA KERNEL CHECKSUM={0}-{1}-{2}-{3}",
+                                   kernelInformation[0], kernelInformation[1], kernelInformation[2], kernelInformation[3]));
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Format("VIPA KERNEL CHECKSUM={0}",
+                                    response.kernelConfigurationObject.ApplicationKernelInformation));
+                            }
+
+                            // TODO: check EMV Kernel per device family (UX/Engage)
+                            if (response.kernelConfigurationObject.ApplicationKernelInformation.Substring(BinaryStatusObject.EMV_KERNEL_CHECKSUM_OFFSET).Equals(BinaryStatusObject.UX301_EMV_KERNEL_CHECKSUM,
+                                StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Console.WriteLine("VIPA EMV KERNEL VALIDATED");
+                            }
+                            else
+                            {
+                                Console.WriteLine("VIPA EMV KERNEL IS INVALID");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED GET KERNEL CHECKSUM REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         public LinkRequest GetSecurityConfiguration(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();

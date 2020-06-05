@@ -19,6 +19,7 @@ namespace StateMachine.State.SubWorkflows.Providers
             {
                 LinkDeviceActionType.GetStatus => DeviceSubWorkflowState.GetStatus,
                 LinkDeviceActionType.GetActiveKeySlot => DeviceSubWorkflowState.GetActiveKeySlot,
+                LinkDeviceActionType.GetEMVKernelChecksum => DeviceSubWorkflowState.GetEMVKernelChecksum,
                 LinkDeviceActionType.GetSecurityConfiguration => DeviceSubWorkflowState.GetSecurityConfiguration,
                 LinkDeviceActionType.AbortCommand => DeviceSubWorkflowState.AbortCommand,
                 LinkDeviceActionType.ResetCommand => DeviceSubWorkflowState.ResetCommand,

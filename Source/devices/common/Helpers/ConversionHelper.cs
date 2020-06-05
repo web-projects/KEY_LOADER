@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Devices.Common.Helpers
@@ -63,6 +65,34 @@ namespace Devices.Common.Helpers
                 result[i] = (byte)(array1[i] ^ array2[i]);
             }
             return result;
+        }
+
+        /// <summary>
+        /// Splits a string into sized chunks
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> EnumerateByLength(this string text, int length)
+        {
+            int index = 0;
+            while (index < text.Length)
+            {
+                int charCount = Math.Min(length, text.Length - index);
+                yield return text.Substring(index, charCount);
+                index += length;
+            }
+        }
+
+        /// <summary>
+        /// Splits a string into sized chunks
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> SplitByLength(this string text, int length)
+        {
+            return text.EnumerateByLength(length).ToArray();
         }
     }
 

@@ -25,6 +25,11 @@ namespace StateMachine.State.Enums
         GetActiveKeySlot,
 
         /// <summary>
+        /// Represents a state when DAL gets EMV kernel checksum from the device
+        /// </summary>
+        GetEMVKernelChecksum,
+
+        /// <summary>
         /// Represents a state when DAL gets security status information from the device
         /// </summary>
         GetSecurityConfiguration,

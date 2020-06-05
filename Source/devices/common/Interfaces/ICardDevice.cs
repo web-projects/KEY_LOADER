@@ -41,6 +41,7 @@ namespace Devices.Common.Interfaces
         // ------------------------------------------------------------------------
         LinkRequest GetStatus(LinkRequest linkRequest);
         LinkRequest GetActiveKeySlot(LinkRequest linkRequest);
+        LinkRequest GetEMVKernelChecksum(LinkRequest linkRequest);
         LinkRequest GetSecurityConfiguration(LinkRequest linkRequest);
         LinkRequest AbortCommand(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);

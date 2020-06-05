@@ -17,6 +17,7 @@ namespace StateMachine.State.SubWorkflows.Actions.Controllers
                 {
                     [GetStatus] = (IDeviceSubStateController _) => new DeviceGetStatusSubStateAction(_),
                     [GetActiveKeySlot] = (IDeviceSubStateController _) => new DeviceGetActiveKeySlotSubStateAction(_),
+                    [GetEMVKernelChecksum] = (IDeviceSubStateController _) => new DeviceGetEMVKernelChecksumSubStateAction(_),
                     [GetSecurityConfiguration] = (IDeviceSubStateController _) => new DeviceGetSecurityConfigurationSubStateAction(_),
                     [Configuration] = (IDeviceSubStateController _) => new DeviceConfigurationSubStateAction(_),
                     [FeatureEnablementToken] = (IDeviceSubStateController _) => new DeviceFeatureEnablementTokenSubStateAction(_),

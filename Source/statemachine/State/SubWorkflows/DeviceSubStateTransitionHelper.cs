@@ -20,6 +20,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeGetEMVKernelChecksumStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeGetSecurityConfigurationStateTransition(bool exception) =>
             exception switch
             {
@@ -116,6 +123,7 @@ namespace StateMachine.State.SubWorkflows
             {
                 GetStatus => ComputeGetStatusStateTransition(exception),
                 GetActiveKeySlot => ComputeGetActiveKeySlotStateTransition(exception),
+                GetEMVKernelChecksum => ComputeGetEMVKernelChecksumStateTransition(exception),
                 GetSecurityConfiguration => ComputeGetSecurityConfigurationStateTransition(exception),
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),

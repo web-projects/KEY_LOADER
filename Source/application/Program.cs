@@ -63,16 +63,11 @@ namespace DEVICE_CORE
                     //    await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
                     //    break;
                     //}
-                    case ConsoleKey.NumPad0:
+                    case ConsoleKey.K:
                     {
-                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
-                        await application.Command(LinkDeviceActionType.LockDeviceConfig0).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.NumPad8:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
-                        await application.Command(LinkDeviceActionType.LockDeviceConfig8).ConfigureAwait(false);
+                        //Console.WriteLine("\r\nCOMMAND: [EMV-KERNEL]");
+                        await application.Command(LinkDeviceActionType.GetEMVKernelChecksum).ConfigureAwait(false);
+                        await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.R:
@@ -105,7 +100,18 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
                         break;
                     }
-
+                    case ConsoleKey.NumPad0:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
+                        await application.Command(LinkDeviceActionType.LockDeviceConfig0).ConfigureAwait(false);
+                        break;
+                    }
+                    case ConsoleKey.NumPad8:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
+                        await application.Command(LinkDeviceActionType.LockDeviceConfig8).ConfigureAwait(false);
+                        break;
+                    }
                     default:
                     {
                         redisplay = false;
@@ -158,7 +164,7 @@ namespace DEVICE_CORE
             if (redisplay)
             {
                 //Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
-                Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, 0=LOCK-0, 8=LOCK-8, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
+                Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, k=EMV-KERNEL, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, 0=LOCK-0, 8=LOCK-8, q=QUIT]\r\n");
             }
             return Console.ReadKey(true).Key;
         }

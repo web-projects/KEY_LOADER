@@ -18,6 +18,7 @@ namespace XO.Requests
         RebootDevice,
         GetIdentifier,
         GetActiveKeySlot,
+        GetEMVKernelChecksum,
         GetSecurityConfiguration,
         FeatureEnablementToken,
         LockDeviceConfig0,

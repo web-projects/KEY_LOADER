@@ -3,6 +3,7 @@ using Devices.Common.Helpers;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.TLV;
+using Devices.Verifone.VIPA.Templates;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -69,6 +70,7 @@ namespace Devices.Verifone.VIPA
 
         public TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)> DeviceIdentifier = null;
         public TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)> DeviceSecurityConfiguration = null;
+        public TaskCompletionSource<(KernelConfigurationObject kernelConfigurationObject, int VipaResponse)> DeviceKernelConfiguration = null;
 
         public TaskCompletionSource<(string HMAC, int VipaResponse)> DeviceGenerateHMAC = null;
         public TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)> DeviceBinaryStatusInformation = null;
@@ -309,6 +311,44 @@ namespace Devices.Verifone.VIPA
             ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
 
             return response;
+        }
+
+        public (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum()
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += GetKernelInformationResponseHandler;
+
+            DeviceKernelConfiguration = new TaskCompletionSource<(KernelConfigurationObject kernelConfigurationObject, int VipaResponse)>();
+
+            var aidRequestedTransaction = new List<TLV.TLV>
+            {
+                new TLV.TLV
+                {
+                    Tag = new byte[] { 0xE0 },
+                    InnerTags = new List<TLV.TLV>
+                    {
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0x9F, 0x06, 0x0E },      // AID A000000003101001
+                            Data = new byte[] { 0xA0, 0x00, 0x00, 0x00, 0x03, 0x10, 0x10 }
+                        }
+                    }
+                }
+            };
+            TLV.TLV tlv = new TLV.TLV();
+            var aidRequestedTransactionData = tlv.Encode(aidRequestedTransaction);
+
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDE, ins = 0x01, p1 = 0x00, p2 = 0x00, data = aidRequestedTransactionData };
+            WriteSingleCmd(command);
+
+            var deviceKernelConfigurationInfo = DeviceKernelConfiguration.Task.Result;
+
+            ResponseTagsHandler -= GetKernelInformationResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceKernelConfigurationInfo;
         }
 
         public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot)
@@ -1165,6 +1205,45 @@ namespace Devices.Verifone.VIPA
             else
             {
                 DeviceSecurityConfiguration?.TrySetResult((null, responseCode));
+            }
+        }
+
+        public void GetKernelInformationResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
+        {
+            var applicationAIDTag = new byte[] { 0x9F, 0x06 };
+            var kernelConfigurationTag = new byte[] { 0xDF, 0xDF, 0x05 };
+
+            if (cancelled || tags == null)
+            {
+                DeviceKernelConfiguration?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            var deviceResponse = new KernelConfigurationObject();
+
+            foreach (var tag in tags)
+            {
+                // note: we just need the first instance
+                if (tag.Tag.SequenceEqual(E0Template.E0TemplateTag))
+                {
+                    var kernelApplicationTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(applicationAIDTag)).FirstOrDefault();
+                    deviceResponse.ApplicationIdentifierTerminal = BitConverter.ToString(kernelApplicationTag.Data).Replace("-", "");
+                    var kernelChecksumTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(kernelConfigurationTag)).FirstOrDefault();
+                    deviceResponse.ApplicationKernelInformation = ConversionHelper.ByteArrayToAsciiString(kernelChecksumTag.Data).Replace("\0", string.Empty);
+                    break;
+                }
+            }
+
+            if (responseCode == (int)VipaSW1SW2Codes.Success)
+            {
+                if (tags.Count > 0)
+                {
+                    DeviceKernelConfiguration?.TrySetResult((deviceResponse, responseCode));
+                }
+            }
+            else
+            {
+                DeviceKernelConfiguration?.TrySetResult((null, responseCode));
             }
         }
 
