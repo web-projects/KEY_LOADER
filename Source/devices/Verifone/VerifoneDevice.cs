@@ -91,11 +91,11 @@ namespace Devices.Verifone
                             $" EVENT='{deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification?.TransactionStatusMessage}'");
 
                         deviceIdentifier = vipaDevice.DeviceCommandReset();
-                        
+
                         if (deviceIdentifier.VipaResponse != (int)VipaSW1SW2Codes.Success)
                         {
                             return null;
-                        } 
+                        }
                     }
 
                     if (DeviceInformation != null)
@@ -306,13 +306,23 @@ namespace Devices.Verifone
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
                             Console.WriteLine($"DEVICE: SRED PIN KSN     ={config.securityConfigurationObject.SRedCardKSN}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                            // validate configuration
+                            int vipaResponse = vipaDevice.ValidateConfiguration();
+                            if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Format("DEVICE: CONFIGURATION VALIDATION FAILED WITH ERROR=0x{0:X4}\n", vipaResponse));
+                            }
                             Console.WriteLine("");
                         }
                         DeviceSetIdle();
                     }
                 }
             }
- 
+
             return linkRequest;
         }
 

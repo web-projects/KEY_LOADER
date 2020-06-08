@@ -18,6 +18,8 @@ VERSION.031 (06/05/2020)
     
 4. Added EMV Kernel checksum validation
 
+5. Added CONFIGURATION check for STATUS selection
+
 VERSION.030 (06/03/2020)
 -------------------------------------------------------------------------------
 1. Added a000000384.c1

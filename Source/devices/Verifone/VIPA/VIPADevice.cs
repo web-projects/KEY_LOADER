@@ -430,6 +430,22 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
+        public int ValidateConfiguration()
+        {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
+
+            foreach (var configFile in BinaryStatusObject.binaryStatus)
+            { 
+                fileStatus = GetBinaryStatus(configFile.Value.fileName);
+                Debug.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' STATUS=0x{string.Format("{0:X4}", fileStatus.VipaResponse)}");
+                if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                {
+                    break;
+                }
+            }
+            return fileStatus.VipaResponse;
+        }
+
         public int FeatureEnablementToken()
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);

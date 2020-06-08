@@ -28,6 +28,8 @@ namespace Devices.Verifone.VIPA
 
         int Configuration();
 
+        int ValidateConfiguration();
+
         int FeatureEnablementToken();
 
         int LockDeviceConfiguration0();
