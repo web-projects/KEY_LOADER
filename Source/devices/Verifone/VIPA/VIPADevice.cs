@@ -442,6 +442,29 @@ namespace Devices.Verifone.VIPA
                 {
                     break;
                 }
+                // FILE SIZE
+                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.size)
+                {
+                    string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+                    Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+                }
+                else
+                {
+                    Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                    fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
+                    break;
+                }
+                // HASH
+                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    Debug.WriteLine(", HASH MATCH");
+                }
+                else
+                {
+                    Debug.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
+                    fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
+                    break;
+                }
             }
             return fileStatus.VipaResponse;
         }
