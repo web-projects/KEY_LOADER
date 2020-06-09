@@ -49,4 +49,5 @@ This an application to load HMAC KEYS.
 * 20200605 - Target Build 0.31
 * 20200606 - Added EMV Kernel Checksum validation
 * 20200608 - Added CONFIGURATION validation to STATUS
+* 20200609 - Added Firmware version to STATUS.
           

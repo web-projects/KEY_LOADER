@@ -110,6 +110,11 @@ namespace Devices.Verifone.TLV
                 }
                 else
                 {
+                    // special handling of POS cancellation: "ABORTED" is in the data field without a length
+                    if (tagDataLength > data.Length)
+                    {
+                        tagDataLength = data.Length - dataoffset;
+                    }
                     tag.Data = new byte[tagDataLength];
                     Array.Copy(data, dataoffset, tag.Data, 0, tagDataLength);
                 }

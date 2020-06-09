@@ -301,6 +301,7 @@ namespace Devices.Verifone
                         config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
+                            Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.linkDeviceResponse.FirmwareVersion}");
                             Console.WriteLine($"DEVICE: KEY SLOT NUMBER  ={config.securityConfigurationObject.KeySlotNumber}");
                             Console.WriteLine($"DEVICE: VSS SCRIPT NUMBER={config.securityConfigurationObject.VSSPrimarySlot}");
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");

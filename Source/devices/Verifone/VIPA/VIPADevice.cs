@@ -435,7 +435,7 @@ namespace Devices.Verifone.VIPA
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
             foreach (var configFile in BinaryStatusObject.binaryStatus)
-            { 
+            {
                 fileStatus = GetBinaryStatus(configFile.Value.fileName);
                 Debug.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' STATUS=0x{string.Format("{0:X4}", fileStatus.VipaResponse)}");
                 if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
@@ -1064,9 +1064,9 @@ namespace Devices.Verifone.VIPA
             var serialNumberTag = new byte[] { 0x9F, 0x1E };        // Serial Number tag
             var tamperStatus = new byte[] { 0xDF, 0x81, 0x01 };     // Tamper Status tag
             var arsStatus = new byte[] { 0xDF, 0x81, 0x02 };        // ARS Status tag
-
             var efTemplateTag = new byte[] { 0xEF };                // EF Template tag
             var whiteListHash = new byte[] { 0xDF, 0xDB, 0x09 };    // Whitelist tag
+            var firmwareVersion = new byte[] { 0xDF, 0x7F };
 
             // power notification handling
             var e6TemplateTag = new byte[] { 0xE6 };
@@ -1127,8 +1127,6 @@ namespace Devices.Verifone.VIPA
                             //cardInfo.ArsStatus = Encoding.UTF8.GetString(dataTag.Data);
                         }
                     }
-
-                    break;
                 }
                 else if (tag.Tag.SequenceEqual(terminalIdTag))
                 {
@@ -1141,6 +1139,10 @@ namespace Devices.Verifone.VIPA
                         if (dataTag.Tag.SequenceEqual(whiteListHash))
                         {
                             //cardInfo.WhiteListHash = BitConverter.ToString(dataTag.Data).Replace("-", "");
+                        }
+                        else if (dataTag.Tag.SequenceEqual(firmwareVersion) && string.IsNullOrWhiteSpace(deviceResponse.FirmwareVersion))
+                        {
+                            deviceResponse.FirmwareVersion = Encoding.UTF8.GetString(dataTag.Data);
                         }
                     }
                 }

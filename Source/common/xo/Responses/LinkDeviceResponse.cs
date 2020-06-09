@@ -12,6 +12,7 @@ namespace XO.Responses
         public string Model { get; set; }
         public string TerminalId { get; set; }
         public string SerialNumber { get; set; }
+        public string FirmwareVersion { get; set; }
         public List<string> Features { get; set; }
         public List<string> Configurations { get; set; }
         //CardWorkflowControls only used when request Action = 'DALStatus'; can be null

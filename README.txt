@@ -20,6 +20,8 @@ VERSION.031 (06/05/2020)
 
 5. Added CONFIGURATION check for STATUS selection
 
+6. Added Firmware version to STATUS report
+
 VERSION.030 (06/03/2020)
 -------------------------------------------------------------------------------
 1. Added a000000384.c1
