@@ -25,6 +25,8 @@ namespace Devices.Verifone.Helpers
             GenerateHMAC,
             [StringValue("VIPA: RESET")]
             DeviceReset,
+            [StringValue("VIPA: EXTENDED RESET")]
+            DeviceExtendedReset,
             [StringValue("VIPA: ABORT COMMAND")]
             AbortCommand,
             [StringValue("VIPA: REBOOT DEVICE")]

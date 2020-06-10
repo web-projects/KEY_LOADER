@@ -24,6 +24,8 @@ II. Attended using the Engage P200 (EMV L2 Version 7.0.3r)
 4. Added EMV Kernel checksum validation
    - ENGAGE/UX301 SPECIFIC CONFIGURATIONS
 
+5. Device Extended Reset to reload CONFIGURATION after applying it.
+
 -------------------------------------------------------------------------------
 VERSION.031 (06/05/2020)
 -------------------------------------------------------------------------------

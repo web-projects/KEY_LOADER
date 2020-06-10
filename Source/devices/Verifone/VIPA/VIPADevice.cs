@@ -210,6 +210,70 @@ namespace Devices.Verifone.VIPA
             return deviceResponse;
         }
 
+        public (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceExtendedReset()
+        {
+            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
+
+            // abort previous user entries in progress
+            (int VipaData, int VipaResponse) vipaResult = DeviceCommandAbort();
+
+            if (vipaResult.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+                ResponseTagsHandlerSubscribed++;
+                ResponseTagsHandler += GetDeviceInfoResponseHandler;
+
+                // Bit  1 – 0 PTID in serial response
+                //        – 1 PTID plus serial number (tag 9F1E) in serial response
+                //        - The following flags are only taken into account when P1 = 0x00:
+                // Bit  2 - 0 — Leave screen display unchanged, 1 — Clear screen display to idle display state
+                // Bit  3 - 0 — Slide show starts with normal timing, 1 — Start Slide-Show as soon as possible
+                // Bit  4 - 0 — No beep, 1 — Beep during reset as audio indicator
+                // Bit  5 - 0 — ‘Immediate’ reset, 1 — Card Removal delayed reset
+                // Bit  6 - 1 — Do not add any information in the response, except serial number if Bit 1 is set.
+                // Bit  7 - 0 — Do not return PinPad configuration, 1 — return PinPad configuration (warning: it can take a few seconds)
+                // Bit  8 - 1 — Add V/OS components information (Vault, OpenProtocol, OS_SRED, AppManager) to
+                // response (V/OS only).
+                // Bit  9 – 1 - Force contact EMV configuration reload
+                // Bit 10 – 1 – Force contactless EMV configuration reload
+                // Bit 11 – 1 – Force contactless CAPK reload
+                // Bit 12 – 1 – Returns OS components version (requires OS supporting this feature)
+                // Bit 13 - 1 - Return communication mode (tag DFA21F) (0 - SERIAL, 1 - TCPIP, 3 - USB, 4 - BT, 5
+                //            - PIPE_INTERNAL, 6 - WIFI, 7 - GPRS)
+                // Bit 14 - 1 - Connect to external pinpad (PP1000SEV3) and set EXTERNAL_PINPAD to ON
+                // Bit 15 - 1 - Disconnect external pinpad (PP1000SEV3) and set EXTERNAL_PINPAD to OFF
+                var dataForReset = new List<TLV.TLV>
+                {
+                    new TLV.TLV
+                    {
+                        Tag = new byte[] { 0xE0 },
+                        InnerTags = new List<TLV.TLV>
+                        {
+                            new TLV.TLV
+                            {
+                                Tag = new byte[] { 0xDF, 0xED, 0x0D },
+                                Data = new byte[] { 0x02, 0x0F }
+                            }
+                        }
+                    }
+                };
+                TLV.TLV tlv = new TLV.TLV();
+                byte[] dataForResetData = tlv.Encode(dataForReset);
+
+                Debug.WriteLine(ConsoleMessages.DeviceExtendedReset.GetStringValue());
+                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x0A, p1 = 0x00, p2 = 0x00, data = dataForResetData };
+                WriteSingleCmd(command);   // Device Info [D0, 00]
+
+                deviceResponse = DeviceIdentifier.Task.Result;
+
+                ResponseTagsHandler -= GetDeviceInfoResponseHandler;
+                ResponseTagsHandlerSubscribed--;
+            }
+
+            return deviceResponse;
+        }
+
         private (DevicePTID devicePTID, int VipaResponse) DeviceRebootWithResponse()
         {
             (DevicePTID devicePTID, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
