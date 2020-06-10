@@ -26,9 +26,9 @@ namespace Devices.Verifone.VIPA
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 
-        int Configuration();
+        int Configuration(string deviceModel);
 
-        int ValidateConfiguration();
+        int ValidateConfiguration(string deviceModel);
 
         int FeatureEnablementToken();
 

@@ -50,4 +50,5 @@ This an application to load HMAC KEYS.
 * 20200606 - Added EMV Kernel Checksum validation
 * 20200608 - Added CONFIGURATION validation to STATUS
 * 20200609 - Added Firmware version to STATUS.
+* 20200610 - Added ENGAGE/UX301 device specific configurations
           

@@ -255,8 +255,9 @@ namespace Devices.Verifone
                                     response.kernelConfigurationObject.ApplicationKernelInformation));
                             }
 
-                            // TODO: check EMV Kernel per device family (UX/Engage)
-                            if (response.kernelConfigurationObject.ApplicationKernelInformation.Substring(BinaryStatusObject.EMV_KERNEL_CHECKSUM_OFFSET).Equals(BinaryStatusObject.UX301_EMV_KERNEL_CHECKSUM,
+                            bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model.Substring(0, 4)));
+
+                            if (response.kernelConfigurationObject.ApplicationKernelInformation.Substring(BinaryStatusObject.EMV_KERNEL_CHECKSUM_OFFSET).Equals(IsEngageDevice ? BinaryStatusObject.ENGAGE_EMV_KERNEL_CHECKSUM : BinaryStatusObject.UX301_EMV_KERNEL_CHECKSUM,
                                 StringComparison.CurrentCultureIgnoreCase))
                             {
                                 Console.WriteLine("VIPA EMV KERNEL VALIDATED");
@@ -308,7 +309,7 @@ namespace Devices.Verifone
                             Console.WriteLine($"DEVICE: SRED PIN KSN     ={config.securityConfigurationObject.SRedCardKSN}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                             // validate configuration
-                            int vipaResponse = vipaDevice.ValidateConfiguration();
+                            int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
@@ -347,7 +348,7 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.Configuration();
+                        int vipaResponse = vipaDevice.Configuration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
