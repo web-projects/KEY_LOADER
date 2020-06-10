@@ -1186,7 +1186,7 @@ namespace Devices.Verifone.VIPA
                 {
                     foreach (var dataTag in tag.InnerTags)
                     {
-                        if (dataTag.Tag.SequenceEqual(terminalNameTag))
+                        if (dataTag.Tag.SequenceEqual(terminalNameTag) && string.IsNullOrEmpty(deviceResponse.Model))
                         {
                             deviceResponse.Model = Encoding.UTF8.GetString(dataTag.Data);
                         }
