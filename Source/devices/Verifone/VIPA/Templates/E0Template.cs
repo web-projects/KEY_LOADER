@@ -7,6 +7,7 @@
     public static class E0Template
     {
         public static byte[] E0TemplateTag = new byte[] { 0xE0 };
+        public static byte[] PtidTag = new byte[] { 0x9F, 0x1E };
         public static byte[] CardStatusTag = new byte[] { 0x48 };
         public static byte[] Track1Tag = new byte[] { 0x5F, 0x21 };
         public static byte[] Track2Tag = new byte[] { 0x5F, 0x22 };
@@ -24,5 +25,12 @@
         public static byte[] TransactionTime = new byte[] { 0x9F, 0x21 };
         public static byte[] TransactionAmount = new byte[] { 0x9F, 0x02 };
         public static byte[] TransactionCurrencyCode = new byte[] { 0x5F, 0x2A };
+        public static byte[] OnlinePINKSNTag = new byte[] { 0xDF, 0xED, 0x03 };
+        public static byte[] EncryptedKeyCheckTag = new byte[] { 0xDF, 0xDF, 0x10 };
+        public static byte[] SRedCardKSNTag = new byte[] { 0xDF, 0xDF, 0x11 };
+        public static byte[] InitVectorTag = new byte[] { 0xDF, 0xDF, 0x12 };
+        public static byte[] KeySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x46 };
+        public static byte[] ApplicationAIDTag = new byte[] { 0x9F, 0x06 };
+        public static byte[] KernelConfigurationTag = new byte[] { 0xDF, 0xDF, 0x05 };
     }
 }

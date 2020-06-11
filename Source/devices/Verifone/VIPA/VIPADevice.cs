@@ -1109,8 +1109,6 @@ namespace Devices.Verifone.VIPA
 
         public void DeviceResetResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
-            var ptidTag = new byte[] { 0x9F, 0x1E };
-
             if (cancelled || tags == null)
             {
                 DeviceResetConfiguration?.TrySetResult((null, responseCode));
@@ -1119,7 +1117,7 @@ namespace Devices.Verifone.VIPA
 
             var deviceResponse = new DevicePTID();
 
-            if (tags.FirstOrDefault().Tag.SequenceEqual(ptidTag))
+            if (tags.FirstOrDefault().Tag.SequenceEqual(E0Template.PtidTag))
             {
                 deviceResponse.PTID = BitConverter.ToString(tags.FirstOrDefault().Data).Replace("-", "");
             }
@@ -1139,21 +1137,6 @@ namespace Devices.Verifone.VIPA
 
         private void GetDeviceInfoResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
-            var eeTemplateTag = new byte[] { 0xEE };                // EE Template tag
-            var terminalNameTag = new byte[] { 0xDF, 0x0D };        // Terminal Name tag
-            var terminalIdTag = new byte[] { 0x9F, 0x1C };          // Terminal ID tag
-            var serialNumberTag = new byte[] { 0x9F, 0x1E };        // Serial Number tag
-            var tamperStatus = new byte[] { 0xDF, 0x81, 0x01 };     // Tamper Status tag
-            var arsStatus = new byte[] { 0xDF, 0x81, 0x02 };        // ARS Status tag
-            var efTemplateTag = new byte[] { 0xEF };                // EF Template tag
-            var whiteListHash = new byte[] { 0xDF, 0xDB, 0x09 };    // Whitelist tag
-            var firmwareVersion = new byte[] { 0xDF, 0x7F };
-
-            // power notification handling
-            var e6TemplateTag = new byte[] { 0xE6 };
-            var c3TemplateTag = new byte[] { 0xC3 };
-            var c4TemplateTag = new byte[] { 0xC4 };
-
             if (cancelled)
             {
                 DeviceIdentifier?.TrySetResult((null, responseCode));
@@ -1182,26 +1165,26 @@ namespace Devices.Verifone.VIPA
 
             foreach (var tag in tags)
             {
-                if (tag.Tag.SequenceEqual(eeTemplateTag))
+                if (tag.Tag.SequenceEqual(EETemplate.EETemplateTag))
                 {
                     foreach (var dataTag in tag.InnerTags)
                     {
-                        if (dataTag.Tag.SequenceEqual(terminalNameTag) && string.IsNullOrEmpty(deviceResponse.Model))
+                        if (dataTag.Tag.SequenceEqual(EETemplate.TerminalNameTag) && string.IsNullOrEmpty(deviceResponse.Model))
                         {
                             deviceResponse.Model = Encoding.UTF8.GetString(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(serialNumberTag))
+                        else if (dataTag.Tag.SequenceEqual(EETemplate.SerialNumberTag))
                         {
                             deviceResponse.SerialNumber = Encoding.UTF8.GetString(dataTag.Data);
                             //deviceInformation.SerialNumber = deviceResponse.SerialNumber ?? string.Empty;
                         }
-                        else if (dataTag.Tag.SequenceEqual(tamperStatus))
+                        else if (dataTag.Tag.SequenceEqual(EETemplate.TamperStatus))
                         {
                             //DF8101 = 00 no tamper detected
                             //DF8101 = 01 tamper detected
                             //cardInfo.TamperStatus = Encoding.UTF8.GetString(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(arsStatus))
+                        else if (dataTag.Tag.SequenceEqual(EETemplate.ArsStatus))
                         {
                             //DF8102 = 00 ARS not active
                             //DF8102 = 01 ARS active
@@ -1209,25 +1192,25 @@ namespace Devices.Verifone.VIPA
                         }
                     }
                 }
-                else if (tag.Tag.SequenceEqual(terminalIdTag))
+                else if (tag.Tag.SequenceEqual(EETemplate.TerminalIdTag))
                 {
                     //deviceResponse.TerminalId = Encoding.UTF8.GetString(tag.Data);
                 }
-                else if (tag.Tag.SequenceEqual(efTemplateTag))
+                else if (tag.Tag.SequenceEqual(EFTemplate.EFTemplateTag))
                 {
                     foreach (var dataTag in tag.InnerTags)
                     {
-                        if (dataTag.Tag.SequenceEqual(whiteListHash))
+                        if (dataTag.Tag.SequenceEqual(EFTemplate.WhiteListHash))
                         {
                             //cardInfo.WhiteListHash = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
-                        else if (dataTag.Tag.SequenceEqual(firmwareVersion) && string.IsNullOrWhiteSpace(deviceResponse.FirmwareVersion))
+                        else if (dataTag.Tag.SequenceEqual(EFTemplate.FirmwareVersion) && string.IsNullOrWhiteSpace(deviceResponse.FirmwareVersion))
                         {
                             deviceResponse.FirmwareVersion = Encoding.UTF8.GetString(dataTag.Data);
                         }
                     }
                 }
-                else if (tag.Tag.SequenceEqual(e6TemplateTag))
+                else if (tag.Tag.SequenceEqual(E6Template.E6TemplateTag))
                 {
                     deviceResponse.PowerOnNotification = new XO.Responses.Device.LinkDevicePowerOnNotification();
 
@@ -1236,15 +1219,15 @@ namespace Devices.Verifone.VIPA
 
                     foreach (var dataTag in _tags)
                     {
-                        if (dataTag.Tag.SequenceEqual(c3TemplateTag))
+                        if (dataTag.Tag.SequenceEqual(E6Template.TransactionStatusTag))
                         {
                             deviceResponse.PowerOnNotification.TransactionStatus = BCDConversion.BCDToInt(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(c4TemplateTag))
+                        else if (dataTag.Tag.SequenceEqual(E6Template.TransactionStatusMessageTag))
                         {
                             deviceResponse.PowerOnNotification.TransactionStatusMessage = Encoding.UTF8.GetString(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(terminalIdTag))
+                        else if (dataTag.Tag.SequenceEqual(EETemplate.TerminalIdTag))
                         {
                             deviceResponse.PowerOnNotification.TerminalID = Encoding.UTF8.GetString(dataTag.Data);
                         }
@@ -1272,13 +1255,6 @@ namespace Devices.Verifone.VIPA
 
         public void GetSecurityInformationResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
-            var E0TemplateTag = new byte[] { 0xe0 };                    // E0 Template tag
-            var onlinePINKSNTag = new byte[] { 0xDF, 0xED, 0x03 };
-            var encryptedKeyCheckTag = new byte[] { 0xDF, 0xDF, 0x10 };
-            var sRedCardKSNTag = new byte[] { 0xDF, 0xDF, 0x11 };
-            var initVectorTag = new byte[] { 0xDF, 0xDF, 0x12 };
-            var keySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x46 };
-
             if (cancelled || tags == null)
             {
                 DeviceSecurityConfiguration?.TrySetResult((null, responseCode));
@@ -1289,27 +1265,27 @@ namespace Devices.Verifone.VIPA
 
             foreach (var tag in tags)
             {
-                if (tag.Tag.SequenceEqual(E0TemplateTag))
+                if (tag.Tag.SequenceEqual(E0Template.E0TemplateTag))
                 {
                     foreach (var dataTag in tag.InnerTags)
                     {
-                        if (dataTag.Tag.SequenceEqual(onlinePINKSNTag))
+                        if (dataTag.Tag.SequenceEqual(E0Template.OnlinePINKSNTag))
                         {
                             deviceResponse.OnlinePinKSN = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
-                        if (dataTag.Tag.SequenceEqual(keySlotNumberTag))
+                        if (dataTag.Tag.SequenceEqual(E0Template.KeySlotNumberTag))
                         {
                             deviceResponse.KeySlotNumber = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
-                        else if (dataTag.Tag.SequenceEqual(sRedCardKSNTag))
+                        else if (dataTag.Tag.SequenceEqual(E0Template.SRedCardKSNTag))
                         {
                             deviceResponse.SRedCardKSN = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
-                        else if (dataTag.Tag.SequenceEqual(initVectorTag))
+                        else if (dataTag.Tag.SequenceEqual(E0Template.InitVectorTag))
                         {
                             deviceResponse.InitVector = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
-                        else if (dataTag.Tag.SequenceEqual(encryptedKeyCheckTag))
+                        else if (dataTag.Tag.SequenceEqual(E0Template.EncryptedKeyCheckTag))
                         {
                             deviceResponse.EncryptedKeyCheck = BitConverter.ToString(dataTag.Data).Replace("-", "");
                         }
@@ -1332,9 +1308,6 @@ namespace Devices.Verifone.VIPA
 
         public void GetKernelInformationResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
-            var applicationAIDTag = new byte[] { 0x9F, 0x06 };
-            var kernelConfigurationTag = new byte[] { 0xDF, 0xDF, 0x05 };
-
             if (cancelled || tags == null)
             {
                 DeviceKernelConfiguration?.TrySetResult((null, responseCode));
@@ -1348,9 +1321,9 @@ namespace Devices.Verifone.VIPA
                 // note: we just need the first instance
                 if (tag.Tag.SequenceEqual(E0Template.E0TemplateTag))
                 {
-                    var kernelApplicationTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(applicationAIDTag)).FirstOrDefault();
+                    var kernelApplicationTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(E0Template.ApplicationAIDTag)).FirstOrDefault();
                     deviceResponse.ApplicationIdentifierTerminal = BitConverter.ToString(kernelApplicationTag.Data).Replace("-", "");
-                    var kernelChecksumTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(kernelConfigurationTag)).FirstOrDefault();
+                    var kernelChecksumTag = tag.InnerTags.Where(x => x.Tag.SequenceEqual(E0Template.KernelConfigurationTag)).FirstOrDefault();
                     deviceResponse.ApplicationKernelInformation = ConversionHelper.ByteArrayToAsciiString(kernelChecksumTag.Data).Replace("\0", string.Empty);
                     break;
                 }
@@ -1401,11 +1374,6 @@ namespace Devices.Verifone.VIPA
 
         public void GetBinaryStatusResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
         {
-            var _6fTemplateTag = new byte[] { 0x6F };       // 6F Template tag
-            var fileSizeTag = new byte[] { 0x80 };
-            var fileCheckSumTag = new byte[] { 0x88 };
-            var securityStatusTag = new byte[] { 0x89 };
-
             if (cancelled || tags == null)
             {
                 DeviceBinaryStatusInformation?.TrySetResult((null, responseCode));
@@ -1416,22 +1384,22 @@ namespace Devices.Verifone.VIPA
 
             foreach (var tag in tags)
             {
-                if (tag.Tag.SequenceEqual(_6fTemplateTag))
+                if (tag.Tag.SequenceEqual(_6FTemplate._6fTemplateTag))
                 {
                     TLV.TLV tlv = new TLV.TLV();
                     var _tags = tlv.Decode(tag.Data, 0, tag.Data.Length);
 
                     foreach (var dataTag in _tags)
                     {
-                        if (dataTag.Tag.SequenceEqual(fileSizeTag))
+                        if (dataTag.Tag.SequenceEqual(_6FTemplate.FileSizeTag))
                         {
                             deviceResponse.FileSize = BCDConversion.BCDToInt(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(fileCheckSumTag))
+                        else if (dataTag.Tag.SequenceEqual(_6FTemplate.FileCheckSumTag))
                         {
                             deviceResponse.FileCheckSum = BitConverter.ToString(dataTag.Data, 0).Replace("-", "");
                         }
-                        else if (dataTag.Tag.SequenceEqual(securityStatusTag))
+                        else if (dataTag.Tag.SequenceEqual(_6FTemplate.SecurityStatusTag))
                         {
                             deviceResponse.SecurityStatus = BCDConversion.BCDToInt(dataTag.Data);
                         }
