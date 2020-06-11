@@ -24,7 +24,7 @@ namespace Devices.Verifone.VIPA
 
         (int VipaResult, int VipaResponse) GetActiveKeySlot();
 
-        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot);
+        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot, byte hostID);
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 

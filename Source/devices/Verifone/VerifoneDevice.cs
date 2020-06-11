@@ -299,14 +299,17 @@ namespace Devices.Verifone
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
-                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot);
+                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADEProductionSlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.linkDeviceResponse.FirmwareVersion}");
-                            Console.WriteLine($"DEVICE: KEY SLOT NUMBER  ={config.securityConfigurationObject.KeySlotNumber}");
-                            Console.WriteLine($"DEVICE: VSS SCRIPT NUMBER={config.securityConfigurationObject.VSSPrimarySlot}");
+                            Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
+                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
+                            if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
+                            }
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
-                            Console.WriteLine($"DEVICE: SRED PIN KSN     ={config.securityConfigurationObject.SRedCardKSN}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                             // validate configuration
                             int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
@@ -319,6 +322,28 @@ namespace Devices.Verifone
                                 Console.WriteLine(string.Format("DEVICE: CONFIGURATION VALIDATION FAILED WITH ERROR=0x{0:X4}\n", vipaResponse));
                             }
                             Console.WriteLine("");
+                        }
+                        else
+                        {
+                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
+                            if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.linkDeviceResponse.FirmwareVersion}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
+                                Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
+                                Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                                // validate configuration
+                                int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
+                                if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
+                                }
+                                else
+                                {
+                                    Console.WriteLine(string.Format("DEVICE: CONFIGURATION VALIDATION FAILED WITH ERROR=0x{0:X4}\n", vipaResponse));
+                                }
+                                Console.WriteLine("");
+                            }
                         }
                         DeviceSetIdle();
                     }

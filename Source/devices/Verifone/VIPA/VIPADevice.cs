@@ -416,7 +416,7 @@ namespace Devices.Verifone.VIPA
             return deviceKernelConfigurationInfo;
         }
 
-        public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot)
+        public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot, byte hostID)
         {
             CancelResponseHandlers();
 
@@ -426,7 +426,7 @@ namespace Devices.Verifone.VIPA
             DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
 
             System.Diagnostics.Debug.WriteLine(ConsoleMessages.GetDeviceHealth.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = vssSlot, p2 = 0x00 };
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = vssSlot, p2 = hostID };
             WriteSingleCmd(command);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
@@ -1277,7 +1277,7 @@ namespace Devices.Verifone.VIPA
             var encryptedKeyCheckTag = new byte[] { 0xDF, 0xDF, 0x10 };
             var sRedCardKSNTag = new byte[] { 0xDF, 0xDF, 0x11 };
             var initVectorTag = new byte[] { 0xDF, 0xDF, 0x12 };
-            var keySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x2E };
+            var keySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x46 };
 
             if (cancelled || tags == null)
             {
