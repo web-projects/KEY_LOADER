@@ -85,10 +85,10 @@ namespace Devices.Verifone
                 if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                 {
                     // check for power on notification: reissue reset command to obtain device information
-                    if (deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification != null)
+                    if (deviceIdentifier.deviceInfoObject.LinkDeviceResponse.PowerOnNotification != null)
                     {
-                        Console.WriteLine($"\nDEVICE EVENT: Terminal ID={deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification?.TerminalID}," +
-                            $" EVENT='{deviceIdentifier.deviceInfoObject.linkDeviceResponse.PowerOnNotification?.TransactionStatusMessage}'");
+                        Console.WriteLine($"\nDEVICE EVENT: Terminal ID={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.PowerOnNotification?.TerminalID}," +
+                            $" EVENT='{deviceIdentifier.deviceInfoObject.LinkDeviceResponse.PowerOnNotification?.TransactionStatusMessage}'");
 
                         deviceIdentifier = vipaDevice.DeviceCommandReset();
 
@@ -101,8 +101,8 @@ namespace Devices.Verifone
                     if (DeviceInformation != null)
                     {
                         DeviceInformation.Manufacturer = ManufacturerConfigID;
-                        DeviceInformation.Model = deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model;
-                        DeviceInformation.SerialNumber = deviceIdentifier.deviceInfoObject.linkDeviceResponse.SerialNumber;
+                        DeviceInformation.Model = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model;
+                        DeviceInformation.SerialNumber = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.SerialNumber;
                     }
                     vipaDevice = vipaDevice;
                     _config = config;
@@ -255,7 +255,7 @@ namespace Devices.Verifone
                                     response.kernelConfigurationObject.ApplicationKernelInformation));
                             }
 
-                            bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model.Substring(0, 4)));
+                            bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model.Substring(0, 4)));
 
                             if (response.kernelConfigurationObject.ApplicationKernelInformation.Substring(BinaryStatusObject.EMV_KERNEL_CHECKSUM_OFFSET).Equals(IsEngageDevice ? BinaryStatusObject.ENGAGE_EMV_KERNEL_CHECKSUM : BinaryStatusObject.UX301_EMV_KERNEL_CHECKSUM,
                                 StringComparison.CurrentCultureIgnoreCase))
@@ -302,7 +302,7 @@ namespace Devices.Verifone
                         config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADEProductionSlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                            Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.linkDeviceResponse.FirmwareVersion}");
+                            Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                             Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
                             config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
@@ -312,7 +312,7 @@ namespace Devices.Verifone
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                             // validate configuration
-                            int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
+                            int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
@@ -328,12 +328,12 @@ namespace Devices.Verifone
                             config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.linkDeviceResponse.FirmwareVersion}");
+                                Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
                                 Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
                                 Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                                 // validate configuration
-                                int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
+                                int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
                                 if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                                 {
                                     Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
@@ -373,7 +373,7 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.Configuration(deviceIdentifier.deviceInfoObject.linkDeviceResponse.Model);
+                        int vipaResponse = vipaDevice.Configuration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");

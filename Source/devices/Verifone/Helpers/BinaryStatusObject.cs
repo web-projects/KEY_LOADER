@@ -111,10 +111,13 @@ namespace Devices.Verifone.Helpers
 
         public static readonly string[] EMV_CONFIG_FILES = { CONTLEMV, ICCDATA, ICCKEYS };
 
-        // LOA: CONFIG=16C, TERMINAL=25
+        // EMV KERNEL CONFIGURATION
         public const int EMV_KERNEL_CHECKSUM_OFFSET = 24;
-        public const string UX301_EMV_KERNEL_CHECKSUM = "D196BA9D";
+
+        // LOA: CONFIG=1C, TERMINAL=22 (ENGAGE DEVICES)
         public const string ENGAGE_EMV_KERNEL_CHECKSUM = "96369E1F";
+        // LOA: CONFIG=8C, TERMINAL=25 (UX301 DEVICES)
+        public const string UX301_EMV_KERNEL_CHECKSUM = "D196BA9D";
 
         // GENERIC
         public const string MAPPCFG = "mapp.cfg";

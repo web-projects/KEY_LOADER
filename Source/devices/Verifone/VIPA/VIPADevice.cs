@@ -1241,7 +1241,7 @@ namespace Devices.Verifone.VIPA
                 {
                     DeviceInfoObject deviceInfoObject = new DeviceInfoObject
                     {
-                        linkDeviceResponse = deviceResponse,
+                        LinkDeviceResponse = deviceResponse,
                         LinkDALRequestIPA5Object = cardInfo
                     };
                     DeviceIdentifier?.TrySetResult((deviceInfoObject, responseCode));

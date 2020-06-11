@@ -10,6 +10,7 @@ namespace DEVICE_CORE
     class Program
     {
         const int COMMAND_WAIT_DELAY = 4096;
+        const int CONFIGURATION_UPDATE_DELAY = 6144;
         static readonly DeviceActivator activator = new DeviceActivator();
 
         static async Task Main(string[] args)
@@ -48,7 +49,7 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
                         await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
-                        await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
+                        await Task.Delay(CONFIGURATION_UPDATE_DELAY).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.F:
@@ -80,6 +81,7 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [STATUS]");
                         await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
+                        //Task.Run(async () => await application.Command(LinkDeviceActionType.GetSecurityConfiguration)).GetAwaiter().GetResult();
                         break;
                     }
                     case ConsoleKey.T:

@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="testharness.xsl"?>
+<testharness>
+  <message>
+    <timestamp>2020-06-09 16:53:50.251597</timestamp>
+    <level>user</level>
+    <value>Argument parse SERIAL mode connecting to COM11 , flow control: rts-cts </value>
+  </message>
+  <message>
+    <timestamp>2020-06-09 16:54:00.505425</timestamp>
+    <level>info</level>
+    <value>-- SE --False </value>
+  </message>
+  <send>
+    <timestamp>2020-06-09 16:54:00.505425</timestamp>
+    <data>
+      <hex />
+      <ascii />
+    </data>
+    <frames >
+      <frame>010004d000024196</frame>
+    </frames >
+    <parsed >
+      <value>
+        <hex>d0000241</hex>
+        <ascii>Reset Device</ascii>
+      </value>
+      <tlv />
+    </parsed >
+  </send>
+  <message>
+    <timestamp>2020-06-09 16:54:11.238814</timestamp>
+    <level>info</level>
+    <value>IN: b'9f1c083132303030303030ee7f9f1e09323735323039343732df81080c417263686974656374757265df810904562f4f53df0d0850343030506c7573df7f1072656c656173652d3331303131363030df810603534249df81070c312e31362e342e3130313034df810603434942df8107095034303020506c7573df810201ffdf81010100dfec1f0400007468f005df81110100ef16df0d0752454c45415345df7f09362e382e322e382d33ef54df8106105653442053524544204c696272617279df810708302e302e302e3137dfdb0e0400000d01dfdb080400000000dfdb0920b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec6570f7483dfa21d0400200000dfa21e0400000007ef14df0d0741555448415050df7f07302e302e302e35ef57df0d06434943415050df7f07322e302e352e33df81060f41444b5f454d565f43544c535f4672df810709352e33332e392d3434df81060f41444b5f454d565f43544c535f4b65df81070d506c73206f70656e2063746c73ef19df0d0c47554950524f58595f415050df7f07312e302e302e30ef16df0d1073746174757342617254687265616439df7f00ef55df0d044d415050df7f07322e302e302e37df81060456495041df810709362e382e322e382d33df8106096c696270696e475549df810707322e302e322e30df8106076c696273726564df810708302e302e302e3137ef0ddf0d0743415244415050df7f009000' </value>
+  </message>
+  <recv>
+    <timestamp>2020-06-09 16:54:11.241830</timestamp>
+    <data>
+      <hex>9f1c083132303030303030ee7f9f1e09323735323039343732df81080c417263686974656374757265df810904562f4f53df0d0850343030506c7573df7f1072656c656173652d3331303131363030df810603534249df81070c312e31362e342e3130313034df810603434942df8107095034303020506c7573df810201ffdf81010100dfec1f0400007468f005df81110100ef16df0d0752454c45415345df7f09362e382e322e382d33ef54df8106105653442053524544204c696272617279df810708302e302e302e3137dfdb0e0400000d01dfdb080400000000dfdb0920b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec6570f7483dfa21d0400200000dfa21e0400000007ef14df0d0741555448415050df7f07302e302e302e35ef57df0d06434943415050df7f07322e302e352e33df81060f41444b5f454d565f43544c535f4672df810709352e33332e392d3434df81060f41444b5f454d565f43544c535f4b65df81070d506c73206f70656e2063746c73ef19df0d0c47554950524f58595f415050df7f07312e302e302e30ef16df0d1073746174757342617254687265616439df7f00ef55df0d044d415050df7f07322e302e302e37df81060456495041df810709362e382e322e382d33df8106096c696270696e475549df810707322e302e322e30df8106076c696273726564df810708302e302e302e3137ef0ddf0d0743415244415050df7f00</hex>
+      <ascii>...12000000....275209472....Architecture....V/OS...P400Plus..release-31011600....SBI....1.16.4.10104....CIB....P400 Plus................th............RELEASE..6.8.2.8-3.T....VSD SRED Library....0.0.0.17................... .t.-;......Q.oE.......E.xv..W.t...... ...............AUTHAPP..0.0.0.5.W...CICAPP..2.0.5.3....ADK_EMV_CTLS_Fr....5.33.9-44....ADK_EMV_CTLS_Ke....Pls open ctls.....GUIPROXY_APP..1.0.0.0.....statusBarThread9...U...MAPP..2.0.0.7....VIPA....6.8.2.8-3....libpinGUI....2.0.2.0....libsred....0.0.0.17.....CARDAPP..</ascii>
+    </data>
+    <frames >
+      <frame>0101fe9f1c083132303030303030ee7f9f1e09323735323039343732df81080c417263686974656374757265df810904562f4f53df0d0850343030506c7573df7f1072656c656173652d3331303131363030df810603534249df81070c312e31362e342e3130313034df810603434942df8107095034303020506c7573df810201ffdf81010100dfec1f0400007468f005df81110100ef16df0d0752454c45415345df7f09362e382e322e382d33ef54df8106105653442053524544204c696272617279df810708302e302e302e3137dfdb0e0400000d01dfdb080400000000dfdb0920b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec657b1</frame>
+      <frame>0101fe9f1c083132303030303030ee7f9f1e09323735323039343732df81080c417263686974656374757265df810904562f4f53df0d0850343030506c7573df7f1072656c656173652d3331303131363030df810603534249df81070c312e31362e342e3130313034df810603434942df8107095034303020506c7573df810201ffdf81010100dfec1f0400007468f005df81110100ef16df0d0752454c45415345df7f09362e382e322e382d33ef54df8106105653442053524544204c696272617279df810708302e302e302e3137dfdb0e0400000d01dfdb080400000000dfdb0920b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec6570f7483dfa21d0400200000dfa21e0400000007ef14df0d0741555448415050df7f07302e302e302e35ef57df0d06434943415050df7f07322e302e352e33df81060f41444b5f454d565f43544c535f4672df810709352e33332e392d3434df81060f41444b5f454d565f43544c535f4b65df81070d506c73206f70656e2063746c73ef19df0d0c47554950524f58595f415050df7f07312e302e302e30ef16df0d1073746174757342617254687265616439df7f00ef55df0d044d415050df7f07322e302e302e37df81060456495041df810709362e382e322e382d33df8106096c696270696e475549df810707322e302e322e30df8106076c69627372a5</frame>
+      <frame>01001f9f1c083132303030303030ee7f9f1e09323735323039343732df81080c417263686974656374757265df810904562f4f53df0d0850343030506c7573df7f1072656c656173652d3331303131363030df810603534249df81070c312e31362e342e3130313034df810603434942df8107095034303020506c7573df810201ffdf81010100dfec1f0400007468f005df81110100ef16df0d0752454c45415345df7f09362e382e322e382d33ef54df8106105653442053524544204c696272617279df810708302e302e302e3137dfdb0e0400000d01dfdb080400000000dfdb0920b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec6570f7483dfa21d0400200000dfa21e0400000007ef14df0d0741555448415050df7f07302e302e302e35ef57df0d06434943415050df7f07322e302e352e33df81060f41444b5f454d565f43544c535f4672df810709352e33332e392d3434df81060f41444b5f454d565f43544c535f4b65df81070d506c73206f70656e2063746c73ef19df0d0c47554950524f58595f415050df7f07312e302e302e30ef16df0d1073746174757342617254687265616439df7f00ef55df0d044d415050df7f07322e302e302e37df81060456495041df810709362e382e322e382d33df8106096c696270696e475549df810707322e302e322e30df8106076c696273726564df810708302e302e302e3137ef0ddf0d0743415244415050df7f00900004</frame>
+    </frames >
+    <parsed >
+      <value>
+        <hex>9000</hex>
+        <ascii>OK</ascii>
+      </value>
+      <tlv>
+        <tag>
+          <value>9f1c</value>
+          <desc>NA</desc>
+          <data>
+            <hex>3132303030303030</hex>
+            <ascii>12000000</ascii>
+          </data>
+        </tag>
+        <template>
+          <value>EE</value>
+          <desc>OS Version</desc>
+          <tag>
+            <value>9f1e</value>
+            <desc>Interface Device (IFD) Serial Number</desc>
+            <data>
+              <hex>323735323039343732</hex>
+              <ascii>275209472</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8108</value>
+            <desc>NA</desc>
+            <data>
+              <hex>417263686974656374757265</hex>
+              <ascii>Architecture</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8109</value>
+            <desc>NA</desc>
+            <data>
+              <hex>562f4f53</hex>
+              <ascii>V/OS</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>50343030506c7573</hex>
+              <ascii>P400Plus</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>72656c656173652d3331303131363030</hex>
+              <ascii>release-31011600</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>534249</hex>
+              <ascii>SBI</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>312e31362e342e3130313034</hex>
+              <ascii>1.16.4.10104</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>434942</hex>
+              <ascii>CIB</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>5034303020506c7573</hex>
+              <ascii>P400 Plus</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8102</value>
+            <desc>NA</desc>
+            <data>
+              <hex>ff</hex>
+              <ascii>.</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8101</value>
+            <desc>NA</desc>
+            <data>
+              <hex>00</hex>
+              <ascii>.</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>dfec1f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>00007468</hex>
+              <ascii>..th</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>F0</value>
+          <desc>NA</desc>
+          <tag>
+            <value>df8111</value>
+            <desc>NA</desc>
+            <data>
+              <hex>00</hex>
+              <ascii>.</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>52454c45415345</hex>
+              <ascii>RELEASE</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>362e382e322e382d33</hex>
+              <ascii>6.8.2.8-3</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>5653442053524544204c696272617279</hex>
+              <ascii>VSD SRED Library</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>302e302e302e3137</hex>
+              <ascii>0.0.0.17</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>dfdb0e</value>
+            <desc>NA</desc>
+            <data>
+              <hex>00000d01</hex>
+              <ascii>....</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>dfdb08</value>
+            <desc>NA</desc>
+            <data>
+              <hex>00000000</hex>
+              <ascii>....</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>dfdb09</value>
+            <desc>NA</desc>
+            <data>
+              <hex>b774f82d3b0783db0bd9ce511d6f45bada93cb9d95b245ec78760ec6570f7483</hex>
+              <ascii>.t.-;......Q.oE.......E.xv..W.t.</ascii>
+            </data>
+          </tag>
+        </template>
+        <tag>
+          <value>dfa21d</value>
+          <desc>NA</desc>
+          <data>
+            <hex>00200000</hex>
+            <ascii>. ..</ascii>
+          </data>
+        </tag>
+        <tag>
+          <value>dfa21e</value>
+          <desc>NA</desc>
+          <data>
+            <hex>00000007</hex>
+            <ascii>....</ascii>
+          </data>
+        </tag>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>41555448415050</hex>
+              <ascii>AUTHAPP</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>302e302e302e35</hex>
+              <ascii>0.0.0.5</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>434943415050</hex>
+              <ascii>CICAPP</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>322e302e352e33</hex>
+              <ascii>2.0.5.3</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>41444b5f454d565f43544c535f4672</hex>
+              <ascii>ADK_EMV_CTLS_Fr</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>352e33332e392d3434</hex>
+              <ascii>5.33.9-44</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>41444b5f454d565f43544c535f4b65</hex>
+              <ascii>ADK_EMV_CTLS_Ke</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>506c73206f70656e2063746c73</hex>
+              <ascii>Pls open ctls</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>47554950524f58595f415050</hex>
+              <ascii>GUIPROXY_APP</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>312e302e302e30</hex>
+              <ascii>1.0.0.0</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>73746174757342617254687265616439</hex>
+              <ascii>statusBarThread9</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex />
+              <ascii />
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>4d415050</hex>
+              <ascii>MAPP</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex>322e302e302e37</hex>
+              <ascii>2.0.0.7</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>56495041</hex>
+              <ascii>VIPA</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>362e382e322e382d33</hex>
+              <ascii>6.8.2.8-3</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>6c696270696e475549</hex>
+              <ascii>libpinGUI</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>322e302e322e30</hex>
+              <ascii>2.0.2.0</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8106</value>
+            <desc>NA</desc>
+            <data>
+              <hex>6c696273726564</hex>
+              <ascii>libsred</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df8107</value>
+            <desc>NA</desc>
+            <data>
+              <hex>302e302e302e3137</hex>
+              <ascii>0.0.0.17</ascii>
+            </data>
+          </tag>
+        </template>
+        <template>
+          <value>EF</value>
+          <desc>Module Version</desc>
+          <tag>
+            <value>df0d</value>
+            <desc>NA</desc>
+            <data>
+              <hex>43415244415050</hex>
+              <ascii>CARDAPP</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>df7f</value>
+            <desc>NA</desc>
+            <data>
+              <hex />
+              <ascii />
+            </data>
+          </tag>
+        </template>
+      </tlv>
+    </parsed >
+  </recv>
+  <message>
+    <timestamp>2020-06-09 16:54:11.304641</timestamp>
+    <level>user</level>
+    <value>Terminal MODEL:  P400Plus </value>
+  </message>
+  <message>
+    <timestamp>2020-06-09 16:54:11.306636</timestamp>
+    <level>user</level>
+    <value>Terminal TID  :  275209472 </value>
+  </message>
+  <message>
+    <timestamp>2020-06-09 16:54:11.306636</timestamp>
+    <level>info</level>
+    <value>-- SE --False </value>
+  </message>
+  <send>
+    <timestamp>2020-06-09 16:54:11.307633</timestamp>
+    <data>
+      <hex />
+      <ascii />
+    </data>
+    <frames >
+      <frame>010004d2010101d6</frame>
+    </frames >
+    <parsed >
+      <value>
+        <hex>d2010101</hex>
+        <ascii>Display Command</ascii>
+      </value>
+      <tlv />
+    </parsed >
+  </send>
+  <message>
+    <timestamp>2020-06-09 16:54:11.308630</timestamp>
+    <level>user</level>
+    <value>*** RESET DISPLAY *** </value>
+  </message>
+  <message>
+    <timestamp>2020-06-09 16:54:11.309627</timestamp>
+    <level>info</level>
+    <value>IN: b'e621c30101c41144657669636520706f7765726564206f6e9f1c0831323030303030309000' </value>
+  </message>
+  <recv>
+    <timestamp>2020-06-09 16:54:11.309627</timestamp>
+    <data>
+      <hex>e621c30101c41144657669636520706f7765726564206f6e9f1c083132303030303030</hex>
+      <ascii>.!.....Device powered on...12000000</ascii>
+    </data>
+    <frames >
+      <frame>014025e621c30101c41144657669636520706f7765726564206f6e9f1c0831323030303030309000ea</frame>
+    </frames >
+    <parsed >
+      <value>
+        <hex>9000</hex>
+        <ascii>OK</ascii>
+      </value>
+      <tlv>
+        <template>
+          <value>E6</value>
+          <desc>Status</desc>
+          <tag>
+            <value>c3</value>
+            <desc>Transaction Status</desc>
+            <data>
+              <hex>01</hex>
+              <ascii>.</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>c4</value>
+            <desc>Transaction Status Message</desc>
+            <data>
+              <hex>44657669636520706f7765726564206f6e</hex>
+              <ascii>Device powered on</ascii>
+            </data>
+          </tag>
+          <tag>
+            <value>9f1c</value>
+            <desc>Terminal Identification</desc>
+            <data>
+              <hex>3132303030303030</hex>
+              <ascii>12000000</ascii>
+            </data>
+          </tag>
+        </template>
+      </tlv>
+    </parsed >
+  </recv>
+  <message>
+    <timestamp>2020-06-09 16:54:11.314615</timestamp>
+    <level>user</level>
+    <value>Unsolicited packet detected:  TPL E6
+	TAG C3 -&gt; bytearray(b'\x01')
+	TAG C4 -&gt; bytearray(b'Device powered on')
+	TAG 9F1C -&gt; bytearray(b'12000000')
+    </value>
+  </message>
+  <message>
+    <timestamp>2020-06-09 16:54:11.404368</timestamp>
+    <level>info</level>
+    <value>IN: b'9000' </value>
+  </message>
+  <recv>
+    <timestamp>2020-06-09 16:54:11.404368</timestamp>
+    <data>
+      <hex />
+      <ascii />
+    </data>
+    <frames >
+      <frame>010002900093</frame>
+    </frames >
+    <parsed >
+      <value>
+        <hex>9000</hex>
+        <ascii>OK</ascii>
+      </value>
+      <tlv />
+    </parsed >
+  </recv>
+</testharness>

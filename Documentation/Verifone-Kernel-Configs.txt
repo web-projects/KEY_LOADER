@@ -1,0 +1,23 @@
+NOTES ON LOA CONFIGURATIONS
+
+UNATTENDED
+-------------------------------------------------------------------------------
+Terminal type: 24, 25, 26
+Verifone certifies: Terminal 25 for UX 301
+
+CONFIG          : 13C 
+VENDOR CONFIG ID: AF19EEE6
+TERMINAL        : 25 
+CHECKSUM        : 1EC74C36
+
+ATTENDED TERMINAL
+-------------------------------------------------------------------------------
+Terminal type: 21, 22, 23
+Verifone certifies: Terminal 25 for Engage devices
+
+ENGAGE EMV Application Kernel: EMV L2 Version 7.0.3r
+
+CONFIG          : 
+VENDOR CONFIG ID: 
+TERMINAL        :  
+CHECKSUM        : 
