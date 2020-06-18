@@ -464,7 +464,7 @@ namespace Devices.Verifone.VIPA
                         {
                             if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                             {
-                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.size)
+                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
                                 {
                                     string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
                                     //Console.WriteLine(formattedStr);
@@ -523,7 +523,8 @@ namespace Devices.Verifone.VIPA
                         break;
                     }
                     // FILE SIZE
-                    if (fileStatus.binaryStatusObject.FileSize == configFile.Value.size)
+                    if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize ||
+                        fileStatus.binaryStatusObject.FileSize == configFile.Value.reBooted.size)
                     {
                         string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
                         Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
@@ -535,7 +536,8 @@ namespace Devices.Verifone.VIPA
                         break;
                     }
                     // HASH
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase) ||
+                        fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.reBooted.hash, StringComparison.OrdinalIgnoreCase))
                     {
                         Debug.WriteLine(", HASH MATCH");
                     }
