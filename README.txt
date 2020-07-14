@@ -3,6 +3,26 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.034 (07/10/2020)
+
+1. CONTLEMV.CFG
+   - ENGAGE/UX301 SPECIFIC CONFIGURATIONS TO ALLOW FOR AMEX TRANSACTION AMOUNTS
+     GREATER THAN $10.00
+2. TDOL.CFG
+   - ALL DEVICES TO REPORT TAG 5F20 (CARDHOLDER NAME)
+   
+-------------------------------------------------------------------------------
+VERSION.033 (06/25/2020)
+
+1. CONTLEMV.CFG
+   - ENGAGE/UX301 SPECIFIC CONFIGURATIONS TO ALLOW FOR CONTACTLESS ONLINE PIN
+     REQUEST
+     
+2. ICCDATA.DAT
+   - ENGAGE/UX301 SPECIFIC CONFIGURATIONS TO ALLOW FOR CONTACTLESS ONLINE PIN
+     REQUEST
+     
+-------------------------------------------------------------------------------
 VERSION.032 (06/10/2020)
 
 I. Unattended using the Ux 301/401/100 (EMV L2 Version 7.0.3l)

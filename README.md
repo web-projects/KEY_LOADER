@@ -55,4 +55,6 @@ This an application to load HMAC KEYS.
 * 20200618 - Fixed mapp.cfg file size/hash change when rebooted
 * 20200620 - Target Build 0.32
 * 20200625 - Target Build 0.33
+* 20200710 - Target Build 0.34
+* 20200714 - Added TDOL.CFG (TAG 5F20 PROCESSING)
           

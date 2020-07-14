@@ -38,7 +38,8 @@ namespace Devices.Verifone.Helpers
         public const string CONFIG_SLOT_0_HASH = "1DC66D8F45A843BB2B1ADECF7917FDAF";
         public const int CONFIG_SLOT_0_SIZE = 0x5000;
 
-         // AIDS
+        // Payment Workflow Configuration
+        // AIDS
         public const string AID_00392_NAME = "a000000003.92";
         public const string AID_00392_HASH = "98B8C420A5E79C61D1B5EFD511A84244";
         public const int AID_00392_SIZE = 0x018F;
@@ -125,15 +126,12 @@ namespace Devices.Verifone.Helpers
         public const string MAPPCFG = "mapp.cfg";
         public const string MAPPCFG_HASH = "EAEC30E0790F0413178F9950CBCF8C4B";
         public const int MAPPCFG_FILESIZE = 0x1158;
-        public static readonly (string hash, int size) MAPPCFG_FILE_AFTER_REBOOT = ("FF4A6D5AE1CEA2E206E133D8500D310E", 0x1142);
+        public static readonly (string hash, int size) MAPPCFG_FILE_AFTER_REBOOT =  ("FF4A6D5AE1CEA2E206E133D8500D310E", 0x1142);
+
 
         public const string CICAPPCFG = "cicapp.cfg";
         public const string CICAPPCFG_HASH = "92DFBBDB39B270890347C3F1ED85C16C";
         public const int CICAPPCFG_FILESIZE = 0x1703;
-
-        public const string TDOLCFG = "tdol.cfg";
-        public const string TDOLCFG_HASH = "DBE8908001D1032C403B522F38C2516A";
-        public const int TDOLCFG_FILESIZE = 0x00A8;
 
         public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)> binaryStatus =
             new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)>()
@@ -162,8 +160,7 @@ namespace Devices.Verifone.Helpers
                 [ICCKEYS_UX301] = ("EMV", BinaryStatusObject.UX_DEVICES, ICCKEYS, ICCKEYSHASH_UX301, ICCKEYSFILESIZE_UX301, (string.Empty, 0)),
                 // GENERIC
                 [MAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE, MAPPCFG_FILE_AFTER_REBOOT),
-                [CICAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE, (string.Empty, 0)),
-                [TDOLCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, TDOLCFG, TDOLCFG_HASH, TDOLCFG_FILESIZE, (string.Empty, 0))
+                [CICAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE, (string.Empty, 0))
             };
 
         public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
