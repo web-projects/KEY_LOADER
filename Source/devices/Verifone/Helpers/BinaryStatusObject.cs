@@ -81,12 +81,12 @@ namespace Devices.Verifone.Helpers
 
         // ATTENDED TERMINAL
         public const string CONTLEMV_ENGAGE = "contlemv.engage";
-        public const string CONTLEMVHASH_ENGAGE = "B3D54B8B0D79B60BACDA2598065E8C49";
+        public const string CONTLEMVHASH_ENGAGE = "4FF41F1E18E4954CACCCB03174638767";
         public const int CONTLEMVFILESIZE_ENGAGE = 0x3E6D;
 
         // UNATTENDED TERMINAL
         public const string CONTLEMV_UX301 = "contlemv.ux301";
-        public const string CONTLEMVHASH_UX301 = "86E2E962B21372832B692D2FDECE7902";
+        public const string CONTLEMVHASH_UX301 = "C0325A1129F5380BB7D64C7F4F263066";
         public const int CONTLEMVFILESIZE_UX301 = 0x3E4A;
 
         // EMV CONFIG: ICCDATA.DAT

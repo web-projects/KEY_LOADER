@@ -57,4 +57,5 @@ This an application to load HMAC KEYS.
 * 20200625 - Target Build 0.33
 * 20200710 - Target Build 0.34
 * 20200714 - Added TDOL.CFG (TAG 5F20 PROCESSING)
+* 20200716 - Target Build 0.34.1
           

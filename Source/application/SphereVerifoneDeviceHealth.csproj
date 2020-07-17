@@ -4,10 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>SphereVerifoneDeviceHealth</AssemblyName>
-    <AssemblyVersion>1.0.0.34</AssemblyVersion>
-    <FileVersion>1.0.0.34</FileVersion>
-    <PackageReleaseNotes>IPA5 Build 0.34 Compatible</PackageReleaseNotes>
-    <Version>1.0.34</Version>
+    <AssemblyVersion>1.0.34.01</AssemblyVersion>
+    <FileVersion>1.0.34.01</FileVersion>
+    <PackageReleaseNotes>IPA5 Build 5.0.34.01 Compatible</PackageReleaseNotes>
+    <Version>1.0.34.01</Version>
   </PropertyGroup>
 
   <ItemGroup>
