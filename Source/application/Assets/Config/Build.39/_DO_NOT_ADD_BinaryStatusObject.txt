@@ -38,8 +38,7 @@ namespace Devices.Verifone.Helpers
         public const string CONFIG_SLOT_0_HASH = "1DC66D8F45A843BB2B1ADECF7917FDAF";
         public const int CONFIG_SLOT_0_SIZE = 0x5000;
 
-        // Payment Workflow Configuration
-        // AIDS
+         // AIDS
         public const string AID_00392_NAME = "a000000003.92";
         public const string AID_00392_HASH = "98B8C420A5E79C61D1B5EFD511A84244";
         public const int AID_00392_SIZE = 0x018F;
@@ -47,11 +46,11 @@ namespace Devices.Verifone.Helpers
         public const string AID_00394_HASH = "48A392798CA6494BC3CCCE289860877F";
         public const int AID_00394_SIZE = 0x021F;
         public const string AID_004EF_NAME = "a000000004.ef";
-        public const string AID_004EF_HASH = "0592DF7F94C39FF23AF15C6836967C73";
-        public const int AID_004EF_SIZE = 0x0221;
+        public const string AID_004EF_HASH = "B01124948B68CEE0A5CF7BD1AD33689C";
+        public const int AID_004EF_SIZE = 0x0220;
         public const string AID_004F1_NAME = "a000000004.f1";
-        public const string AID_004F1_HASH = "994C1F789205834E22B7BC1CF461A1E7";
-        public const int AID_004F1_SIZE = 0x0191;
+        public const string AID_004F1_HASH = "F9D16DC8D08911C849E40898946DACC8";
+        public const int AID_004F1_SIZE = 0x0190;
         public const string AID_025C8_NAME = "a000000025.c8";
         public const string AID_025C8_HASH = "848365828CD61B5E9CB1196E3DB9BD1C";
         public const int AID_025C8_SIZE = 0x014F;
@@ -82,35 +81,35 @@ namespace Devices.Verifone.Helpers
 
         // ATTENDED TERMINAL
         public const string CONTLEMV_ENGAGE = "contlemv.engage";
-        public const string CONTLEMVHASH_ENGAGE = "B3D54B8B0D79B60BACDA2598065E8C49";
-        public const int CONTLEMVFILESIZE_ENGAGE = 0x3E6D;
+        public const string CONTLEMVHASH_ENGAGE = "762071D3CED73923E2C59ADFD3DB1808";
+        public const int CONTLEMVFILESIZE_ENGAGE = 0x3C51;
 
         // UNATTENDED TERMINAL
         public const string CONTLEMV_UX301 = "contlemv.ux301";
-        public const string CONTLEMVHASH_UX301 = "86E2E962B21372832B692D2FDECE7902";
-        public const int CONTLEMVFILESIZE_UX301 = 0x3E4A;
+        public const string CONTLEMVHASH_UX301 = "40A5C513AFA2A03B2417B1FD8579EF40";
+        public const int CONTLEMVFILESIZE_UX301 = 0x3C2E;
 
         // EMV CONFIG: ICCDATA.DAT
         public const string ICCDATA = "iccdata.dat";
 
         public const string ICCDATA_ENGAGE = "iccdata.engage";
-        public const string ICCDATAHASH_ENGAGE = "6F6325B88CEE560797A58276ED5584CE";
-        public const int ICCDATAFILESIZE_ENGAGE = 0x24E;
+        public const string ICCDATAHASH_ENGAGE = "AD5DC51CDA4CB9C4E5070ED9FE81ACE6";
+        public const int ICCDATAFILESIZE_ENGAGE = 0x0218;
 
         public const string ICCDATA_UX301 = "iccdata.ux301";
-        public const string ICCDATAHASH_UX301 = "FFCC54F1479C3D0073E5A673B2E67026";
-        public const int ICCDATAFILESIZE_UX301 = 0x24E;
+        public const string ICCDATAHASH_UX301 = "1F5FF4EF05363A144FAA57EFD9DB845E";
+        public const int ICCDATAFILESIZE_UX301 = 0x0218;
 
         // EMV CONFIG: ICCKEYS.KEY
         public const string ICCKEYS = "icckeys.key";
 
         public const string ICCKEYS_ENGAGE = "icckeys.engage";
-        public const string ICCKEYSHASH_ENGAGE = "2980B283880151878EFB8864D29A44A5";
-        public const int ICCKEYSFILESIZE_ENGAGE = 0x2A0B;
+        public const string ICCKEYSHASH_ENGAGE = "7828BD708DBB72265907522A426E7351";
+        public const int ICCKEYSFILESIZE_ENGAGE = 0x27ED;
 
         public const string ICCKEYS_UX301 = "icckeys.ux301";
-        public const string ICCKEYSHASH_UX301 = "52562953A245B79938A1A7E57CF3831E";
-        public const int ICCKEYSFILESIZE_UX301 = 0x2A0B;
+        public const string ICCKEYSHASH_UX301 = "1996325248070752DF6651542DD74BE5";
+        public const int ICCKEYSFILESIZE_UX301 = 0x27ED;
 
         public static readonly string[] EMV_CONFIG_FILES = { CONTLEMV, ICCDATA, ICCKEYS };
 
@@ -124,14 +123,17 @@ namespace Devices.Verifone.Helpers
 
         // GENERIC
         public const string MAPPCFG = "mapp.cfg";
-        public const string MAPPCFG_HASH = "EAEC30E0790F0413178F9950CBCF8C4B";
-        public const int MAPPCFG_FILESIZE = 0x1158;
-        public static readonly (string hash, int size) MAPPCFG_FILE_AFTER_REBOOT =  ("FF4A6D5AE1CEA2E206E133D8500D310E", 0x1142);
-
+        public const string MAPPCFG_HASH = "73A38658B39019CE679D2D29B2FA7318";
+        public const int MAPPCFG_FILESIZE = 0x0D23;
+        public static readonly (string hash, int size) MAPPCFG_FILE_AFTER_REBOOT = ("583B0AF5CF1DC80A5D29D4A636E2AFF5", 0x0D0B);
 
         public const string CICAPPCFG = "cicapp.cfg";
-        public const string CICAPPCFG_HASH = "92DFBBDB39B270890347C3F1ED85C16C";
-        public const int CICAPPCFG_FILESIZE = 0x1703;
+        public const string CICAPPCFG_HASH = "C7BF6C37F6681327468125660E85C98C";
+        public const int CICAPPCFG_FILESIZE = 0x1854;
+
+        public const string TDOLCFG = "tdol.cfg";
+        public const string TDOLCFG_HASH = "2A31EA88480256A5F1D8459FD53149D8";
+        public const int TDOLCFG_FILESIZE = 0x008B;
 
         public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)> binaryStatus =
             new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)>()
@@ -160,7 +162,8 @@ namespace Devices.Verifone.Helpers
                 [ICCKEYS_UX301] = ("EMV", BinaryStatusObject.UX_DEVICES, ICCKEYS, ICCKEYSHASH_UX301, ICCKEYSFILESIZE_UX301, (string.Empty, 0)),
                 // GENERIC
                 [MAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE, MAPPCFG_FILE_AFTER_REBOOT),
-                [CICAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE, (string.Empty, 0))
+                [CICAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE, (string.Empty, 0)),
+                [TDOLCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, TDOLCFG, TDOLCFG_HASH, TDOLCFG_FILESIZE, (string.Empty, 0))
             };
 
         public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
