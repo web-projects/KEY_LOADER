@@ -15,8 +15,8 @@ namespace Devices.Verifone.Helpers
         public static readonly string[] UX_DEVICES = { DEVICE_UX100, DEVICE_UX300, DEVICE_UX301 };
 
         public const string WHITELIST = "#whitelist.dat";
-        public const string WHITELISTHASH = "33514E07FFD021D98B80DC3990A9B8F0";
-        public const int WHITELISTFILESIZE = 0x131;
+        public const string WHITELISTHASH = "247F373C9DEA79C9EEEDA69615F02E42";
+        public const int WHITELISTFILESIZE = 0x129;
 
         public const string FET_BUNDLE = "1a.dl.zADE-Enablement-VfiDev.tar";
         public const string FET_HASH = "1C261B56A83E30413786E809D5698579";
@@ -125,7 +125,8 @@ namespace Devices.Verifone.Helpers
         public const string MAPPCFG = "mapp.cfg";
         public const string MAPPCFG_HASH = "73A38658B39019CE679D2D29B2FA7318";
         public const int MAPPCFG_FILESIZE = 0x0D23;
-        public static readonly (string hash, int size) MAPPCFG_FILE_AFTER_REBOOT = ("583B0AF5CF1DC80A5D29D4A636E2AFF5", 0x0D0B);
+        public const string MAPPCFG_FILE_AFTER_REBOOT_HASH = "583B0AF5CF1DC80A5D29D4A636E2AFF5";
+        public const int MAPPCFG_FILE_AFTER_REBOOT_SIZE = 0x0D0B;
 
         public const string CICAPPCFG = "cicapp.cfg";
         public const string CICAPPCFG_HASH = "C7BF6C37F6681327468125660E85C98C";
@@ -138,7 +139,7 @@ namespace Devices.Verifone.Helpers
         public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)> binaryStatus =
             new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)>()
             {
-                //[WHITELIST] = ("WHITELIST", BinaryStatusObject.ALL_DEVICES, WHITELISTHASH, WHITELISTFILESIZE, (string.Empty, 0)),
+                [WHITELIST] = ("WHITELIST", BinaryStatusObject.ALL_DEVICES, WHITELIST, WHITELISTHASH, WHITELISTFILESIZE, (string.Empty, 0)),
                 // AIDS
                 [AID_00392_NAME] = ("AID", BinaryStatusObject.ALL_DEVICES, AID_00392_NAME, AID_00392_HASH, AID_00392_SIZE, (string.Empty, 0)),
                 [AID_00394_NAME] = ("AID", BinaryStatusObject.ALL_DEVICES, AID_00394_NAME, AID_00394_HASH, AID_00394_SIZE, (string.Empty, 0)),
@@ -161,7 +162,7 @@ namespace Devices.Verifone.Helpers
                 [ICCKEYS_ENGAGE] = ("EMV", BinaryStatusObject.ENGAGE_DEVICES, ICCKEYS, ICCKEYSHASH_ENGAGE, ICCKEYSFILESIZE_ENGAGE, (string.Empty, 0)),
                 [ICCKEYS_UX301] = ("EMV", BinaryStatusObject.UX_DEVICES, ICCKEYS, ICCKEYSHASH_UX301, ICCKEYSFILESIZE_UX301, (string.Empty, 0)),
                 // GENERIC
-                [MAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE, MAPPCFG_FILE_AFTER_REBOOT),
+                [MAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, MAPPCFG, MAPPCFG_HASH, MAPPCFG_FILESIZE, (MAPPCFG_FILE_AFTER_REBOOT_HASH, MAPPCFG_FILE_AFTER_REBOOT_SIZE)),
                 [CICAPPCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, CICAPPCFG, CICAPPCFG_HASH, CICAPPCFG_FILESIZE, (string.Empty, 0)),
                 [TDOLCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, TDOLCFG, TDOLCFG_HASH, TDOLCFG_FILESIZE, (string.Empty, 0))
             };

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <None Remove="Assets\1a.dl.zADE-Enablement-VfiDev.tar" />
+    <None Remove="Assets\Config\#whitelist.dat" />
     <None Remove="Assets\Config\a000000003.92" />
     <None Remove="Assets\Config\a000000003.94" />
     <None Remove="Assets\Config\a000000004.ef" />
@@ -51,6 +52,7 @@
     <EmbeddedResource Include="Assets\1a.dl.zADE-Enablement-VfiDev.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Config\#whitelist.dat" />
     <EmbeddedResource Include="Assets\Config\a000000003.92">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
