@@ -15,28 +15,26 @@ namespace Devices.Verifone.Helpers
         public static readonly string[] UX_DEVICES = { DEVICE_UX100, DEVICE_UX300, DEVICE_UX301 };
 
         public const string WHITELIST = "#whitelist.dat";
-        public const string WHITELISTHASH = "247F373C9DEA79C9EEEDA69615F02E42";
-        public const int WHITELISTFILESIZE = 0x129;
+        public const string WHITELISTHASH = "F914E92759E021F2A38AEFFF4D342A9D";
+        public const int WHITELISTFILESIZE = 0x128;
+        public const string WHITELIST_FILE_AFTER_REBOOT_HASH = "33514E07FFD021D98B80DC3990A9B8F0";
+        public const int WHITELIST_FILE_AFTER_REBOOT_SIZE = 0x0131;
 
         public const string FET_BUNDLE = "1a.dl.zADE-Enablement-VfiDev.tar";
         public const string FET_HASH = "1C261B56A83E30413786E809D5698579";
         public const int FET_SIZE = 0x2800;
 
-        public const string LOCK_CONFIG0_BUNDLE = "dl.bundle.Sphere_Config4-s0.tar";
-        public const string LOCK_CONFIG0_HASH = "1DC66D8F45A843BB2B1ADECF7917FDAF";
+        public const string LOCK_CONFIG0_BUNDLE = "dl.bundle.Sphere_Config5-s0.tar";
+        public const string LOCK_CONFIG0_HASH = "53AB1A872B1298F4BD90AB449AA68B95";
         public const int LOCK_CONFIG0_SIZE = 0x5000;
 
-        public const string LOCK_CONFIG8_BUNDLE = "dl.bundle.Sphere_Config4-s8.tar";
-        public const string LOCK_CONFIG8_HASH = "B6977AEA39B9BC4423099D46F0A480E9";
+        public const string LOCK_CONFIG8_BUNDLE = "dl.bundle.Sphere_Config5-s8.tar";
+        public const string LOCK_CONFIG8_HASH = "23E078CD017E213D0EEB208F27799A14";
         public const int LOCK_CONFIG8_SIZE = 0x5000;
 
         public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_UpdKeyCmd_Enable.tar";
         public const string UNLOCK_CONFIG_HASH = "F466919BDBCF22DBF9DAD61C1E173F61";
         public const int UNLOCK_CONFIG_SIZE = 0x5000;
-
-        public const string CONFIG_SLOT_0_BUNDLE = "dl.bundle.Sphere_Config4-s0.tar";
-        public const string CONFIG_SLOT_0_HASH = "1DC66D8F45A843BB2B1ADECF7917FDAF";
-        public const int CONFIG_SLOT_0_SIZE = 0x5000;
 
          // AIDS
         public const string AID_00392_NAME = "a000000003.92";
@@ -123,10 +121,10 @@ namespace Devices.Verifone.Helpers
 
         // GENERIC
         public const string MAPPCFG = "mapp.cfg";
-        public const string MAPPCFG_HASH = "73A38658B39019CE679D2D29B2FA7318";
-        public const int MAPPCFG_FILESIZE = 0x0D23;
-        public const string MAPPCFG_FILE_AFTER_REBOOT_HASH = "583B0AF5CF1DC80A5D29D4A636E2AFF5";
-        public const int MAPPCFG_FILE_AFTER_REBOOT_SIZE = 0x0D0B;
+        public const string MAPPCFG_HASH = "EB64A8AE5C4B21C80CA1AB613DDFB61D";
+        public const int MAPPCFG_FILESIZE = 0x0D21;
+        public const string MAPPCFG_FILE_AFTER_REBOOT_HASH = "31F21D84B2D21809565D54811C1A87F5";//"04DE05541D24ED837238DC0E755885AE";
+        public const int MAPPCFG_FILE_AFTER_REBOOT_SIZE = 0xD0D;//0x0D23;
 
         public const string CICAPPCFG = "cicapp.cfg";
         public const string CICAPPCFG_HASH = "C7BF6C37F6681327468125660E85C98C";
@@ -139,7 +137,8 @@ namespace Devices.Verifone.Helpers
         public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)> binaryStatus =
             new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize, (string hash, int size) reBooted)>()
             {
-                [WHITELIST] = ("WHITELIST", BinaryStatusObject.ALL_DEVICES, WHITELIST, WHITELISTHASH, WHITELISTFILESIZE, (string.Empty, 0)),
+                // THIS FILE IS NOT ADDED WHEN SphereConfig is applied to lock-down the device
+                //[WHITELIST] = ("WHITELIST", BinaryStatusObject.ALL_DEVICES, WHITELIST, WHITELISTHASH, WHITELISTFILESIZE, (WHITELIST_FILE_AFTER_REBOOT_HASH, WHITELIST_FILE_AFTER_REBOOT_SIZE)),
                 // AIDS
                 [AID_00392_NAME] = ("AID", BinaryStatusObject.ALL_DEVICES, AID_00392_NAME, AID_00392_HASH, AID_00392_SIZE, (string.Empty, 0)),
                 [AID_00394_NAME] = ("AID", BinaryStatusObject.ALL_DEVICES, AID_00394_NAME, AID_00394_HASH, AID_00394_SIZE, (string.Empty, 0)),

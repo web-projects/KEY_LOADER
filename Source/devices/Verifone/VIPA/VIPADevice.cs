@@ -342,8 +342,8 @@ namespace Devices.Verifone.VIPA
                 return (-1, fileStatus.VipaResponse);
             }
 
-            // Read File Contents at OFFSET 250
-            fileStatus = ReadBinaryDataFromSelectedFile(0xFA, 0x0A);
+            // Read File Contents at OFFSET 242
+            fileStatus = ReadBinaryDataFromSelectedFile(0xF2, 0x0A);
             if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
             {
                 Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
@@ -475,13 +475,14 @@ namespace Devices.Verifone.VIPA
                                     Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
                                 }
 
-                                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase) ||
+                                    fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.reBooted.hash, StringComparison.OrdinalIgnoreCase))
                                 {
                                     Console.WriteLine(", HASH MATCH");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
+                                    Console.WriteLine($", HASH MISMATCH!");
                                 }
                             }
                         }
@@ -543,7 +544,7 @@ namespace Devices.Verifone.VIPA
                     }
                     else
                     {
-                        Debug.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
+                        Debug.WriteLine($", HASH MISMATCH!");
                         fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
                         break;
                     }
@@ -1175,7 +1176,7 @@ namespace Devices.Verifone.VIPA
                         {
                             deviceResponse.Model = Encoding.UTF8.GetString(dataTag.Data);
                         }
-                        else if (dataTag.Tag.SequenceEqual(EETemplate.SerialNumberTag))
+                        else if (dataTag.Tag.SequenceEqual(EETemplate.SerialNumberTag) && string.IsNullOrWhiteSpace(deviceResponse.SerialNumber))
                         {
                             deviceResponse.SerialNumber = Encoding.UTF8.GetString(dataTag.Data);
                             //deviceInformation.SerialNumber = deviceResponse.SerialNumber ?? string.Empty;

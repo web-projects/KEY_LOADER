@@ -43,8 +43,8 @@
     <None Remove="Assets\Config\cicapp.cfg" />
     <None Remove="Assets\Config\mapp.cfg" />
     <None Remove="Assets\Config\tdol.cfg" />
-    <None Remove="Assets\dl.bundle.Sphere_Config4-s0.tar" />
-    <None Remove="Assets\dl.bundle.Sphere_Config4-s8.tar" />
+    <None Remove="Assets\dl.bundle.Sphere_Config5-s0.tar" />
+    <None Remove="Assets\dl.bundle.Sphere_Config5-s8.tar" />
     <None Remove="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar" />
   </ItemGroup>
 
@@ -96,12 +96,8 @@
     <EmbeddedResource Include="Assets\Config\cicapp.cfg" />
     <EmbeddedResource Include="Assets\Config\mapp.cfg" />
     <EmbeddedResource Include="Assets\Config\tdol.cfg" />
-    <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config4-s0.tar">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config4-s8.tar">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s0.tar" />
+    <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s8.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -132,6 +128,12 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\dl.bundle.Sphere_Config4-s0.tar">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\dl.bundle.Sphere_Config4-s8.tar">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
