@@ -9,9 +9,29 @@ namespace DEVICE_CORE
 {
     class Program
     {
+        const int STARTUP_WAIT_DELAY = 2048;
         const int COMMAND_WAIT_DELAY = 4096;
         const int CONFIGURATION_UPDATE_DELAY = 6144;
         static readonly DeviceActivator activator = new DeviceActivator();
+
+        static readonly string[] MENU = new string[]
+        {
+            " ",
+            "============ [ MENU ] ============",
+            " c => CONFIGURATION",
+            " k => EMV-KERNEL",
+            " r => REBOOT",
+            " s => STATUS",
+            " t => TEST",
+            " u => UPDATE",
+            " v => SLOT",
+            " 0 => LOCK-0",
+            " 8 => LOCK-8",
+            " O => UNLOCK",
+            " m => menu",
+            " q => QUIT",
+            "  "
+        };
 
         static async Task Main(string[] args)
         {
@@ -31,20 +51,27 @@ namespace DEVICE_CORE
 
             IDeviceApplication application = activator.Start(pluginPath);
             await application.Run().ConfigureAwait(false);
-            await Task.Delay(COMMAND_WAIT_DELAY);
+            await Task.Delay(STARTUP_WAIT_DELAY);
 
             // GET STATUS
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
             //await Task.Delay(4096);
 
-            ConsoleKey keypressed = GetKeyPressed(true);
+            DisplayMenu();
+            ConsoleKey keypressed = GetKeyPressed(false);
 
             while (keypressed != ConsoleKey.Q)
             {
-                bool redisplay = true;
+                bool redisplay = false;
 
                 switch (keypressed)
                 {
+                    case ConsoleKey.M:
+                    {
+                        Console.WriteLine("");
+                        DisplayMenu();
+                        break;
+                    }
                     case ConsoleKey.C:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
@@ -58,12 +85,12 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
                         break;
                     }
-                    //case ConsoleKey.K:
-                    //{
-                    //    //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
-                    //    await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
-                    //    break;
-                    //}
+                    case ConsoleKey.O:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
+                        await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
+                        break;
+                    }
                     case ConsoleKey.K:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [EMV-KERNEL]");
@@ -165,10 +192,19 @@ namespace DEVICE_CORE
         {
             if (redisplay)
             {
-                //Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, k=UNLOCK, l=LOCK, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, q=QUIT]\r\n");
-                Console.WriteLine("\nCOMMANDS: [c=CONFIGURATION, k=EMV-KERNEL, r=REBOOT, s=STATUS, t=TEST, u=UPDATE, v=SLOT, 0=LOCK-0, 8=LOCK-8, q=QUIT]\r\n");
+                Console.Write("SELECT COMMAND: ");
             }
             return Console.ReadKey(true).Key;
+        }
+
+        static private void DisplayMenu()
+        {
+            foreach(string value in MENU)
+            {
+                Console.WriteLine(value);
+            }
+            
+            Console.Write("SELECT COMMAND: ");
         }
     }
 }
