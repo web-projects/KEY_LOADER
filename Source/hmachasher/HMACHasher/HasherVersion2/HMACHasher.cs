@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace HMACHasher.Hasher
+namespace HMACHasher.HasherVersion2
 {
     public static class HMACHasher
     {
