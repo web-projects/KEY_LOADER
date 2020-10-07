@@ -718,6 +718,7 @@ namespace Devices.Verifone.VIPA
 
             (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) securityConfig = (new SecurityConfigurationObject(), 0);
 
+            // HostId 06
             securityConfig = GetGeneratedHMAC(securityConfig.securityConfigurationObject.PrimarySlot,
                             HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryPANSalt), HMACValidator.MACSecondaryHASH));
 
@@ -726,6 +727,7 @@ namespace Devices.Verifone.VIPA
                 if (securityConfig.securityConfigurationObject.GeneratedHMAC.Equals(HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryHASHSalt), HMACValidator.MACSecondaryHASH),
                     StringComparison.CurrentCultureIgnoreCase))
                 {
+                    // HostId 07
                     securityConfig = GetGeneratedHMAC(securityConfig.securityConfigurationObject.SecondarySlot, securityConfig.securityConfigurationObject.GeneratedHMAC);
                     if (securityConfig.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
@@ -743,6 +745,10 @@ namespace Devices.Verifone.VIPA
                     {
                         Console.WriteLine(string.Format("DEVICE: HMAC PRIMARY SLOT MISMATCH=0x{0:X}", securityConfig.securityConfigurationObject.GeneratedHMAC));
                     }
+                }
+                else
+                {
+                    Console.WriteLine(string.Format("DEVICE: HMAC PRIMARY SLOT MISMATCH=0x{0:X}", securityConfig.securityConfigurationObject.GeneratedHMAC));
                 }
             }
 

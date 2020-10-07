@@ -136,8 +136,8 @@ namespace Devices.Verifone.Helpers
         public const string MAPPCFG = "mapp.cfg";
         public const string MAPPCFG_HASH = "EB64A8AE5C4B21C80CA1AB613DDFB61D";
         public const int MAPPCFG_FILESIZE = 0x0D21;
-        public const string MAPPCFG_HMACHASH = "FF4A6D5AE1CEA2E206E133D8500D310E";
-        public const int MAPPCFG_HMACFILESIZE = 0x1142;
+        public const string MAPPCFG_HMACHASH = "583B0AF5CF1DC80A5D29D4A636E2AFF5";
+        public const int MAPPCFG_HMACFILESIZE = 0x0D0B;
 
         public const string CICAPPCFG = "cicapp.cfg";
         public const string CICAPPCFG_HASH = "C7BF6C37F6681327468125660E85C98C";

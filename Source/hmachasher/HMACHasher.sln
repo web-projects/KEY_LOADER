@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMACHasher", "HMACHasher\HMACHasher.csproj", "{DDB72A63-78BE-4075-AB7F-2CED24E5D6AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDB72A63-78BE-4075-AB7F-2CED24E5D6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB72A63-78BE-4075-AB7F-2CED24E5D6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB72A63-78BE-4075-AB7F-2CED24E5D6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB72A63-78BE-4075-AB7F-2CED24E5D6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8040D94D-07B0-4A85-94FC-B5A7D060180D}
+	EndGlobalSection
+EndGlobal
