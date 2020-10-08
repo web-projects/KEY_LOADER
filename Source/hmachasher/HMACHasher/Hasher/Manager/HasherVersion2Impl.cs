@@ -194,7 +194,7 @@ namespace HMACHasher.Hasher.Manager
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACSecondaryHASHSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED SECONDARY HASH SALT=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACSecondaryHASHSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
         }
 
         private static string ReverseString(string message)
