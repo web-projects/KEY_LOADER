@@ -1,9 +1,8 @@
-﻿using HMACHasher.HasherVersion1;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace HMACHasher
+namespace HMACHasher.Hasher.Manager
 {
     /// <summary>
     /// 
@@ -14,12 +13,12 @@ namespace HMACHasher
     /// string expectedVSSKey06     : TC_4111_GENERATE_HMAC_ASCII.py "Generated HMAC HOSTID-07"
     /// 
     /// byte[] MACSecondaryKeyHASH  : expectedVSSKey07 to byte[]
-    /// byte[] MACPrimaryPANSalt    : Hasher.HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH)
+    /// byte[] MACPrimaryPANSalt    : HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH)
     /// 
-    /// byte[] MACPrimaryHASHSalt   : Hasher.HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH)
+    /// byte[] MACPrimaryHASHSalt   : HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH)
     /// byte[] MACPrimaryKeyHASH    :
     /// 
-    /// byte[] MACSecondaryHASHSalt : Hasher.HMACHasher..EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH) 
+    /// byte[] MACSecondaryHASHSalt : HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH) 
     ///
     /// USAGE:
     /// 
@@ -40,25 +39,28 @@ namespace HMACHasher
         // "Generated HMAC HOSTID-06:"
         static string expectedVSSKey06 = "98A8AAED5A2BA9E228B138274FDF546D6688D2AB8D9A36E0A50A5BF3B142AFB0";
         static byte[] vssKey06Hash = new byte[] { 0x98, 0xA8, 0xAA, 0xED, 0x5A, 0x2B, 0xA9, 0xE2, 0x28, 0xB1, 0x38, 0x27, 0x4F, 0xDF, 0x54, 0x6D, 0x66, 0x88, 0xD2, 0xAB, 0x8D, 0x9A, 0x36, 0xE0, 0xA5, 0x0A, 0x5B, 0xF3, 0xB1, 0x42, 0xAF, 0xB0 };
-
+        //static byte[] vssKey06KeyHash = new byte[] { 0x39, 0x38, 0x41, 0x38, 0x41, 0x41, 0x45, 0x44, 0x35, 0x41, 0x32, 0x42, 0x41, 0x39, 0x45, 0x32, 0x32, 0x38, 0x42, 0x31, 0x33, 0x38, 0x32, 0x37, 0x34, 0x46, 0x44, 0x46, 0x35, 0x34, 0x36, 0x44, 0x36, 0x36, 0x38, 0x38, 0x44, 0x32, 0x41, 0x42, 0x38, 0x44, 0x39, 0x41, 0x33, 0x36, 0x45, 0x30, 0x41, 0x35, 0x30, 0x41, 0x35, 0x42, 0x46, 0x33, 0x42, 0x31, 0x34, 0x32, 0x41, 0x46, 0x42, 0x30 };
+        // 98a8aaed5a2ba9e228b138274fdf546d6688d2ab8d9a36e0a50a5bf3b142afb0
+        static byte[] vssKey06KeyHash = new byte[] { 0x39, 0x38, 0x61, 0x38, 0x61, 0x61, 0x65, 0x64, 0x35, 0x61, 0x32, 0x62, 0x61, 0x39, 0x65, 0x32, 0x32, 0x38, 0x62, 0x31, 0x33, 0x38, 0x32, 0x37, 0x34, 0x66, 0x64, 0x66, 0x35, 0x34, 0x36, 0x64, 0x36, 0x36, 0x38, 0x38, 0x64, 0x32, 0x61, 0x62, 0x38, 0x64, 0x39, 0x61, 0x33, 0x36, 0x65, 0x30, 0x61, 0x35, 0x30, 0x61, 0x35, 0x62, 0x66, 0x33, 0x62, 0x31, 0x34, 0x32, 0x61, 0x66, 0x62, 0x30 };
         // "Generated HMAC HOSTID-07:"
         static string expectedVSSKey07 = "D1F8827DD9276F9F80F8890D3E607AC03CA022BA91B8024356DCDF54AD434F83";
         static byte[] vssKey07Hash = new byte[] { 0xD1, 0xF8, 0x82, 0x7D, 0xD9, 0x27, 0x6F, 0x9F, 0x80, 0xF8, 0x89, 0x0D, 0x3E, 0x60, 0x7A, 0xC0, 0x3C, 0xA0, 0x22, 0xBA, 0x91, 0xB8, 0x02, 0x43, 0x56, 0xDC, 0xDF, 0x54, 0xAD, 0x43, 0x4F, 0x83 };
 
         // VERSION 1
         // MACPRIMARYHASH  : 79326d616b334a4337416354684b6f7970634462416a334b64543236526e3271635250366130654e4348586c46716e52713948424f636e69315361794b69766e68504b4f42316952444e52497149364548786435664968445963723435546962
-        // HASH-PRODUCED   : 0B121C1ECDCC79A846B0E05761FC6CC4
+        // MD5-HASH        : 0B121C1ECDCC79A846B0E05761FC6CC4
 
         // VERSION 2
         // MACPRIMARYHASH  : 39394138414145443541324241394532323842313338323734464446353436443636383844324142384439413336453041353041354246334231343241464230
-        // HASH-PRODUCED   : D700C6ADA0159742C38CBE4D9D03890B
+        // MD5-HASH        : D700C6ADA0159742C38CBE4D9D03890B
 
         // VSS-7-HMAC      : D1F8827DD9276F9F80F8890D3E607AC03CA022BA91B8024356DCDF54AD434F83
         // MACSECONDARYHASH: 44314638383237444439323736463946383046383839304433453630374143303343413032324241393142383032343335364443444635344144343334463833
-        // HASH-PRODUCED   : 9A40969CEA07981C36906CDB56108C1D
+        // MD5-HASH        : 9A40969CEA07981C36906CDB56108C1D
 
         // VSS-6-HMAC      : 98A8AAED5A2BA9E228B138274FDF546D6688D2AB8D9A36E0A50A5BF3B142AFB0
         // MACPRIMARYHASH  : 39384138414145443541324241394532323842313338323734464446353436443636383844324142384439413336453041353041354246334231343241464230
+        // MD5-HASH        : 8EED5B9CE698138BF71A2512CFF52DBD
 
         // PAN
         //static string PANShortSecret = "4111111111111111";
@@ -68,8 +70,8 @@ namespace HMACHasher
         public static void TestHasher()
         {
             // THIS IS THE EXPECTED HOSTID-07 KEY
-            Debug.WriteLine($"SECONDARY HASH=[{Encoding.UTF8.GetString(HMACValidator.MACSecondaryKeyHASH)}]");
-            bool isMatch = expectedVSSKey07.Equals(Encoding.UTF8.GetString(HMACValidator.MACSecondaryKeyHASH));
+            Debug.WriteLine($"SECONDARY HASH=[{Encoding.UTF8.GetString(HMACValidatorVersion1.MACSecondaryKeyHASH)}]");
+            bool isMatch = expectedVSSKey07.Equals(Encoding.UTF8.GetString(HMACValidatorVersion1.MACSecondaryKeyHASH));
             Debug.WriteLine($"SECONDARY HASH IS A MATCH? {isMatch}");
 
             // *** HOW TO CONSTRUCT MACPrimaryPANSalt ***
@@ -78,7 +80,7 @@ namespace HMACHasher
             Generate_MACPrimaryPANSalt();
 
             // TEST MACPrimaryPANSalt
-            string decriptedPrimaryPANSalt = HasherVersion1.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryPANSalt), HMACValidator.MACSecondaryKeyHASH);
+            string decriptedPrimaryPANSalt = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion1.MACPrimaryPANSalt), HMACValidatorVersion1.MACSecondaryKeyHASH);
             Debug.WriteLine($"PAN DECRYPTED HASH={decriptedPrimaryPANSalt}");
             Console.WriteLine($"PAN DECRYPTED HASH={decriptedPrimaryPANSalt}");
 
@@ -88,7 +90,7 @@ namespace HMACHasher
             Generate_MACPrimaryHASHSalt();
 
             // KEY HOST-ID 06 VALIDATOR
-            string decriptedVSS06Hash = HasherVersion1.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryHASHSalt), HMACValidator.MACSecondaryKeyHASH);
+            string decriptedVSS06Hash = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion1.MACPrimaryHASHSalt), HMACValidatorVersion1.MACSecondaryKeyHASH);
             Debug.WriteLine($"DECRYPTED VSS-6 HASH={decriptedVSS06Hash}");
             Console.WriteLine($"DECRYPTED VSS-6 HASH={decriptedVSS06Hash}");
 
@@ -103,7 +105,7 @@ namespace HMACHasher
             Generate_MACSecondaryHASHSalt();
 
             // KEY HOST-ID 07 VALIDATOR
-            string decriptedVSS07Hash = HasherVersion1.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt), HMACValidator.MACPrimaryKeyHASH);
+            string decriptedVSS07Hash = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion1.MACSecondaryHASHSalt), HMACValidatorVersion1.MACPrimaryKeyHASH);
             Debug.WriteLine($"DECRYPTED VSS-7 HASH={decriptedVSS07Hash}");
             Console.WriteLine($"DECRYPTED VSS-7 HASH={decriptedVSS07Hash}");
         }
@@ -120,12 +122,13 @@ namespace HMACHasher
         static void Generate_MACPrimaryPANSalt()
         {
             // *** HOW TO CONSTRUCT MACPrimaryPANSalt ***
-            string encryptedHashText = HasherVersion1.HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(PANSecret, HMACValidatorVersion1.MACSecondaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             //Debug.WriteLine($"ENCRYPTED HASH={encryptedHashText}");
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryPANSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryPANSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -140,14 +143,15 @@ namespace HMACHasher
         static void Generate_MACPrimaryHASHSalt()
         {
             // ENCRYPT: expectedVSSKey06 with MACSecondaryKeyHASH == MACPrimaryHASHSalt
-            // DECRYPT: MACPrimaryPANSalt with MACSecondaryKeyHASH == HostIdKey-06
+            // DECRYPT: MACPrimaryPANSalt with MACSecondaryKeyHASH == VSSKey-06
 
             // *** HOW TO CONSTRUCT MACPrimaryHASHSalt ***
-            string encryptedHashText = HasherVersion1.HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidatorVersion1.MACSecondaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryHASHSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryHASHSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -160,71 +164,61 @@ namespace HMACHasher
         /// </summary>
         static void Generate_MACPrimaryKeyHASH()
         {
-            // I HAVE: PanSecret, MACSecondaryKeyHASH
-            //         MACPrimaryPANSalt, 
-
             // ENCRYPT: expectedVSSKey07 with ???
-            // DECRYPT: MACPrimaryPANSalt with MACSecondaryKeyHASH == HostIdKey-06
+            // USAGE: 
+            // CREATE MACSecondaryHASHSalt
+            // DECRYPT: VSS-07 == Decrypt(MACSecondaryHASHSalt, HMACValidator.MACPrimaryKeyHASH)
 
-            //string primaryHash = Encoding.UTF8.GetString(HMACValidator.MACPrimaryKeyHASH);
-            //y2mak3JC7AcThKoypcDbAj3KdT26Rn2qcRP6a0eNCHXlFqnRq9HBOcni1SayKivnhPKOB1iRDNRIqI6EHxd5fIhDYcr45Tib
-            //79326d616b334a4337416354684b6f7970634462416a334b64543236526e3271635250366130654e4348586c46716e52713948424f636e69315361794b69766e68504b4f42316952444e52497149364548786435664968445963723435546962
-            //Debug.WriteLine($"PRIMARY HASH=[{primaryHash}]");
+            // PAN SECRET      : 34313131313131313131313131313131
 
-            // MAC PRIMARY HASH
-            // DATA    : 79326d616b334a4337416354684b6f7970634462416a334b64543236526e3271635250366130654e4348586c46716e52713948424f636e69315361794b69766e68504b4f42316952444e52497149364548786435664968445963723435546962
-            // MD5 HASH: 0B121C1ECDCC79A846B0E05761FC6CC4
+            // VSS-6-HMAC      : 98A8AAED5A2BA9E228B138274FDF546D6688D2AB8D9A36E0A50A5BF3B142AFB0
+            // MACPRIMARYHASH  : 39384138414145443541324241394532323842313338323734464446353436443636383844324142384439413336453041353041354246334231343241464230
+            // MD5-HASH        : 8EED5B9CE698138BF71A2512CFF52DBD
+            // MACPRIMARYHASHL : 39386138616165643561326261396532323862313338323734666466353436643636383864326162386439613336653061353061356266336231343261666230
+
+            // VSS-07 HMAC     : D1F8827DD9276F9F80F8890D3E607AC03CA022BA91B8024356DCDF54AD434F83
+            // MD5-HASH        : 9A40969CEA07981C36906CDB56108C1D
+            // MACSECONDARYHASH: 44314638383237444439323736463946383046383839304433453630374143303343413032324241393142383032343335364443444635344144343334463833
+            string vss07BitesU = "44314638383237444439323736463946383046383839304433453630374143303343413032324241393142383032343335364443444635344144343334463833";
+            string vss07BitesL = "64316638383237646439323736663966383066383839306433653630376163303363613032326261393162383032343335366463646635346164343334663833";
+
+            // MACPrimaryHASHSalt
+            // 5A2B50664D4C5576366476464F7772314D753650637658306845676C5771386E6E57745A58332B6C45795938775837677A6C4956516953765865765766564B786C6A45494E495242302F4379695150624D556230365941334130446B7A366645
+
+            //
+            // DATA            : 79326d616b334a4337416354684b6f7970634462416a334b64543236526e3271635250366130654e4348586c46716e52713948424f636e69315361794b69766e68504b4f42316952444e52497149364548786435664968445963723435546962
+            // MD5 HASH        : 0B121C1ECDCC79A846B0E05761FC6CC4
 
             // expectedVSSKey07
             //         : D1F8827DD9276F9F80F8890D3E607AC03CA022BA91B8024356DCDF54AD434F83
 
-            //string hashString = Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt);
-            //ivpzqQYO8YgoQLy568gsrQS49boHeRpu7Dr7yXjL2mqFEn42V7DA/LNcBpmNMXHmkC2kllj32zKrTi2LLrT8OW/LkAJNOGVs
-            //string decriptedHash = Hasher.HMACHasher.DecryptHMAC(hashString, HMACValidator.MACPrimaryKeyHASH);
-            //Debug.WriteLine($"HOSTID-7 DECRYPTED HASH={decriptedHash}");
+            // MACSecondaryHASHSalt
+            // 6976707A7151594F3859676F514C7935363867737251533439626F48655270753744723779586A4C326D7146456E3432563744412F4C4E6342706D4E4D58486D6B43326B6C6C6A33327A4B725469324C4C7254384F572F4C6B414A4E4F475673
 
             // *** HOW TO CONSTRUCT MACPrimaryKeyHASH ***
             // DECRYPT: MACSecondaryHASHSalt with MACPrimaryKeyHASH == HostIdKey07
             // ENCRYPT: ?
             // ENCRYPT: expectedVSSKey06 with MACSecondaryHASHSalt == MACPrimaryKeyHASH
 
-            // string text
-            //expectedVSSKey07
-            //hostIDKey07
-
-            // byte hashKey
-            //MACSecondaryHASHSalt
-            byte[] testHash = new byte[] { 0x0b, 0x12, 0x1c, 0x1e, 0xcd, 0xcc, 0x79, 0xa8, 0x46, 0xb0, 0xe0, 0x57, 0x61, 0xfc, 0x6c, 0xc4 };
-
-            //string temp = hashString;
-            //string temp = expectedVSSKey07;
-            //string temp = Encoding.ASCII.GetString(hostIDKey07);
-            //string temp = Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt);
-            string temp = Encoding.ASCII.GetString(HMACValidator.MACSecondaryKeyHASH);
-
-            // MACPrimaryKeyHASH: ENCRYPT VSSKey-07 with MAC-SECONDARY-HASH
-            // MACPrimaryKeyHASH: ENCRYPT VSSKey-07 with MAC-PRIMARY-HASH
-
-            //SPHERECOMMERCE
-            //535048455245434F4D4D45524345
-            byte[] sphere = new byte[] { 0x53, 0x50, 0x48, 0x45, 0x52, 0x45, 0x43, 0x4F, 0x4D, 0x4D, 0x45, 0x52, 0x43, 0x45 };
-
-            //byte[] secondaryKeyHashReversed = new byte[] { 0x39, 0x38, 0x41, 0x38, 0x41, 0x41, 0x45, 0x44, 0x35, 0x41, 0x32, 0x42, 0x41, 0x39, 0x45, 0x32, 0x32, 0x38, 0x42, 0x31, 0x33, 0x38, 0x32, 0x37, 0x34, 0x46, 0x44, 0x46, 0x35, 0x34, 0x36, 0x44, 0x36, 0x36, 0x38, 0x38, 0x44, 0x32, 0x41, 0x42, 0x38, 0x44, 0x39, 0x41, 0x33, 0x36, 0x45, 0x30, 0x41, 0x35, 0x30, 0x41, 0x35, 0x42, 0x46, 0x33, 0x42, 0x31, 0x34, 0x32, 0x41, 0x46, 0x42, 0x30 };
-
-            //byte[] secondaryKeyHashReversed = HMACValidator.MACSecondaryKeyHASH;
-            //byte[] secondaryKeyHashReversed =
-            //Array.Reverse(secondaryKeyHashReversed);
-
+            string expectedVSSKey07Lower = expectedVSSKey07.ToLower();
             // vssKey06Hash: VSSKey06-HMAC in BYTE ARRAY
-            //string encryptedHashText = Hasher.HMACHasher.EncryptHMAC(expectedVSSKey07, vssKey06Hash);
-            //string encryptedHashText = Hasher.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACSecondaryHASHSalt);
-            //string encryptedHashText = Hasher.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryHASHSalt);
-            string encryptedHashText = HasherVersion1.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, vssKey06Hash);
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, vssKey06KeyHash);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07Lower, vssKey06KeyHash);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidatorVersion1.MACSecondaryHASHSalt);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidatorVersion1.MACPrimaryHASHSalt);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07Lower, HMACValidatorVersion1.MACPrimaryPANSalt);
+
+            //string encryptedHashText = HMACHasher.EncryptHMAC(vss07BitesL, HMACValidatorVersion1.MACSecondaryHASHSalt);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(vss07BitesL, HMACValidatorVersion1.MACPrimaryHASHSalt);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(vss07BitesL, HMACValidatorVersion1.MACPrimaryPANSalt);
+            //string encryptedHashText = HMACHasher.EncryptHMAC(vss07BitesL, vssKey06Hash);
 
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryKeyHASH = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryKeyHASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -239,15 +233,18 @@ namespace HMACHasher
         /// </summary>
         static void Generate_MACSecondaryHASHSalt()
         {
+            // HARD DEPENDENCY: MACPrimaryKeyHASH
+            //
             // ENCRYPT: expectedVSSKey07 with MACPrimaryKeyHASH
             // DECRYPT: MACSecondaryHASHSalt with MACSecondaryKeyHASH == VSSKey07
 
             // *** HOW TO CONSTRUCT MACSecondaryHASHSalt ***
-            string encryptedHashText = HasherVersion1.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidatorVersion1.MACPrimaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACSecondaryHASHSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED SECONDARY HASH SALT=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACSecondaryHASHSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         private static string ReverseString(string message)

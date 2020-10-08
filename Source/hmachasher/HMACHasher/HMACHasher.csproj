@@ -43,14 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HasherVersion2Impl.cs" />
-    <Compile Include="HasherVersion1Impl.cs" />
-    <Compile Include="HasherVersion1\HMACValidator.cs" />
-    <Compile Include="HasherVersion2\HMACHasher.cs" />
-    <Compile Include="HasherVersion2\HMACValidator.cs" />
+    <Compile Include="Hasher\Manager\HasherVersion2Impl.cs" />
+    <Compile Include="Hasher\Manager\HasherVersion1Impl.cs" />
+    <Compile Include="Hasher\HMACValidatorVersion1.cs" />
+    <Compile Include="Hasher\HMACValidatorVersion2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HasherVersion1\HMACHasher.cs" />
+    <Compile Include="Hasher\HMACHasher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,9 +1,8 @@
-﻿using HMACHasher.HasherVersion2;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace HMACHasher
+namespace HMACHasher.Hasher.Manager
 {
     /// <summary>
     /// 
@@ -14,12 +13,12 @@ namespace HMACHasher
     /// string expectedVSSKey06     : TC_4111_GENERATE_HMAC_ASCII.py "Generated HMAC HOSTID-07"
     /// 
     /// byte[] MACSecondaryKeyHASH  : expectedVSSKey07 to byte[]
-    /// byte[] MACPrimaryPANSalt    : Hasher.HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH)
+    /// byte[] MACPrimaryPANSalt    : HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH)
     /// 
-    /// byte[] MACPrimaryHASHSalt   : Hasher.HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH)
+    /// byte[] MACPrimaryHASHSalt   : HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH)
     /// byte[] MACPrimaryKeyHASH    :
     /// 
-    /// byte[] MACSecondaryHASHSalt : Hasher.HMACHasher..EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH) 
+    /// byte[] MACSecondaryHASHSalt : HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH) 
     ///
     /// USAGE:
     /// 
@@ -61,7 +60,7 @@ namespace HMACHasher
         public static void TestHasher()
         {
             // THIS IS THE EXPECTED HOSTID-07 KEY
-            string actualVSSKey07 = BitConverter.ToString(HMACValidator.MACSecondaryKeyHASH).Replace("-", "");
+            string actualVSSKey07 = BitConverter.ToString(HMACValidatorVersion2.MACSecondaryKeyHASH).Replace("-", "");
             Debug.WriteLine($"SECONDARY HASH=[{actualVSSKey07}]");
             bool isVSSKey07Match = expectedVSSKey07.Equals(actualVSSKey07);
             Debug.WriteLine($"SECONDARY HASH IS A MATCH? {isVSSKey07Match}");
@@ -72,7 +71,7 @@ namespace HMACHasher
             Generate_MACPrimaryPANSalt();
 
             // TEST MACPrimaryPANSalt
-            string decriptedPrimaryPANSalt = HasherVersion2.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryPANSalt), HMACValidator.MACSecondaryKeyHASH);
+            string decriptedPrimaryPANSalt = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion2.MACPrimaryPANSalt), HMACValidatorVersion2.MACSecondaryKeyHASH);
             Debug.WriteLine($"PAN DECRYPTED HASH={decriptedPrimaryPANSalt}");
             Console.WriteLine($"PAN DECRYPTED HASH__={decriptedPrimaryPANSalt}");
             bool isPANMatch = PANSecret.Equals(decriptedPrimaryPANSalt);
@@ -84,7 +83,7 @@ namespace HMACHasher
             Generate_MACPrimaryHASHSalt();
 
             // KEY HOST-ID 06 VALIDATOR
-            string decriptedVSS06Hash = HasherVersion2.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryHASHSalt), HMACValidator.MACSecondaryKeyHASH);
+            string decriptedVSS06Hash = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion2.MACPrimaryHASHSalt), HMACValidatorVersion2.MACSecondaryKeyHASH);
             Debug.WriteLine($"DECRYPTED VSS-6 HASH={decriptedVSS06Hash}");
             Console.WriteLine($"DECRYPTED VSS-6 HASH={decriptedVSS06Hash}");
             bool isVSS06HMACMatch = expectedVSSKey06.Equals(decriptedVSS06Hash);
@@ -93,7 +92,7 @@ namespace HMACHasher
             // *** HOW TO CONSTRUCT MACPrimaryKeyHASH ***
             // USAGE   : 
             // REQUIRES: 
-            //Generate_MACPrimaryKeyHASH();
+            Generate_MACPrimaryKeyHASH();
 
             // *** HOW TO CONSTRUCT MACSecondaryHASHSalt ***
             // USAGE   : decrypts HostId-Key-06
@@ -101,7 +100,7 @@ namespace HMACHasher
             Generate_MACSecondaryHASHSalt();
 
             // KEY HOST-ID 07 VALIDATOR
-            string decriptedVSS07Hash = HasherVersion2.HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt), HMACValidator.MACPrimaryKeyHASH);
+            string decriptedVSS07Hash = HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidatorVersion2.MACSecondaryHASHSalt), HMACValidatorVersion2.MACPrimaryKeyHASH);
             Debug.WriteLine($"DECRYPTED VSS-7 HASH={decriptedVSS07Hash}");
             Console.WriteLine($"DECRYPTED VSS-7 HASH={decriptedVSS07Hash}");
             bool isVSS07HMACMatch = expectedVSSKey07.Equals(decriptedVSS07Hash);
@@ -120,12 +119,13 @@ namespace HMACHasher
         static void Generate_MACPrimaryPANSalt()
         {
             // *** HOW TO CONSTRUCT MACPrimaryPANSalt ***
-            string encryptedHashText = HasherVersion2.HMACHasher.EncryptHMAC(PANSecret, HMACValidator.MACSecondaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(PANSecret, HMACValidatorVersion2.MACSecondaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             //Debug.WriteLine($"ENCRYPTED HASH={encryptedHashText}");
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryPANSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryPANSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -143,11 +143,12 @@ namespace HMACHasher
             // DECRYPT: MACPrimaryPANSalt with MACSecondaryKeyHASH == HostIdKey-06
 
             // *** HOW TO CONSTRUCT MACPrimaryHASHSalt ***
-            string encryptedHashText = HasherVersion2.HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidator.MACSecondaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey06, HMACValidatorVersion2.MACSecondaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryHASHSalt = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryHASHSalt=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -160,12 +161,17 @@ namespace HMACHasher
         /// </summary>
         static void Generate_MACPrimaryKeyHASH()
         {
-            string encryptedHashText = HasherVersion2.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH);
+            // USAGE:
+            // MACSecondaryHASHSalt : HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH) 
+            // VSSKey-07            : HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt), HMACValidator.MACPrimaryKeyHASH)
+
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidatorVersion2.MACPrimaryKeyHASH);
 
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACPrimaryKeyHASH = new byte[] { };
-            Debug.WriteLine($"ENCRYPTED HASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"MACPrimaryKeyHASH=[0x{BitConverter.ToString(encryptedHashBytes).Replace("-", ", 0x").ToLower()}]");
+            Debug.WriteLine($"HASH LEN={encryptedHashBytes.Length}");
         }
 
         /// <summary>
@@ -184,7 +190,7 @@ namespace HMACHasher
             // DECRYPT: MACSecondaryHASHSalt with MACSecondaryKeyHASH == VSSKey07
 
             // *** HOW TO CONSTRUCT MACSecondaryHASHSalt ***
-            string encryptedHashText = HasherVersion2.HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidator.MACPrimaryKeyHASH);
+            string encryptedHashText = HMACHasher.EncryptHMAC(expectedVSSKey07, HMACValidatorVersion2.MACPrimaryKeyHASH);
             byte[] encryptedHashBytes = Encoding.ASCII.GetBytes(encryptedHashText);
             // TAKE THE VALUE IN THE DEBUGGER AND REPLACE IT IN HMACValidator: 
             // public static readonly byte[] MACSecondaryHASHSalt = new byte[] { };

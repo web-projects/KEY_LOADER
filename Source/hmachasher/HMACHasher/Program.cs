@@ -1,5 +1,4 @@
-﻿//using HMACHasher.HasherVersion1;
-
+﻿using HMACHasher.Hasher.Manager;
 using System;
 
 namespace HMACHasher
@@ -8,6 +7,7 @@ namespace HMACHasher
     {
         static void Main(string[] args)
         {
+            //HasherVersion1Impl.TestHasher();
             HasherVersion2Impl.TestHasher();
             _ = Console.ReadKey(true).Key;
         }
