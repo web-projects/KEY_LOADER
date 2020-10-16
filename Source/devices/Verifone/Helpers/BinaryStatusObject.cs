@@ -35,7 +35,7 @@ namespace Devices.Verifone.Helpers
         //public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_UpdKeyCmd_Enable.tar";
         //public const string UNLOCK_CONFIG_HASH = "F466919BDBCF22DBF9DAD61C1E173F61";
         //public const int UNLOCK_CONFIG_SIZE = 0x5000;
-        public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_Config_nokeysigning";
+        public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_Config_nokeysigning.tar";
         public const string UNLOCK_CONFIG_HASH = "457EB4980E801C1D7883608B0A8CB492";
         public const int UNLOCK_CONFIG_SIZE = 0x5000;
 

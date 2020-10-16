@@ -523,31 +523,33 @@ namespace Devices.Verifone.VIPA
                     {
                         break;
                     }
+                    // 20201012 - ONLY CHECK FOR FILE PRESENCE
+                    Debug.WriteLine("FILE FOUND !!!");
                     // FILE SIZE
-                    if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize ||
-                        fileStatus.binaryStatusObject.FileSize == configFile.Value.reBooted.size)
-                    {
-                        string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
-                        Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
-                        fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
-                        break;
-                    }
-                    // HASH
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase) ||
-                        fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.reBooted.hash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Debug.WriteLine(", HASH MATCH");
-                    }
-                    else
-                    {
-                        Debug.WriteLine($", HASH MISMATCH!");
-                        fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
-                        break;
-                    }
+                    //if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize ||
+                    //    fileStatus.binaryStatusObject.FileSize == configFile.Value.reBooted.size)
+                    //{
+                    //    string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+                    //    Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+                    //}
+                    //else
+                    //{
+                    //    Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                    //    fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
+                    //    break;
+                    //}
+                    //// HASH
+                    //if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase) ||
+                    //    fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.reBooted.hash, StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    Debug.WriteLine(", HASH MATCH");
+                    //}
+                    //else
+                    //{
+                    //    Debug.WriteLine($", HASH MISMATCH!");
+                    //    fileStatus.VipaResponse = (int)VipaSW1SW2Codes.Failure;
+                    //    break;
+                    //}
                 }
             }
             return fileStatus.VipaResponse;
@@ -720,18 +722,18 @@ namespace Devices.Verifone.VIPA
 
             // HostId 06
             securityConfig = GetGeneratedHMAC(securityConfig.securityConfigurationObject.PrimarySlot,
-                            HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryPANSalt), HMACValidator.MACSecondaryHASH));
+                            HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryPANSalt), HMACValidator.MACSecondaryKeyHASH));
 
             if (securityConfig.VipaResponse == (int)VipaSW1SW2Codes.Success)
             {
-                if (securityConfig.securityConfigurationObject.GeneratedHMAC.Equals(HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryHASHSalt), HMACValidator.MACSecondaryHASH),
+                if (securityConfig.securityConfigurationObject.GeneratedHMAC.Equals(HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACPrimaryHASHSalt), HMACValidator.MACSecondaryKeyHASH),
                     StringComparison.CurrentCultureIgnoreCase))
                 {
                     // HostId 07
                     securityConfig = GetGeneratedHMAC(securityConfig.securityConfigurationObject.SecondarySlot, securityConfig.securityConfigurationObject.GeneratedHMAC);
                     if (securityConfig.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        if (securityConfig.securityConfigurationObject.GeneratedHMAC.Equals(HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt), HMACValidator.MACPrimaryHASH),
+                        if (securityConfig.securityConfigurationObject.GeneratedHMAC.Equals(HMACHasher.DecryptHMAC(Encoding.ASCII.GetString(HMACValidator.MACSecondaryHASHSalt), HMACValidator.MACPrimaryKeyHASH),
                             StringComparison.CurrentCultureIgnoreCase))
                         {
                             Console.WriteLine("DEVICE: HMAC IS VALID +++++++++++++++++++++++++++++++++++++++++++++++++++++++");
