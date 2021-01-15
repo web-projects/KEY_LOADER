@@ -82,6 +82,7 @@ namespace StateMachine.State.Management
         public bool DeviceListenerIsOnline { get; set; }
 
         private static bool subscribed { get; set; }
+        private bool deviceNeedsToBeAdded;
 
         private IDeviceSubStateController subStateController;
         private IDeviceStateAction currentStateAction;
@@ -213,8 +214,8 @@ namespace StateMachine.State.Management
                         {
                             if (device == deviceDisconnected)
                             {
-                                Console.WriteLine($"DEVICE: Comport unplugged: '{portNumber}', " +
-                                    $"DeviceType '{device.ManufacturerConfigID}', SerialNumber '{device.DeviceInformation?.SerialNumber}'");
+                                Console.WriteLine($"\n\nDEVICE: Comport unplugged: '{portNumber}', " +
+                                   $"DeviceType '{device.ManufacturerConfigID}', SerialNumber '{device.DeviceInformation?.SerialNumber}'");
 
                                 //PublishDeviceDisconnectEvent(device, portNumber);
                             }
@@ -241,6 +242,7 @@ namespace StateMachine.State.Management
             {
                 Console.WriteLine($"DEVICE: Comport Plugged. ComportNumber '{portNumber}'. Detecting a new connection...");
                 peformDeviceDiscovery = DisconnectAllDevices(comPortEvent, portNumber);
+                deviceNeedsToBeAdded = true;
             }
             else if (comPortEvent == PortEventType.Removal)
             {
@@ -496,6 +498,30 @@ namespace StateMachine.State.Management
         //    return eventResponse;
         //}
 
+        public void DisplayDeviceStatus()
+        {
+            if (TargetDevices is null || TargetDevices.Count == 0)
+            {
+                Console.WriteLine("NO DEVICE FOUND!!!");
+            }
+            else
+            {
+                Console.WriteLine($"SERIAL: ON PORT={TargetDevices[0].DeviceInformation?.ComPort} - CONNECTION OPEN");
+                Console.WriteLine($"DEVICE FOUND: name='{TargetDevices[0]?.Name}', model='{TargetDevices[0]?.DeviceInformation?.Model}', " +
+                    $"serial='{TargetDevices[0]?.DeviceInformation?.SerialNumber}'\n");
+            }
+        }
+
+        public void DeviceStatusUpdate()
+        {
+            if (deviceNeedsToBeAdded)
+            {
+                deviceNeedsToBeAdded = false;
+                Console.WriteLine();
+                DisplayDeviceStatus();
+            }
+        }
+
         #region --- state machine management ---
 
         public Task Complete(IDeviceStateAction state) => AdvanceStateActionTransition(state);
@@ -538,6 +564,11 @@ namespace StateMachine.State.Management
         }
 
         public void LaunchWorkflow() => stateActionController.GetNextAction(DeviceWorkflowState.None).DoWork();
+
+        public DeviceWorkflowState GetCurrentWorkflow()
+        {
+            return currentStateAction?.WorkflowStateType ?? DeviceWorkflowState.None;
+        }
 
         public void StopWorkflow()
         {

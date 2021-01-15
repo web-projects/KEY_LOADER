@@ -61,4 +61,6 @@ This an application to load HMAC KEYS.
 * 20200723 - Target Build 0.35.00
 * 20200918 - Target Build 0.39.00
 * 20201008 - Added HMAC changes to new secrets.
-* 20201016 - Fixes to unlock mechanism.        
+* 20201016 - Fixes to unlock mechanism.
+* 20210115 - Improved initialization workflow
+        

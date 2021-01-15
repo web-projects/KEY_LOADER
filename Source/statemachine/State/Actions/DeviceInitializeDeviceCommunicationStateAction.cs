@@ -177,15 +177,16 @@ namespace StateMachine.State.Actions
                 {
                     //Controller.LoggingClient.LogInfoAsync($"Device found: name='{device.Name}', model={device.DeviceInformation.Model}, " +
                     //    $"serial={device.DeviceInformation.SerialNumber}");
-                    Console.WriteLine($"DEVICE FOUND: name='{device.Name}', model='{device?.DeviceInformation?.Model}', " +
-                        $"serial='{device?.DeviceInformation?.SerialNumber}'\n");
+                    //Console.WriteLine($"DEVICE FOUND: name='{device.Name}', model='{device?.DeviceInformation?.Model}', " +
+                    //    $"serial='{device?.DeviceInformation?.SerialNumber}'\n");
+                    Controller.DeviceStatusUpdate();
                     device.DeviceSetIdle();
                 }
             }
             else
             {
                 //Controller.LoggingClient.LogInfoAsync("Unable to find a valid device to connect to.");
-                Console.WriteLine("Unable to find a valid device to connect to.");
+                //Console.WriteLine("Unable to find a valid device to connect to.");
                 LastException = new StateException("Unable to find a valid device to connect to.");
                 _ = Error(this);
                 return Task.CompletedTask;

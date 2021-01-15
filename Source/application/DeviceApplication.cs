@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using StateMachine.State.Enums;
 using StateMachine.State.Management;
 using System;
 using System.Threading.Tasks;
@@ -15,20 +16,46 @@ namespace DEVICE_CORE
 
         public void Initialize(string pluginPath) => (this.pluginPath) = (pluginPath);
 
-        public Task Run()
+        private async Task WaitForManageWorkflow(bool displayProgress = false)
+        {
+            // Wait for Manage State
+            if (displayProgress)
+            { 
+                Console.Write("INITIALIZING ");
+            }
+            for (; ; )
+            {
+                if (DeviceStateManager.GetCurrentWorkflow() == DeviceWorkflowState.Manage)
+                {
+                    break;
+                }
+                if (displayProgress)
+                {
+                    Console.Write(".");
+                }
+                await Task.Delay(500);
+            }
+            if (displayProgress)
+            {
+                Console.WriteLine(" FINISHED!\n");
+            }
+        }
+
+        public async Task Run()
         {
             DeviceStateManager.SetPluginPath(pluginPath);
             _ = Task.Run(() => DeviceStateManager.LaunchWorkflow());
-            return Task.CompletedTask;
+            await WaitForManageWorkflow(true);
+            DeviceStateManager.DisplayDeviceStatus();
         }
 
-        public Task Command(LinkDeviceActionType action)
+        public async Task Command(LinkDeviceActionType action)
         {
             Console.WriteLine($"\n==========================================================================================");
             Console.WriteLine($"DAL COMMAND: {action}");
             Console.WriteLine($"==========================================================================================");
             DeviceStateManager.SetWorkflow(action);
-            return Task.CompletedTask;
+            await WaitForManageWorkflow();
         }
 
         public void Shutdown()

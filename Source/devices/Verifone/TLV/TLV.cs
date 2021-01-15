@@ -106,6 +106,11 @@ namespace Devices.Verifone.TLV
 
                 if (foundTagOfTags)
                 {
+                    if (dataoffset + tagDataLength > data.Length)
+                    {
+                        tagDataLength = data.Length - dataoffset;
+                    }
+
                     tag.InnerTags = Decode(data, dataoffset, dataoffset + tagDataLength, tagoftagslist);
                 }
                 else

@@ -296,7 +296,7 @@ namespace Devices.Verifone.Connection
                 readThread.Start();
                 ResponseBytesHandler += ReadResponses;
 
-                Console.WriteLine($"SERIAL: ON PORT={commPort} - CONNECTION OPEN");
+                //Console.WriteLine($"SERIAL: ON PORT={commPort} - CONNECTION OPEN");
 
                 connected = true;
             }

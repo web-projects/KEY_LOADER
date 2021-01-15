@@ -425,7 +425,7 @@ namespace Devices.Verifone.VIPA
 
             DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
 
-            System.Diagnostics.Debug.WriteLine(ConsoleMessages.GetDeviceHealth.GetStringValue());
+            System.Diagnostics.Debug.WriteLine(ConsoleMessages.GetSecurityConfiguration.GetStringValue());
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = vssSlot, p2 = hostID };
             WriteSingleCmd(command);
 
@@ -753,8 +753,12 @@ namespace Devices.Verifone.VIPA
                     Console.WriteLine(string.Format("DEVICE: HMAC PRIMARY SLOT MISMATCH=0x{0:X}", securityConfig.securityConfigurationObject.GeneratedHMAC));
                 }
             }
+            else
+            {
+                Console.WriteLine(string.Format("DEVICE: HMAC GENERATIN FAILED WITH ERROR=0x{0:X}", securityConfig.VipaResponse));
+            }
 
-            return (securityConfig.securityConfigurationObject.GeneratedHMAC, securityConfig.VipaResponse);
+            return (securityConfig.securityConfigurationObject?.GeneratedHMAC, securityConfig.VipaResponse);
         }
 
         private (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetGeneratedHMAC(int hostID, string MAC)

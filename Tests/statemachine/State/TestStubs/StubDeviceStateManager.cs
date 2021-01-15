@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using XO.Requests;
+using StateMachine.State.Enums;
 
 namespace StateMachine.State.TestStubs.Tests
 {
@@ -120,6 +121,21 @@ namespace StateMachine.State.TestStubs.Tests
         public void SetWorkflow(LinkDeviceActionType action)
         {
 
+        }
+
+        public DeviceWorkflowState GetCurrentWorkflow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayDeviceStatus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeviceStatusUpdate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

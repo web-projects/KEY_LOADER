@@ -44,7 +44,9 @@ namespace Devices.Verifone.Helpers
             [StringValue("VIPA: ENTER ADA MODE")]
             StartADA,
             [StringValue("VIPA: CLESS READER CLOSED")]
-            DeviceCLessReaderClosed
+            DeviceCLessReaderClosed,
+            [StringValue("VIPA: GET SECURITY CONFIGURATION")]
+            GetSecurityConfiguration
         }
     }
 }

@@ -108,12 +108,12 @@ namespace Devices.Verifone
                     _config = config;
                     active = true;
 
-                    Console.WriteLine($"\nDEVICE PROBE SUCCESS ON {DeviceInformation?.ComPort}, FOR SN: {DeviceInformation?.SerialNumber}");
+                    //Console.WriteLine($"\nDEVICE PROBE SUCCESS ON {DeviceInformation?.ComPort}, FOR SN: {DeviceInformation?.SerialNumber}");
                 }
                 else
                 {
                     //vipaDevice.CancelResponseHandlers();
-                    Console.WriteLine($"\nDEVICE PROBE FAILED ON {DeviceInformation?.ComPort}\n");
+                    //Console.WriteLine($"\nDEVICE PROBE FAILED ON {DeviceInformation?.ComPort}\n");
                 }
             }
             return null;
@@ -154,7 +154,7 @@ namespace Devices.Verifone
 
         public void DeviceSetIdle()
         {
-            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: SET TO IDLE.");
+            //Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: SET TO IDLE.");
             if (vipaDevice != null)
             {
                 vipaDevice.DisplayMessage(VIPADevice.VIPADisplayMessageValue.Idle);
@@ -308,6 +308,8 @@ namespace Devices.Verifone
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
+                                Console.WriteLine($"DEVICE: BDK KEY_ID       ={config.securityConfigurationObject.SRedCardKSN.Substring(4, 6)}");
+                                Console.WriteLine($"DEVICE: BDK TRSM ID      ={config.securityConfigurationObject.SRedCardKSN.Substring(10, 5)}");
                             }
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
                             Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");

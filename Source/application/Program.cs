@@ -39,7 +39,7 @@ namespace DEVICE_CORE
             Console.WriteLine($"{Assembly.GetEntryAssembly().GetName().Name} - Version {Assembly.GetEntryAssembly().GetName().Version}");
             Console.WriteLine($"==========================================================================================\r\n");
 
-             DirectoryInfo di = null;
+            DirectoryInfo di = null;
 
             // create working directory
             if (!Directory.Exists(Constants.TargetDirectory))
@@ -51,11 +51,9 @@ namespace DEVICE_CORE
 
             IDeviceApplication application = activator.Start(pluginPath);
             await application.Run().ConfigureAwait(false);
-            await Task.Delay(STARTUP_WAIT_DELAY);
 
             // GET STATUS
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
-            //await Task.Delay(4096);
 
             DisplayMenu();
             ConsoleKey keypressed = GetKeyPressed(false);
@@ -76,7 +74,6 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
                         await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
-                        await Task.Delay(CONFIGURATION_UPDATE_DELAY).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.F:
@@ -95,7 +92,6 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [EMV-KERNEL]");
                         await application.Command(LinkDeviceActionType.GetEMVKernelChecksum).ConfigureAwait(false);
-                        await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.R:
@@ -148,7 +144,6 @@ namespace DEVICE_CORE
                     }
                 }
 
-                await Task.Delay(COMMAND_WAIT_DELAY).ConfigureAwait(false);
                 keypressed = GetKeyPressed(redisplay);
             }
 
@@ -199,11 +194,11 @@ namespace DEVICE_CORE
 
         static private void DisplayMenu()
         {
-            foreach(string value in MENU)
+            foreach (string value in MENU)
             {
                 Console.WriteLine(value);
             }
-            
+
             Console.Write("SELECT COMMAND: ");
         }
     }

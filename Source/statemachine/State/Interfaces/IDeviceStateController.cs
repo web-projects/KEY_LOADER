@@ -29,5 +29,6 @@ namespace StateMachine.State.Interfaces
         IControllerVisitorProvider GetCurrentVisitorProvider();
         ISubStateManagerProvider GetSubStateManagerProvider();
         IDeviceCancellationBroker GetCancellationBroker();
+        void DeviceStatusUpdate();
     }
 }

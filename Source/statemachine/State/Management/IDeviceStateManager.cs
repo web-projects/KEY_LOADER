@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StateMachine.State.Enums;
+using System;
 using XO.Requests;
 
 namespace StateMachine.State.Management
@@ -8,6 +9,8 @@ namespace StateMachine.State.Management
         void SetPluginPath(string pluginPath);
         void SetWorkflow(LinkDeviceActionType action);
         void LaunchWorkflow();
+        DeviceWorkflowState GetCurrentWorkflow();
         void StopWorkflow();
+        void DisplayDeviceStatus();
     }
 }
