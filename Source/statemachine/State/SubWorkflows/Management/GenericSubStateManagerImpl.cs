@@ -1,4 +1,7 @@
-﻿using Config;
+﻿using Devices.Common;
+using Devices.Common.AppConfig;
+using Devices.Common.Helpers;
+using Devices.Common.Interfaces;
 using StateMachine.Cancellation;
 using StateMachine.State.Enums;
 using StateMachine.State.Interfaces;
@@ -6,15 +9,12 @@ using StateMachine.State.SubWorkflows.Actions;
 using StateMachine.State.SubWorkflows.Actions.Controllers;
 using StateMachine.State.SubWorkflows.Providers;
 using StateMachine.State.Visitors;
-using Devices.Common;
-using Devices.Common.Helpers;
-using Devices.Common.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using XO.Requests;
-using System.Diagnostics;
 
 namespace StateMachine.State.SubWorkflows.Management
 {

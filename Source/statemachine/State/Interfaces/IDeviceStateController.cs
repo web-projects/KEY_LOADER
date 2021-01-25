@@ -1,12 +1,12 @@
 ﻿using Core.Patterns.Queuing;
-using Config;
-using StateMachine.SerialPort.Interfaces;
+using DEVICE_SDK.Sdk;
+using Devices.Common.AppConfig;
+using Devices.Common.Interfaces;
 using StateMachine.Cancellation;
+using StateMachine.SerialPort.Interfaces;
 using StateMachine.State.Actions;
 using StateMachine.State.Actions.Preprocessing;
 using StateMachine.State.Providers;
-using DEVICE_SDK.Sdk;
-using Devices.Common.Interfaces;
 using System.Collections.Generic;
 
 namespace StateMachine.State.Interfaces

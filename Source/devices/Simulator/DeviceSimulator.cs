@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Devices.Simulator.Connection;
@@ -94,6 +95,12 @@ namespace Devices.Simulator
         {
 
         }
+
+        public void SetDeviceSectionConfig(DeviceSection config)
+        {
+
+        }
+
 
         public List<LinkErrorValue> Probe(DeviceConfig config, DeviceInformation deviceInfo, out bool active)
         {

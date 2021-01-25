@@ -1,4 +1,6 @@
 ﻿using Devices.Common;
+using Devices.Common.AppConfig;
+using Devices.Common.Config;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Devices.Verifone.Connection;
@@ -30,7 +32,8 @@ namespace Devices.Verifone
 
         private bool IsConnected { get; set; }
 
-        private DeviceConfig _config;
+        DeviceConfig deviceConfiguration;
+        DeviceSection deviceSectionConfig;
 
         [Inject]
         internal IVIPADevice vipaDevice { get; set; } = new VIPADevice();
@@ -40,6 +43,10 @@ namespace Devices.Verifone
         public string ManufacturerConfigID => DeviceType.Verifone.ToString();
 
         public int SortOrder { get; set; } = -1;
+
+        int OnlinePinHostId { get => deviceSectionConfig?.Verifone?.OnlinePinHostId ?? VerifoneSettingsOnlinePin.OnlinePinHostId; }
+
+        int OnlinePinKeySetId { get => deviceSectionConfig?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId; }
 
         public VerifoneDevice()
         {
@@ -69,6 +76,17 @@ namespace Devices.Verifone
             return IsConnected;
         }
 
+        public void SetDeviceSectionConfig(DeviceSection config)
+        {
+            deviceSectionConfig = config;
+            if (vipaDevice != null)
+            {
+                string onlinePINSource = deviceSectionConfig.Verifone?.OnlinePinHostId == VerifoneSettingsOnlinePin.OnlinePinHostId ? "VSS" : "IPP";
+                Console.WriteLine($"ONLINE PIN STORE: {onlinePINSource}");
+                vipaDevice.LoadDeviceSectionConfig(deviceSectionConfig);
+            }
+        }
+
         public List<LinkErrorValue> Probe(DeviceConfig config, DeviceInformation deviceInfo, out bool active)
         {
             DeviceInformation = deviceInfo;
@@ -76,7 +94,7 @@ namespace Devices.Verifone
             DeviceInformation.ComPort = deviceInfo.ComPort;
 
             SerialConnection = new SerialConnection(DeviceInformation);
-            active = IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+            active = IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
 
             if (active)
             {
@@ -105,7 +123,7 @@ namespace Devices.Verifone
                         DeviceInformation.SerialNumber = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.SerialNumber;
                     }
                     vipaDevice = vipaDevice;
-                    _config = config;
+                    deviceConfiguration = config;
                     active = true;
 
                     //Console.WriteLine($"\nDEVICE PROBE SUCCESS ON {DeviceInformation?.ComPort}, FOR SN: {DeviceInformation?.SerialNumber}");
@@ -194,7 +212,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -230,7 +248,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -289,7 +307,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -299,20 +317,26 @@ namespace Devices.Verifone
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
-                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADEProductionSlot);
+                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSHostId, config.securityConfigurationObject.ADEProductionSlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                             Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
-                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
+                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSHostId, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
                                 Console.WriteLine($"DEVICE: BDK KEY_ID       ={config.securityConfigurationObject.SRedCardKSN.Substring(4, 6)}");
                                 Console.WriteLine($"DEVICE: BDK TRSM ID      ={config.securityConfigurationObject.SRedCardKSN.Substring(10, 5)}");
                             }
-                            Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
-                            Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                            Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSHostId - 0x01}");
+                            config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.OnlinePinHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
+                            if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine($"DEVICE: ONLINE PIN STORE ={(deviceSectionConfig.Verifone?.OnlinePinHostId == VerifoneSettingsOnlinePin.OnlinePinHostId ? "VSS" : "IPP")}");
+                                Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                            }
+
                             // validate configuration
                             int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
@@ -327,12 +351,12 @@ namespace Devices.Verifone
                         }
                         else
                         {
-                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSPrimarySlot, config.securityConfigurationObject.ADETestSlot);
+                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.ADETestSlot, config.securityConfigurationObject.VSSHostId);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
-                                Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSPrimarySlot - 0x01}");
+                                Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSHostId - 0x01}");
                                 Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                                 // validate configuration
                                 int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
@@ -366,7 +390,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -413,7 +437,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -449,7 +473,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -485,7 +509,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -521,7 +545,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -571,7 +595,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -608,7 +632,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)
@@ -645,7 +669,7 @@ namespace Devices.Verifone
                 {
                     vipaDevice.Dispose();
                     SerialConnection = new SerialConnection(DeviceInformation);
-                    IsConnected = vipaDevice.Connect(DeviceInformation.ComPort, SerialConnection);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
                 if (IsConnected)

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Devices.Common.AppConfig;
+using System;
 using System.Collections.Generic;
-using System.Threading;
 using XO.Requests;
 using XO.Responses;
 
@@ -24,13 +24,15 @@ namespace Devices.Common.Interfaces
 
         bool IsConnected(object request);
 
+        void SetDeviceSectionConfig(DeviceSection config);
+
         List<DeviceInformation> DiscoverDevices();
 
         List<LinkErrorValue> Probe(DeviceConfig config, DeviceInformation deviceInfo, out bool dalActive);
 
         void DeviceSetIdle();
 
-		bool DeviceRecovery();
+        bool DeviceRecovery();
 
         void Disconnect();
 

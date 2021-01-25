@@ -1,4 +1,7 @@
 ﻿using Config.Config;
+using Devices.Common;
+using Devices.Common.AppConfig;
+using Devices.Common.Config;
 using Devices.Common.Helpers;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
@@ -35,9 +38,6 @@ namespace Devices.Verifone.VIPA
             RemoveCardWithBeeps = 0x0E,
             Processing = 0x0F
         }
-        #endregion --- enumerations ---
-
-        #region --- attributes ---
         private enum ResetDeviceCfg
         {
             ReturnSerialNumber = 1 << 0,
@@ -49,6 +49,11 @@ namespace Devices.Verifone.VIPA
             ReturnPinpadConfiguration = 1 << 6,
             AddVOSComponentsInformation = 1 << 7
         }
+
+        #endregion --- enumerations ---
+
+        #region --- attributes ---
+        public DeviceInformation DeviceInformation { get; set; }
 
         // Optimal Packet Size for READ/WRITE operations on device
         const int PACKET_SIZE = 1024;
@@ -80,10 +85,11 @@ namespace Devices.Verifone.VIPA
         #region --- connection ---
         private SerialConnection serialConnection { get; set; }
 
-        public bool Connect(string comPort, SerialConnection connection)
+        public bool Connect(SerialConnection connection, DeviceInformation deviceInformation)
         {
             serialConnection = connection;
-            return serialConnection.Connect(comPort);
+            DeviceInformation = deviceInformation;
+            return serialConnection.Connect(DeviceInformation.ComPort);
         }
 
         public void Dispose()
@@ -416,7 +422,7 @@ namespace Devices.Verifone.VIPA
             return deviceKernelConfigurationInfo;
         }
 
-        public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot, byte hostID)
+        public (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte hostID, byte vssSlot)
         {
             CancelResponseHandlers();
 
@@ -426,7 +432,7 @@ namespace Devices.Verifone.VIPA
             DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
 
             System.Diagnostics.Debug.WriteLine(ConsoleMessages.GetSecurityConfiguration.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = vssSlot, p2 = hostID };
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = hostID, p2 = vssSlot };
             WriteSingleCmd(command);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
@@ -1286,7 +1292,15 @@ namespace Devices.Verifone.VIPA
                     {
                         if (dataTag.Tag.SequenceEqual(E0Template.OnlinePINKSNTag))
                         {
-                            deviceResponse.OnlinePinKSN = BitConverter.ToString(dataTag.Data).Replace("-", "");
+                            if (DeviceInformation.OnlinePinHostId != VerifoneSettingsOnlinePin.OnlinePinHostId)
+                            {
+                                string ksn = ConversionHelper.ByteArrayCodedHextoString(dataTag.Data);
+                                deviceResponse.OnlinePinKSN = ksn.PadLeft(20, 'F');
+                            }
+                            else
+                            {
+                                deviceResponse.OnlinePinKSN = BitConverter.ToString(dataTag.Data).Replace("-", "");
+                            }
                         }
                         if (dataTag.Tag.SequenceEqual(E0Template.KeySlotNumberTag))
                         {
@@ -1460,5 +1474,12 @@ namespace Devices.Verifone.VIPA
         }
 
         #endregion --- response handlers ---
+
+        public void LoadDeviceSectionConfig(DeviceSection config)
+        {
+            //preSwipeCardStorage.SetConfig(config?.Verifone?.PreSwipeTimeout ?? 0);
+            DeviceInformation.OnlinePinHostId = config?.Verifone?.OnlinePinHostId ?? VerifoneSettingsOnlinePin.OnlinePinHostId;
+            DeviceInformation.OnlinePinKeySetId = config?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId;
+        }
     }
 }

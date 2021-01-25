@@ -1,22 +1,22 @@
-﻿using Config;
-using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.Tests;
-using DEVICE_SDK.Sdk;
+﻿using DEVICE_SDK.Sdk;
 using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Moq;
+using StateMachine.Cancellation;
+using StateMachine.State.Enums;
+using StateMachine.State.Interfaces;
+using StateMachine.Tests;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using TestHelper.Polly;
 using XO.Device;
 using XO.Requests;
-using Xunit;
-using TestHelper.Polly;
 using XO.Responses;
-using StateMachine.Cancellation;
-using System.Threading;
+using Xunit;
 
 namespace StateMachine.State.Actions.Tests
 {
@@ -73,7 +73,7 @@ namespace StateMachine.State.Actions.Tests
 
             //mockLoggingClient = new Mock<ILoggingServiceClient>();
             mockDevicePluginLoader = new Mock<IDevicePluginLoader>();
-            
+
             mockCancellationBroker = new Mock<IDeviceCancellationBroker>();
 
             mockController = new Mock<IDeviceStateController>();

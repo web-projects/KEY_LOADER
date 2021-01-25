@@ -63,4 +63,5 @@ This an application to load HMAC KEYS.
 * 20201008 - Added HMAC changes to new secrets.
 * 20201016 - Fixes to unlock mechanism.
 * 20210115 - Improved initialization workflow
+* 20210125 - ONLINE PIN IPP implementation
         

@@ -1,22 +1,21 @@
 ﻿using Core.Patterns.Queuing;
-using Config;
-using StateMachine.SerialPort.Interfaces;
-using StateMachine.State.Interfaces;
-using StateMachine.State.Providers;
-using StateMachine.State.SubWorkflows.Management;
-using StateMachine.Cancellation;
-using StateMachine.State;
-using StateMachine.State.Actions;
-using StateMachine.State.Actions.Preprocessing;
-using StateMachine.State.Management;
 using DEVICE_SDK.Sdk;
 using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Common.Interfaces;
+using StateMachine.Cancellation;
+using StateMachine.SerialPort.Interfaces;
+using StateMachine.State.Actions;
+using StateMachine.State.Actions.Preprocessing;
+using StateMachine.State.Enums;
+using StateMachine.State.Interfaces;
+using StateMachine.State.Management;
+using StateMachine.State.Providers;
+using StateMachine.State.SubWorkflows.Management;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using XO.Requests;
-using StateMachine.State.Enums;
 
 namespace StateMachine.State.TestStubs.Tests
 {

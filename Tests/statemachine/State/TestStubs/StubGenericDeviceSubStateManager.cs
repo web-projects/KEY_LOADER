@@ -1,5 +1,5 @@
-﻿using Config;
-using Devices.Common;
+﻿using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using StateMachine.Cancellation;

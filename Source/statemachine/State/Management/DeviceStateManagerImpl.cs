@@ -2,6 +2,7 @@
 using Core.Patterns.Queuing;
 using DEVICE_SDK.Sdk;
 using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Newtonsoft.Json;
@@ -130,6 +131,14 @@ namespace StateMachine.State.Management
                 }
             }
             TargetDevices = targetDevices;
+
+            if (targetDevices != null)
+            {
+                foreach (var device in targetDevices)
+                {
+                    device.SetDeviceSectionConfig(Configuration);
+                }
+            }
         }
 
         public void SetPublishEventHandlerAsTask()

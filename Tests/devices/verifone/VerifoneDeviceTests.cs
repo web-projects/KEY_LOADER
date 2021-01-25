@@ -54,7 +54,7 @@ namespace Devices.Simulator.Tests
         [InlineData(false)]
         public void Probe_ReturnsProperActiveState_WhenCalled(bool expectedValue)
         {
-            moqIVAPADevice.Setup(e => e.Connect(It.IsAny<string>(), It.IsAny<SerialConnection>())).Returns(expectedValue);
+            moqIVAPADevice.Setup(e => e.Connect(It.IsAny<SerialConnection>(), It.IsAny<DeviceInformation>())).Returns(expectedValue);
 
             DeviceConfig deviceConfig = new DeviceConfig()
             {

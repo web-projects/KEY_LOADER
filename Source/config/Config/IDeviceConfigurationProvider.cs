@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Devices.Common.AppConfig;
+using Microsoft.Extensions.Configuration;
 
 namespace Config
 {

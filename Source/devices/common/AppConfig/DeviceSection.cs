@@ -1,7 +1,7 @@
 ﻿using Devices.Common.Config;
 using System;
 
-namespace Config
+namespace Devices.Common.AppConfig
 {
     [Serializable]
     public class DeviceSection

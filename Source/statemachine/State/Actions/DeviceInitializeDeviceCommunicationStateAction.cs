@@ -1,16 +1,16 @@
-﻿using Config;
-using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using Devices.Common;
+﻿using Devices.Common;
+using Devices.Common.AppConfig;
+using Devices.Common.Constants;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
+using StateMachine.Cancellation;
+using StateMachine.State.Enums;
+using StateMachine.State.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using XO.Responses;
-using StateMachine.Cancellation;
-using Devices.Common.Constants;
 
 namespace StateMachine.State.Actions
 {
@@ -110,7 +110,7 @@ namespace StateMachine.State.Actions
                             ICardDevice device = validatedCardDevices[i].Clone() as ICardDevice;
 
                             device.DeviceEventOccured += Controller.DeviceEventReceived;
- 
+
                             // Device powered on status capturing: free up the com port and try again.
                             // This occurs when a USB device repowers the USB interface and the virtual port is open.
                             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -135,7 +135,7 @@ namespace StateMachine.State.Actions
                             }
                         }
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Console.WriteLine($"device: exception='{e.Message}'");
 

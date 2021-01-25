@@ -6,7 +6,7 @@ namespace Devices.Verifone.Helpers
 {
     public class SecurityConfigurationObject
     {
-        public byte VSSPrimarySlot { get; } = 0x02;
+        public byte VSSHostId { get; } = 0x02;
         public int PrimarySlot { get; } = 0x06;
         public int SecondarySlot { get; } = 0x07;
         public byte ADEProductionSlot { get; } = 0x00;

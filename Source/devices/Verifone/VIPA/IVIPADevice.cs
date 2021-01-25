@@ -3,12 +3,15 @@ using Devices.Verifone.TLV;
 using Devices.Verifone.Connection;
 using System.Collections.Generic;
 using static Devices.Verifone.VIPA.VIPADevice;
+using Config;
+using Devices.Common.AppConfig;
+using Devices.Common;
 
 namespace Devices.Verifone.VIPA
 {
     public interface IVIPADevice
     {
-        bool Connect(string comPort, SerialConnection connection);
+        bool Connect(SerialConnection connection, DeviceInformation deviceInformation);
 
         void Dispose();
         
@@ -24,7 +27,7 @@ namespace Devices.Verifone.VIPA
 
         (int VipaResult, int VipaResponse) GetActiveKeySlot();
 
-        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte vssSlot, byte hostID);
+        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) GetSecurityConfiguration(byte hostID, byte vssSlot);
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 
@@ -43,5 +46,6 @@ namespace Devices.Verifone.VIPA
         (string HMAC, int VipaResponse) GenerateHMAC();
 
         int UpdateHMACKeys();
+        void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
     }
 }

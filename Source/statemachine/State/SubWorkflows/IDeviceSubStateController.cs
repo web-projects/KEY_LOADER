@@ -1,11 +1,9 @@
-﻿using Config;
-using StateMachine.State.SubWorkflows.Actions;
-using StateMachine.Cancellation;
-using StateMachine.State;
+﻿using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
+using StateMachine.Cancellation;
+using StateMachine.State.SubWorkflows.Actions;
 using System.Collections.Generic;
-using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows
 {
