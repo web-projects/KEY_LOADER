@@ -136,6 +136,10 @@ namespace StateMachine.State.Actions
                                 {
                                     discoveredCardDevices.Add(device);
                                 }
+                                else
+                                {
+                                    device.DeviceSetIdle();
+                                }
                             }
                         }
                     }
