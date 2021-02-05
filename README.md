@@ -64,4 +64,5 @@ This an application to load HMAC KEYS.
 * 20201016 - Fixes to unlock mechanism.
 * 20210115 - Improved initialization workflow
 * 20210125 - ONLINE PIN IPP implementation
-        
+* 20210204 - Multi-Device Selection via app settings
+      

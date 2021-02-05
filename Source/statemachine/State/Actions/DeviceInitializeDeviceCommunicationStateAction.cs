@@ -131,7 +131,11 @@ namespace StateMachine.State.Actions
                             }
                             else if (success)
                             {
-                                discoveredCardDevices.Add(device);
+                                string deviceName = $"{device.DeviceInformation.Manufacturer}-{device.DeviceInformation.Model}";
+                                if (Controller.Configuration.Verifone.SupportedDevices.Contains(deviceName))
+                                {
+                                    discoveredCardDevices.Add(device);
+                                }
                             }
                         }
                     }
@@ -159,11 +163,6 @@ namespace StateMachine.State.Actions
             catch
             {
                 availableCardDevices = new List<ICardDevice>();
-            }
-
-            if (discoveredCardDevices?.Count > 1)
-            {
-                discoveredCardDevices.Sort();
             }
 
             if (discoveredCardDevices?.Count > 0)
