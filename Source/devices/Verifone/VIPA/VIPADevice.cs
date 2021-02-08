@@ -443,6 +443,7 @@ namespace Devices.Verifone.VIPA
             return deviceSecurityConfigurationInfo;
         }
 
+        [Obsolete]
         public int Configuration(string deviceModel)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
@@ -483,6 +484,76 @@ namespace Devices.Verifone.VIPA
 
                                 if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase) ||
                                     fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.reBooted.hash, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    Console.WriteLine(", HASH MATCH");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($", HASH MISMATCH!");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
+                                configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
+                            Console.WriteLine(formattedStr);
+                        }
+                        // clean up
+                        if (File.Exists(targetFile))
+                        {
+                            File.Delete(targetFile);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' NOT FOUND!");
+                    }
+                }
+            }
+
+            return fileStatus.VipaResponse;
+        }
+
+        public int ConfigurationPackage(string deviceModel)
+        {
+            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
+
+            Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
+
+            bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceModel.Substring(0, 4)));
+
+            foreach (var configFile in BinaryStatusObject.configurationPackages)
+            {
+                // search for partial matches in P200 vs P200Plus
+                if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
+                {
+                    string fileName = configFile.Value.fileName;
+                    if (BinaryStatusObject.EMV_CONFIG_FILES.Any(x => x.Contains(configFile.Value.fileName)))
+                    {
+                        fileName = (IsEngageDevice ? "ENGAGE." : "UX301.") + configFile.Value.fileName;
+                    }
+
+                    string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
+                    if (FindEmbeddedResourceByName(fileName, targetFile))
+                    {
+                        fileStatus = PutFile(configFile.Value.fileName, targetFile);
+                        if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                        {
+                            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                            {
+                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
+                                {
+                                    string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+                                    //Console.WriteLine(formattedStr);
+                                    Console.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                                }
+
+                                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
                                 {
                                     Console.WriteLine(", HASH MATCH");
                                 }

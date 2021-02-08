@@ -6,6 +6,7 @@ using static Devices.Verifone.VIPA.VIPADevice;
 using Config;
 using Devices.Common.AppConfig;
 using Devices.Common;
+using System;
 
 namespace Devices.Verifone.VIPA
 {
@@ -31,7 +32,10 @@ namespace Devices.Verifone.VIPA
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 
+        [Obsolete]
         int Configuration(string deviceModel);
+
+        int ConfigurationPackage(string deviceModel);
 
         int ValidateConfiguration(string deviceModel);
 

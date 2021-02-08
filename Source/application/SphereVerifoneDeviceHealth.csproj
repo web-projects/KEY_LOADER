@@ -4,10 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>SphereVerifoneDeviceHealth</AssemblyName>
-    <AssemblyVersion>1.0.40.0</AssemblyVersion>
-    <FileVersion>1.0.40.0</FileVersion>
+    <AssemblyVersion>1.0.42.0</AssemblyVersion>
+    <FileVersion>1.0.42.0</FileVersion>
     <PackageReleaseNotes>IPA5 Build 5.0.40 Compatible</PackageReleaseNotes>
-    <Version>1.0.40</Version>
+    <Version>1.0.42.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +40,8 @@
     <None Remove="Assets\Config\Build.39\UX301\contlemv.cfg" />
     <None Remove="Assets\Config\Build.39\UX301\iccdata.dat" />
     <None Remove="Assets\Config\Build.39\UX301\icckeys.key" />
+    <None Remove="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
+    <None Remove="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere_engage.tgz" />
     <None Remove="Assets\Config\cicapp.cfg" />
     <None Remove="Assets\Config\mapp.cfg" />
     <None Remove="Assets\Config\tdol.cfg" />
@@ -47,56 +49,20 @@
     <None Remove="Assets\dl.bundle.Sphere_Config5-s8.tar" />
     <None Remove="Assets\dl.bundle.Sphere_Config_nokeysigning.tar" />
     <None Remove="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar" />
+    <None Remove="Assets\dl.VIPA_cfg_emv_att_prodcapk_sphere_engage.tgz" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Assets\1a.dl.zADE-Enablement-VfiDev.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\#whitelist.dat" />
-    <EmbeddedResource Include="Assets\Config\a000000003.92">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000003.94">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000004.ef">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000004.f1">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000025.c8">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000025.c9">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000025.ca">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000065.11">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000065.13">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000152.5c">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000152.5d">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\Config\a000000384.c1" />
     <EmbeddedResource Include="Assets\Config\Build.39\ENGAGE\contlemv.cfg" />
     <EmbeddedResource Include="Assets\Config\Build.39\ENGAGE\iccdata.dat" />
     <EmbeddedResource Include="Assets\Config\Build.39\ENGAGE\icckeys.key" />
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\contlemv.cfg" />
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\iccdata.dat" />
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\icckeys.key" />
-    <EmbeddedResource Include="Assets\Config\cicapp.cfg" />
-    <EmbeddedResource Include="Assets\Config\mapp.cfg" />
-    <EmbeddedResource Include="Assets\Config\tdol.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s0.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s8.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config_nokeysigning.tar" />

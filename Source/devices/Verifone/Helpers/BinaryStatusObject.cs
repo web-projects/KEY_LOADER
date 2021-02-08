@@ -39,6 +39,9 @@ namespace Devices.Verifone.Helpers
         public const string UNLOCK_CONFIG_HASH = "457EB4980E801C1D7883608B0A8CB492";
         public const int UNLOCK_CONFIG_SIZE = 0x5000;
 
+        // RAW CONFIGURATION FILES
+        #region --- raw config files ---
+
         // AIDS
         public const string AID_00392_NAME = "a000000003.92";
         public const string AID_00392_HASH = "98B8C420A5E79C61D1B5EFD511A84244";
@@ -183,6 +186,31 @@ namespace Devices.Verifone.Helpers
                 [TDOLCFG] = ("CFG", BinaryStatusObject.ALL_DEVICES, TDOLCFG, TDOLCFG_HASH, TDOLCFG_FILESIZE, (TDOLCFG_HMACHASH, TDOLCFG_HMACFILESIZE))
             };
 
+        #endregion --- raw config files ---
+
+        // PACKAGED CONFIGURATION
+        #region --- packaged config files ---
+
+        // ATTENDED TERMINAL
+        public const string CONFIG_PKG_ENGAGE = "dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz";
+        public const string CONFIG_PKG_HASH_ENGAGE = "75f72274e6c40e623ebdf3605c6a31d1";
+        public const int CONFIG_PKG_FILESIZE_ENGAGE = 0x7E16;
+
+        // UNATTENDED TERMINAL
+        public const string CONFIG_PKG_UX301 = "dl.VIPA_cfg_emv_unatt_prodcapk_sphere.tgz";
+        public const string CONFIG_PKG_HASH_UX = "";
+        public const int CONFIG_PKG_FILESIZE_UX = 0x00;
+
+        public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configurationPackages =
+             new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)>()
+             {
+                 // CONFIGURATION PACKAGE
+                 [CONTLEMV_ENGAGE] = ("EMV", BinaryStatusObject.ENGAGE_DEVICES, CONFIG_PKG_ENGAGE, CONFIG_PKG_HASH_ENGAGE, CONFIG_PKG_FILESIZE_ENGAGE),
+                 [CONTLEMV_UX301] = ("EMV", BinaryStatusObject.UX_DEVICES, CONFIG_PKG_ENGAGE, CONFIG_PKG_HASH_UX, CONFIG_PKG_FILESIZE_UX),
+             };
+
+        #endregion --- packaged config files ---
+        
         public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
 
         public bool FileNotFound { get; set; }

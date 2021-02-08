@@ -399,20 +399,30 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.Configuration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        int vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
-                            Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+                            //Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                            //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
 
-                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            //{
+                            //    Console.WriteLine("SUCCESS!");
+                            //}
+                            //else
+                            //{
+                            //    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            //}
+                            (DevicePTID devicePTID, int VipaResponse) response = vipaDevice.DeviceReboot();
+                            if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine("SUCCESS!");
+                                //Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
+                                Console.WriteLine($"DEVICE: REBOOT REQUEST RECEIVED SUCCESSFULLY");
                             }
                             else
                             {
-                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                Console.WriteLine(string.Format("DEVICE: FAILED REBOOT REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
                             }
                         }
                         else
