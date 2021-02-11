@@ -32,8 +32,8 @@ namespace Devices.Verifone.VIPA
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 
-        [Obsolete]
-        int Configuration(string deviceModel);
+        //[Obsolete]
+        int ConfigurationFiles(string deviceModel);
 
         int ConfigurationPackage(string deviceModel);
 

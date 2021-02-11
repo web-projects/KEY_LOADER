@@ -443,8 +443,8 @@ namespace Devices.Verifone.VIPA
             return deviceSecurityConfigurationInfo;
         }
 
-        [Obsolete]
-        public int Configuration(string deviceModel)
+        //[Obsolete]
+        public int ConfigurationFiles(string deviceModel)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
@@ -471,7 +471,8 @@ namespace Devices.Verifone.VIPA
                         {
                             if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                             {
-                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
+                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize ||
+                                    fileStatus.binaryStatusObject.FileSize == configFile.Value.reBooted.size)
                                 {
                                     string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
                                     //Console.WriteLine(formattedStr);

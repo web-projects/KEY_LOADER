@@ -48,6 +48,8 @@ namespace Devices.Verifone
 
         int OnlinePinKeySetId { get => deviceSectionConfig?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId; }
 
+        string ConfigurationPackageActive { get => deviceSectionConfig?.Verifone?.ConfigurationPackageActive; }
+
         public VerifoneDevice()
         {
 
@@ -399,26 +401,66 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        int vipaResponse = (int)VipaSW1SW2Codes.Failure;
+                        
+                        bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
+                        bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+
+                        if (activePackageIsEpic)
+                        {
+                            vipaResponse = vipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        }
+                        else if(activePackageIsNJT)
+                        {
+                            vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"DEVICE: INVALID CONFIGURATION {ConfigurationPackageActive}\n");
+                        }
+
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
-                            //Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                            //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
 
-                            //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                            //{
-                            //    Console.WriteLine("SUCCESS!");
-                            //}
-                            //else
-                            //{
-                            //    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
-                            //}
-                            (DevicePTID devicePTID, int VipaResponse) response = vipaDevice.DeviceReboot();
+                            (DevicePTID devicePTID, int VipaResponse) response = (null, (int)VipaSW1SW2Codes.Success);
+
+                            if (activePackageIsEpic)
+                            {
+                                Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+
+                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    Console.WriteLine("SUCCESS!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                }
+                            }
+                            else
+                            {
+                                Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
+
+                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    Console.WriteLine("SUCCESS!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                }
+                                response = vipaDevice.DeviceReboot();
+                            }
+
                             if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                //Console.WriteLine($"DEVICE: REBOOT SUCCESSFULLY for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
-                                Console.WriteLine($"DEVICE: REBOOT REQUEST RECEIVED SUCCESSFULLY");
+                                if (activePackageIsNJT)
+                                {
+                                    Console.WriteLine($"DEVICE: REBOOT REQUEST SUCCESSFUL for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
+                                }
                             }
                             else
                             {

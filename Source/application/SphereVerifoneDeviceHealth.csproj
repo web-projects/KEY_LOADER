@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>SphereVerifoneDeviceHealth</AssemblyName>
     <AssemblyVersion>1.0.42.0</AssemblyVersion>
     <FileVersion>1.0.42.0</FileVersion>
@@ -11,10 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Assets\Config\Build.42\NJT\ENGAGE\**" />
     <Compile Remove="Common\**" />
     <Compile Remove="SerialPort\**" />
+    <EmbeddedResource Remove="Assets\Config\Build.42\NJT\ENGAGE\**" />
     <EmbeddedResource Remove="Common\**" />
     <EmbeddedResource Remove="SerialPort\**" />
+    <None Remove="Assets\Config\Build.42\NJT\ENGAGE\**" />
     <None Remove="Common\**" />
     <None Remove="SerialPort\**" />
   </ItemGroup>
@@ -40,8 +43,28 @@
     <None Remove="Assets\Config\Build.39\UX301\contlemv.cfg" />
     <None Remove="Assets\Config\Build.39\UX301\iccdata.dat" />
     <None Remove="Assets\Config\Build.39\UX301\icckeys.key" />
-    <None Remove="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
-    <None Remove="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere_engage.tgz" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000003.92" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000003.94" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000004.ef" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000004.f1" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000025.c8" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000025.c9" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000025.ca" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000065.11" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000065.13" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000152.5c" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000152.5d" />
+    <None Remove="Assets\Config\Build.42\EPIC\a000000384.c1" />
+    <None Remove="Assets\Config\Build.42\EPIC\Attended\contlemv.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\Attended\icckeys.key" />
+    <None Remove="Assets\Config\Build.42\EPIC\cardapp.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\cicapp.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\mapp.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\tdol.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\trmdol.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\Unattended\contlemv.cfg" />
+    <None Remove="Assets\Config\Build.42\EPIC\Unattended\icckeys.key" />
+    <None Remove="Assets\Config\Build.42\NJT\Attended\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
     <None Remove="Assets\Config\cicapp.cfg" />
     <None Remove="Assets\Config\mapp.cfg" />
     <None Remove="Assets\Config\tdol.cfg" />
@@ -62,7 +85,28 @@
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\contlemv.cfg" />
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\iccdata.dat" />
     <EmbeddedResource Include="Assets\Config\Build.39\UX301\icckeys.key" />
-    <EmbeddedResource Include="Assets\Config\Build.42\ENGAGE\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000003.92" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000003.94" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000004.ef" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000004.f1" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000025.c8" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000025.c9" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000025.ca" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000065.11" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000065.13" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000152.5c" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000152.5d" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\a000000384.c1" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\Attended\contlemv.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\Attended\icckeys.key" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\cardapp.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\cicapp.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\mapp.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\tdol.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\trmdol.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\Unattended\contlemv.cfg" />
+    <EmbeddedResource Include="Assets\Config\Build.42\EPIC\Unattended\icckeys.key" />
+    <EmbeddedResource Include="Assets\Config\Build.42\NJT\Attended\dl.VIPA_cfg_emv_att_prodcapk_sphere.tgz" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s0.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config5-s8.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config_nokeysigning.tar" />
@@ -106,8 +150,8 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="%25WINDIR%25\System32\XCOPY /y /i /d &quot;$(SolutionDir)devices\Verifone\bin\$(ConfigurationName)\netcoreapp3.0\Devices.Verifone.dll&quot; &quot;$(TargetDir)DevicePlugins\&quot;" />
-    <Exec Command="%25WINDIR%25\System32\XCOPY /y /i /d &quot;$(SolutionDir)devices\Simulator\bin\$(ConfigurationName)\netcoreapp3.0\Devices.Simulator.dll&quot; &quot;$(TargetDir)DevicePlugins\&quot;" />
+    <Exec Command="%25WINDIR%25\System32\XCOPY /y /i /d &quot;$(SolutionDir)devices\Verifone\bin\$(ConfigurationName)\netcoreapp3.1\Devices.Verifone.dll&quot; &quot;$(TargetDir)DevicePlugins\&quot;" />
+    <Exec Command="%25WINDIR%25\System32\XCOPY /y /i /d &quot;$(SolutionDir)devices\Simulator\bin\$(ConfigurationName)\netcoreapp3.1\Devices.Simulator.dll&quot; &quot;$(TargetDir)DevicePlugins\&quot;" />
   </Target>
 
 </Project>

@@ -12,5 +12,6 @@ namespace Devices.Common
         public string Model { get; set; }
         public byte OnlinePinHostId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinHostId;
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
+        public string ConfigurationPackageActive { get; set; }
     }
 }
