@@ -326,8 +326,8 @@ namespace Devices.Verifone
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
-                                Console.WriteLine($"DEVICE: BDK KEY_ID       ={config.securityConfigurationObject.SRedCardKSN.Substring(4, 6)}");
-                                Console.WriteLine($"DEVICE: BDK TRSM ID      ={config.securityConfigurationObject.SRedCardKSN.Substring(10, 5)}");
+                                Console.WriteLine($"DEVICE: BDK KEY_ID       ={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
+                                Console.WriteLine($"DEVICE: BDK TRSM ID      ={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
                             }
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSHostId - 0x01}");
                             config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.OnlinePinHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);

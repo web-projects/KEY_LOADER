@@ -9,9 +9,10 @@ namespace Devices.Verifone.Helpers
         public const string DEVICE_UX301 = "UX301";
         public const string DEVICE_P200 = "P200";
         public const string DEVICE_P400 = "P400";
+        public const string DEVICE_M400 = "M400";
 
-        public static readonly string[] ALL_DEVICES = { DEVICE_P200, DEVICE_P400, DEVICE_UX100, DEVICE_UX300, DEVICE_UX301 };
-        public static readonly string[] ENGAGE_DEVICES = { DEVICE_P200, DEVICE_P400 };
+        public static readonly string[] ALL_DEVICES = { DEVICE_P200, DEVICE_P400, DEVICE_M400, DEVICE_UX100, DEVICE_UX300, DEVICE_UX301 };
+        public static readonly string[] ENGAGE_DEVICES = { DEVICE_P200, DEVICE_P400, DEVICE_M400 };
         public static readonly string[] UX_DEVICES = { DEVICE_UX100, DEVICE_UX300, DEVICE_UX301 };
 
         public const string WHITELIST = "#whitelist.dat";
