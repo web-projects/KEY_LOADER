@@ -83,8 +83,9 @@ namespace Devices.Verifone
             deviceSectionConfig = config;
             if (vipaDevice != null)
             {
+                Console.WriteLine($"\r\nACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
                 string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsOnlinePin.ConfigurationHostId ? "VSS" : "IPP";
-                Console.WriteLine($"ONLINE PIN STORE: {onlinePINSource}");
+                Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
                 vipaDevice.LoadDeviceSectionConfig(deviceSectionConfig);
             }
         }
