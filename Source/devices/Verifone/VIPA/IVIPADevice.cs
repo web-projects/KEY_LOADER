@@ -41,9 +41,9 @@ namespace Devices.Verifone.VIPA
 
         int FeatureEnablementToken();
 
-        int LockDeviceConfiguration0();
+        int LockDeviceConfiguration0(bool activeConfigurationIsEpic);
 
-        int LockDeviceConfiguration8();
+        int LockDeviceConfiguration8(bool activeConfigurationIsEpic);
 
         int UnlockDeviceConfiguration();
 

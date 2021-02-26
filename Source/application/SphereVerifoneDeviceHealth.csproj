@@ -73,6 +73,10 @@
     <None Remove="Assets\dl.bundle.Sphere_Config_nokeysigning.tar" />
     <None Remove="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar" />
     <None Remove="Assets\dl.VIPA_cfg_emv_att_prodcapk_sphere_engage.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v2-Slot0.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v2-Slot8.tgz" />
+    <None Remove="Assets\SphereNJTConfig.v6-Slot0.tgz" />
+    <None Remove="Assets\SphereNJTConfig.v6-Slot8.tgz" />
   </ItemGroup>
 
   <ItemGroup>
@@ -113,6 +117,10 @@
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v2-Slot0.tgz" />
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v2-Slot8.tgz" />
+    <EmbeddedResource Include="Assets\SphereNJTConfig.v6-Slot0.tgz" />
+    <EmbeddedResource Include="Assets\SphereNJTConfig.v6-Slot8.tgz" />
   </ItemGroup>
 
   <ItemGroup>

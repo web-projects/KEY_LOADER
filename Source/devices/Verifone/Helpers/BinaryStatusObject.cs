@@ -25,13 +25,21 @@ namespace Devices.Verifone.Helpers
         public const string FET_HASH = "1C261B56A83E30413786E809D5698579";
         public const int FET_SIZE = 0x2800;
 
-        public const string LOCK_CONFIG0_BUNDLE = "dl.bundle.Sphere_Config5-s0.tar";
-        public const string LOCK_CONFIG0_HASH = "53AB1A872B1298F4BD90AB449AA68B95";
-        public const int LOCK_CONFIG0_SIZE = 0x5000;
+        public const string NJT_LOCK_CONFIG0_BUNDLE = "SphereNJTConfig.v6-Slot0.tgz";
+        public const string NJT_LOCK_CONFIG0_HASH = "2AAC0328E1FF99A18D835CBF45F8CC09";
+        public const int NJT_LOCK_CONFIG0_SIZE = 0x7152;
 
-        public const string LOCK_CONFIG8_BUNDLE = "dl.bundle.Sphere_Config5-s8.tar";
-        public const string LOCK_CONFIG8_HASH = "23E078CD017E213D0EEB208F27799A14";
-        public const int LOCK_CONFIG8_SIZE = 0x5000;
+        public const string NJT_LOCK_CONFIG8_BUNDLE = "SphereNJTConfig.v6-Slot8.tgz";
+        public const string NJT_LOCK_CONFIG8_HASH = "53CFAA88F8987F1D833D8E1980A38266";
+        public const int NJT_LOCK_CONFIG8_SIZE = 0x7158;
+
+        public const string EPIC_LOCK_CONFIG0_BUNDLE = "SphereEpicConfig.v2-Slot0.tgz";
+        public const string EPIC_LOCK_CONFIG0_HASH = "7B5B4150A92E0088C2C468F0EF637EDD";
+        public const int EPIC_LOCK_CONFIG0_SIZE = 0x7158;
+
+        public const string EPIC_LOCK_CONFIG8_BUNDLE = "SphereEpicConfig.v2-Slot8.tgz";
+        public const string EPIC_LOCK_CONFIG8_HASH = "51022622219103F9E2878642CBE1502B";
+        public const int EPIC_LOCK_CONFIG8_SIZE = 0x7161;
 
         //public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_UpdKeyCmd_Enable.tar";
         //public const string UNLOCK_CONFIG_HASH = "F466919BDBCF22DBF9DAD61C1E173F61";

@@ -674,32 +674,33 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int LockDeviceConfiguration0()
+        public int LockDeviceConfiguration0(bool activeConfigurationIsEpic)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            string targetFile = Path.Combine(Constants.TargetDirectory, BinaryStatusObject.LOCK_CONFIG0_BUNDLE);
-            if (FindEmbeddedResourceByName(BinaryStatusObject.LOCK_CONFIG0_BUNDLE, targetFile))
+            string targetBundle = activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_BUNDLE : BinaryStatusObject.NJT_LOCK_CONFIG0_BUNDLE;
+            string targetFile = Path.Combine(Constants.TargetDirectory, targetBundle);
+            if (FindEmbeddedResourceByName(targetBundle, targetFile))
             {
-                fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG0_BUNDLE, targetFile);
+                fileStatus = PutFile(targetBundle, targetFile);
                 if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                 {
-                    if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG0_SIZE)
+                    if (fileStatus.binaryStatusObject.FileSize == (activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_SIZE : BinaryStatusObject.NJT_LOCK_CONFIG0_SIZE))
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG0_BUNDLE} SIZE MATCH");
+                        Console.WriteLine($"VIPA: {targetBundle} SIZE MATCH");
                     }
                     else
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG0_BUNDLE} SIZE MISMATCH!");
+                        Console.WriteLine($"VIPA: {targetBundle} SIZE MISMATCH!");
                     }
 
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.LOCK_CONFIG0_HASH, StringComparison.OrdinalIgnoreCase))
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_HASH : BinaryStatusObject.NJT_LOCK_CONFIG0_HASH, StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG0_BUNDLE} HASH MATCH");
+                        Console.WriteLine($"VIPA: {targetBundle} HASH MATCH");
                     }
                     else
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG0_BUNDLE} HASH MISMATCH!");
+                        Console.WriteLine($"VIPA: {targetBundle} HASH MISMATCH!");
                     }
                 }
                 // clean up
@@ -710,37 +711,38 @@ namespace Devices.Verifone.VIPA
             }
             else
             {
-                Console.WriteLine($"VIPA: RESOURCE '{BinaryStatusObject.LOCK_CONFIG0_BUNDLE}' NOT FOUND!");
+                Console.WriteLine($"VIPA: RESOURCE '{targetBundle}' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }
 
-        public int LockDeviceConfiguration8()
+        public int LockDeviceConfiguration8(bool activeConfigurationIsEpic)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            string targetFile = Path.Combine(Constants.TargetDirectory, BinaryStatusObject.LOCK_CONFIG8_BUNDLE);
-            if (FindEmbeddedResourceByName(BinaryStatusObject.LOCK_CONFIG8_BUNDLE, targetFile))
+            string targetBundle = activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_BUNDLE : BinaryStatusObject.NJT_LOCK_CONFIG8_BUNDLE;
+            string targetFile = Path.Combine(Constants.TargetDirectory, targetBundle);
+            if (FindEmbeddedResourceByName(targetBundle, targetFile))
             {
-                fileStatus = PutFile(BinaryStatusObject.LOCK_CONFIG8_BUNDLE, targetFile);
+                fileStatus = PutFile(targetBundle, targetFile);
                 if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                 {
-                    if (fileStatus.binaryStatusObject.FileSize == BinaryStatusObject.LOCK_CONFIG8_SIZE)
+                    if (fileStatus.binaryStatusObject.FileSize == (activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_SIZE : BinaryStatusObject.NJT_LOCK_CONFIG8_SIZE))
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG8_BUNDLE} SIZE MATCH");
+                        Console.WriteLine($"VIPA: {targetBundle} SIZE MATCH");
                     }
                     else
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG8_BUNDLE} SIZE MISMATCH!");
+                        Console.WriteLine($"VIPA: {targetBundle} SIZE MISMATCH!");
                     }
 
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(BinaryStatusObject.LOCK_CONFIG8_HASH, StringComparison.OrdinalIgnoreCase))
+                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_HASH :BinaryStatusObject.NJT_LOCK_CONFIG8_HASH, StringComparison.OrdinalIgnoreCase))
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG8_BUNDLE} HASH MATCH");
+                        Console.WriteLine($"VIPA: {targetBundle} HASH MATCH");
                     }
                     else
                     {
-                        Console.WriteLine($"VIPA: {BinaryStatusObject.LOCK_CONFIG8_BUNDLE} HASH MISMATCH!");
+                        Console.WriteLine($"VIPA: {targetBundle} HASH MISMATCH!");
                     }
                 }
                 // clean up
@@ -751,7 +753,7 @@ namespace Devices.Verifone.VIPA
             }
             else
             {
-                Console.WriteLine($"VIPA: RESOURCE '{BinaryStatusObject.LOCK_CONFIG8_BUNDLE}' NOT FOUND!");
+                Console.WriteLine($"VIPA: RESOURCE '{targetBundle})' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }

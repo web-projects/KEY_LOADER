@@ -534,7 +534,10 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.LockDeviceConfiguration0();
+                        bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
+                        bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration0(activePackageIsEpic);
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
@@ -570,7 +573,10 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.LockDeviceConfiguration8();
+                        bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
+                        bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration8(activePackageIsEpic);
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
