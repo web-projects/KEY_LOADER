@@ -10,7 +10,7 @@ namespace Devices.Common
         public string VendorIdentifier { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
-        public byte OnlinePinHostId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinHostId;
+        public byte ConfigurationHostId { get; set; } = VerifoneSettingsOnlinePin.ConfigurationHostId;
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
         public string ConfigurationPackageActive { get; set; }
     }

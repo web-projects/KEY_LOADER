@@ -67,4 +67,5 @@ This an application to load HMAC KEYS.
 * 20210204 - Multi-Device Selection via app settings
 * 20210208 - Configuration via Package
 * 20210211 - Added M400 device
+* 20210225 - Corrected IPP key reading slot
     

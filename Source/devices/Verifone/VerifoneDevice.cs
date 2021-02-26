@@ -44,7 +44,7 @@ namespace Devices.Verifone
 
         public int SortOrder { get; set; } = -1;
 
-        int OnlinePinHostId { get => deviceSectionConfig?.Verifone?.OnlinePinHostId ?? VerifoneSettingsOnlinePin.OnlinePinHostId; }
+        int ConfigurationHostId { get => deviceSectionConfig?.Verifone?.ConfigurationHostId ?? VerifoneSettingsOnlinePin.ConfigurationHostId; }
 
         int OnlinePinKeySetId { get => deviceSectionConfig?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId; }
 
@@ -83,7 +83,7 @@ namespace Devices.Verifone
             deviceSectionConfig = config;
             if (vipaDevice != null)
             {
-                string onlinePINSource = deviceSectionConfig.Verifone?.OnlinePinHostId == VerifoneSettingsOnlinePin.OnlinePinHostId ? "VSS" : "IPP";
+                string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsOnlinePin.ConfigurationHostId ? "VSS" : "IPP";
                 Console.WriteLine($"ONLINE PIN STORE: {onlinePINSource}");
                 vipaDevice.LoadDeviceSectionConfig(deviceSectionConfig);
             }
@@ -319,24 +319,24 @@ namespace Devices.Verifone
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
-                        config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSHostId, config.securityConfigurationObject.ADEProductionSlot);
+                        config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADEProductionSlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: FIRMARE VERSION  ={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
-                            Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
-                            config = vipaDevice.GetSecurityConfiguration(config.securityConfigurationObject.VSSHostId, config.securityConfigurationObject.ADETestSlot);
+                            Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
+                            config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN   ={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
                                 Console.WriteLine($"DEVICE: BDK KEY_ID       ={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
                                 Console.WriteLine($"DEVICE: BDK TRSM ID      ={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
                             }
                             Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSHostId - 0x01}");
-                            config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.OnlinePinHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
+                            config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: ONLINE PIN STORE ={(deviceSectionConfig.Verifone?.OnlinePinHostId == VerifoneSettingsOnlinePin.OnlinePinHostId ? "VSS" : "IPP")}");
-                                Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
+                                Console.WriteLine($"DEVICE: ONLINE PIN STORE ={(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsOnlinePin.ConfigurationHostId ? "VSS" : "IPP")}");
+                                Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
                             }
 
                             // validate configuration

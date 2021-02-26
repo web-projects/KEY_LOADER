@@ -8,7 +8,7 @@ namespace Devices.Common.Config
     {
         public int SortOrder { get; set; } = -1;
         public List<string> SupportedDevices { get; internal set; } = new List<string>();
-        public byte OnlinePinHostId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinHostId;
+        public byte ConfigurationHostId { get; set; } = VerifoneSettingsOnlinePin.ConfigurationHostId;
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
         public List<string> ConfigurationPackages { get; internal set; } = new List<string>();
         public string ConfigurationPackageActive { get; set; } = VerifoneSettingsConfigurationPackages.Epic;
@@ -20,7 +20,7 @@ namespace Devices.Common.Config
     /// </summary>
     public static class VerifoneSettingsOnlinePin
     {
-        public const byte OnlinePinHostId = 0x02;
+        public const byte ConfigurationHostId = 0x02;
         public const byte OnlinePinKeySetId = 0x00;
     }
 
