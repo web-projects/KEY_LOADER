@@ -4,10 +4,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>SphereVerifoneDeviceHealth</AssemblyName>
-    <AssemblyVersion>1.0.42.0</AssemblyVersion>
-    <FileVersion>1.0.42.0</FileVersion>
+    <AssemblyVersion>1.0.43.0</AssemblyVersion>
+    <FileVersion>1.0.43.0</FileVersion>
     <PackageReleaseNotes>IPA5 Build 5.0.40 Compatible</PackageReleaseNotes>
-    <Version>1.0.42.0</Version>
+    <Version>1.0.43.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -75,8 +75,14 @@
     <None Remove="Assets\dl.VIPA_cfg_emv_att_prodcapk_sphere_engage.tgz" />
     <None Remove="Assets\SphereEpicConfig.v2-Slot0.tgz" />
     <None Remove="Assets\SphereEpicConfig.v2-Slot8.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v3-Slot0.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v3-Slot0_6.8.2.17.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v3-Slot8.tgz" />
+    <None Remove="Assets\SphereEpicConfig.v3-Slot8_6.8.2.17.tgz" />
     <None Remove="Assets\SphereNJTConfig.v6-Slot0.tgz" />
     <None Remove="Assets\SphereNJTConfig.v6-Slot8.tgz" />
+    <None Remove="Assets\SphereNJTConfig.v7-Slot0_6.8.2.17.tgz" />
+    <None Remove="Assets\SphereNJTConfig.v7-Slot8_6.8.2.17.tgz" />
   </ItemGroup>
 
   <ItemGroup>
@@ -119,8 +125,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\SphereEpicConfig.v2-Slot0.tgz" />
     <EmbeddedResource Include="Assets\SphereEpicConfig.v2-Slot8.tgz" />
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v3-Slot0.tgz" />
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v3-Slot0_6.8.2.17.tgz" />
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v3-Slot8.tgz" />
+    <EmbeddedResource Include="Assets\SphereEpicConfig.v3-Slot8_6.8.2.17.tgz" />
     <EmbeddedResource Include="Assets\SphereNJTConfig.v6-Slot0.tgz" />
     <EmbeddedResource Include="Assets\SphereNJTConfig.v6-Slot8.tgz" />
+    <EmbeddedResource Include="Assets\SphereNJTConfig.v7-Slot0_6.8.2.17.tgz" />
+    <EmbeddedResource Include="Assets\SphereNJTConfig.v7-Slot8_6.8.2.17.tgz" />
   </ItemGroup>
 
   <ItemGroup>

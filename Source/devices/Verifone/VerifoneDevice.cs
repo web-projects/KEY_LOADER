@@ -124,6 +124,7 @@ namespace Devices.Verifone
                         DeviceInformation.Manufacturer = ManufacturerConfigID;
                         DeviceInformation.Model = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model;
                         DeviceInformation.SerialNumber = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.SerialNumber;
+                        DeviceInformation.FirmwareVersion = deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion;
                     }
                     vipaDevice = vipaDevice;
                     deviceConfiguration = config;

@@ -349,7 +349,7 @@ namespace Devices.Verifone.VIPA
             }
 
             // Read File Contents at OFFSET 242
-            fileStatus = ReadBinaryDataFromSelectedFile(0xF2, 0x0A);
+            fileStatus = ReadBinaryDataFromSelectedFile(0xF2, 0x10);
             if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
             {
                 Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
@@ -674,88 +674,74 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int LockDeviceConfiguration0(bool activeConfigurationIsEpic)
+        private int LockDeviceConfiguration(Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configurationBundle,
+            bool activeConfigurationIsEpic)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
-            Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            string targetBundle = activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_BUNDLE : BinaryStatusObject.NJT_LOCK_CONFIG0_BUNDLE;
-            string targetFile = Path.Combine(Constants.TargetDirectory, targetBundle);
-            if (FindEmbeddedResourceByName(targetBundle, targetFile))
+            foreach (var configFile in configurationBundle)
             {
-                fileStatus = PutFile(targetBundle, targetFile);
-                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                bool configurationBundleMatches = activeConfigurationIsEpic ? configFile.Key.Contains("EPIC") : configFile.Key.Contains("NJT");
+                if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase) && configurationBundleMatches)
                 {
-                    if (fileStatus.binaryStatusObject.FileSize == (activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_SIZE : BinaryStatusObject.NJT_LOCK_CONFIG0_SIZE))
+                    string fileName = configFile.Value.fileName;
+                    string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
+                    if (FindEmbeddedResourceByName(fileName, targetFile))
                     {
-                        Console.WriteLine($"VIPA: {targetBundle} SIZE MATCH");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} SIZE MISMATCH!");
-                    }
+                        fileStatus = PutFile(configFile.Value.fileName, targetFile);
+                        if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                        {
+                            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+                            {
+                                if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
+                                {
+                                    string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+                                    //Console.WriteLine(formattedStr);
+                                    Console.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                                }
 
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG0_HASH : BinaryStatusObject.NJT_LOCK_CONFIG0_HASH, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} HASH MATCH");
+                                if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    Console.WriteLine(", HASH MATCH");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($", HASH MISMATCH!");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
+                                configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
+                            Console.WriteLine(formattedStr);
+                        }
+                        // clean up
+                        if (File.Exists(targetFile))
+                        {
+                            File.Delete(targetFile);
+                        }
                     }
                     else
                     {
-                        Console.WriteLine($"VIPA: {targetBundle} HASH MISMATCH!");
+                        Console.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' NOT FOUND!");
                     }
                 }
-                // clean up
-                if (File.Exists(targetFile))
-                {
-                    File.Delete(targetFile);
-                }
-            }
-            else
-            {
-                Console.WriteLine($"VIPA: RESOURCE '{targetBundle}' NOT FOUND!");
             }
             return fileStatus.VipaResponse;
         }
 
+        public int LockDeviceConfiguration0(bool activeConfigurationIsEpic)
+        {
+            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot0, activeConfigurationIsEpic);
+        }
+
         public int LockDeviceConfiguration8(bool activeConfigurationIsEpic)
         {
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
-            Debug.WriteLine(ConsoleMessages.LockDeviceUpdate.GetStringValue());
-            string targetBundle = activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_BUNDLE : BinaryStatusObject.NJT_LOCK_CONFIG8_BUNDLE;
-            string targetFile = Path.Combine(Constants.TargetDirectory, targetBundle);
-            if (FindEmbeddedResourceByName(targetBundle, targetFile))
-            {
-                fileStatus = PutFile(targetBundle, targetFile);
-                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
-                {
-                    if (fileStatus.binaryStatusObject.FileSize == (activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_SIZE : BinaryStatusObject.NJT_LOCK_CONFIG8_SIZE))
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} SIZE MATCH");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} SIZE MISMATCH!");
-                    }
-
-                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(activeConfigurationIsEpic ? BinaryStatusObject.EPIC_LOCK_CONFIG8_HASH :BinaryStatusObject.NJT_LOCK_CONFIG8_HASH, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} HASH MATCH");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"VIPA: {targetBundle} HASH MISMATCH!");
-                    }
-                }
-                // clean up
-                if (File.Exists(targetFile))
-                {
-                    File.Delete(targetFile);
-                }
-            }
-            else
-            {
-                Console.WriteLine($"VIPA: RESOURCE '{targetBundle})' NOT FOUND!");
-            }
-            return fileStatus.VipaResponse;
+            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot8, activeConfigurationIsEpic);
         }
 
         public int UnlockDeviceConfiguration()
