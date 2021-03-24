@@ -64,8 +64,8 @@ namespace Devices.Verifone.Helpers
         public const int EPIC_LOCK_CONFIG0_SIZE_17 = 0x7082;
 
         public const string EPIC_LOCK_CONFIG8_BUNDLE_17 = "SphereEpicConfig.v3-Slot8_6.8.2.17.tgz";
-        public const string EPIC_LOCK_CONFIG8_HASH_17 = "6F130E82A4A44BA76FDD6A22890CB069";
-        public const int EPIC_LOCK_CONFIG8_SIZE_17 = 0x7088;
+        public const string EPIC_LOCK_CONFIG8_HASH_17 = "956DA292308375D5404823AEA162D10E";
+        public const int EPIC_LOCK_CONFIG8_SIZE_17 = 0x708B;
 
         //public const string UNLOCK_CONFIG_BUNDLE = "dl.bundle.Sphere_UpdKeyCmd_Enable.tar";
         //public const string UNLOCK_CONFIG_HASH = "F466919BDBCF22DBF9DAD61C1E173F61";
