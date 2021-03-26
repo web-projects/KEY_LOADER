@@ -3,6 +3,11 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.044.00 (03/25/2021)
+
+1. EMV Configuration Signed Packages in TGZ format.
+
+-------------------------------------------------------------------------------
 VERSION.043.00 (03/19/2021)
 
 1. Updated NJT and EPIC configurations to support VIPA 6.8.2.17

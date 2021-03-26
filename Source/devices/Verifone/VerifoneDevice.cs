@@ -408,18 +408,20 @@ namespace Devices.Verifone
                         bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
                         bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
 
-                        if (activePackageIsEpic)
-                        {
-                            vipaResponse = vipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                        }
-                        else if(activePackageIsNJT)
-                        {
-                            vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"DEVICE: INVALID CONFIGURATION {ConfigurationPackageActive}\n");
-                        }
+                        //if (activePackageIsEpic)
+                        //{
+                        //    vipaResponse = vipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        //}
+                        //else if(activePackageIsNJT)
+                        //{
+                        //    vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine($"DEVICE: INVALID CONFIGURATION {ConfigurationPackageActive}\n");
+                        //}
+                        
+                        vipaResponse = vipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
 
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {

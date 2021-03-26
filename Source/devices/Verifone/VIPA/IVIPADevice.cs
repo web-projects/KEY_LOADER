@@ -37,6 +37,8 @@ namespace Devices.Verifone.VIPA
 
         int ConfigurationPackage(string deviceModel);
 
+        int EmvConfigurationPackage(string deviceModel);
+
         int ValidateConfiguration(string deviceModel);
 
         int FeatureEnablementToken();
