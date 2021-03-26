@@ -226,25 +226,25 @@ namespace Devices.Verifone.Helpers
         #region --- ADE SLOT CONFIGURATION ---
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string NJT_LOCK_CONFIG0_BUNDLE_11 = "SphereNJTConfig.v6-Slot0.tgz";
+        public const string NJT_LOCK_CONFIG0_BUNDLE_11 = "SphereNJTConfig.v6-Slot0_6.8.2.11.tgz";
         public const string NJT_LOCK_CONFIG0_HASH_11 = "2AAC0328E1FF99A18D835CBF45F8CC09";
         public const int NJT_LOCK_CONFIG0_SIZE_11 = 0x7152;
 
-        public const string NJT_LOCK_CONFIG8_BUNDLE_11 = "SphereNJTConfig.v6-Slot8.tgz";
+        public const string NJT_LOCK_CONFIG8_BUNDLE_11 = "SphereNJTConfig.v6-Slot8_6.8.2.11.tgz";
         public const string NJT_LOCK_CONFIG8_HASH_11 = "53CFAA88F8987F1D833D8E1980A38266";
         public const int NJT_LOCK_CONFIG8_SIZE_11 = 0x7158;
 
         //public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "SphereEpicConfig.v2-Slot0.tgz";
         //public const string EPIC_LOCK_CONFIG0_HASH_11 = "7B5B4150A92E0088C2C468F0EF637EDD";
         //public const int EPIC_LOCK_CONFIG0_SIZE_11 = 0x7158;
-        public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "SphereEpicConfig.v3-Slot0.tgz";
+        public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "SphereEpicConfig.v3-Slot0_6.8.2.11.tgz";
         public const string EPIC_LOCK_CONFIG0_HASH_11 = "2D3D027BBCFD3B941886B9DD6CB72101";
         public const int EPIC_LOCK_CONFIG0_SIZE_11 = 0x7082;
 
         //public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "SphereEpicConfig.v2-Slot8.tgz";
         //public const string EPIC_LOCK_CONFIG8_HASH_11 = "51022622219103F9E2878642CBE1502B";
         //public const int EPIC_LOCK_CONFIG8_SIZE_11 = 0x7161;
-        public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "SphereEpicConfig.v3-Slot8.tgz";
+        public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "SphereEpicConfig.v3-Slot8_6.8.2.11.tgz";
         public const string EPIC_LOCK_CONFIG8_HASH_11 = "6F130E82A4A44BA76FDD6A22890CB069";
         public const int EPIC_LOCK_CONFIG8_SIZE_11 = 0x7088;
 
