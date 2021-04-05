@@ -42,9 +42,9 @@ namespace Devices.Verifone.Connection
         private bool lastCDHolding;
         private string commPort;
 
-        internal VIPADevice.ResponseTagsHandlerDelegate ResponseTagsHandler = null;
-        internal VIPADevice.ResponseTaglessHandlerDelegate ResponseTaglessHandler = null;
-        internal VIPADevice.ResponseCLessHandlerDelegate ResponseContactlessHandler = null;
+        internal VIPAImpl.ResponseTagsHandlerDelegate ResponseTagsHandler = null;
+        internal VIPAImpl.ResponseTaglessHandlerDelegate ResponseTaglessHandler = null;
+        internal VIPAImpl.ResponseCLessHandlerDelegate ResponseContactlessHandler = null;
 
         public SerialConnection(DeviceInformation deviceInformation)
         {

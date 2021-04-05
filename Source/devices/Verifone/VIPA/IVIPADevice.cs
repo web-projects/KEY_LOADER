@@ -2,7 +2,7 @@
 using Devices.Verifone.TLV;
 using Devices.Verifone.Connection;
 using System.Collections.Generic;
-using static Devices.Verifone.VIPA.VIPADevice;
+using static Devices.Verifone.VIPA.VIPAImpl;
 using Config;
 using Devices.Common.AppConfig;
 using Devices.Common;

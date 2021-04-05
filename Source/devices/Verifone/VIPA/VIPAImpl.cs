@@ -24,7 +24,7 @@ using static Devices.Verifone.Helpers.Messages;
 
 namespace Devices.Verifone.VIPA
 {
-    public class VIPADevice : IVIPADevice, IDisposable
+    public class VIPAImpl : IVIPADevice, IDisposable
     {
         #region --- enumerations ---
         public enum VIPADisplayMessageValue
@@ -348,8 +348,8 @@ namespace Devices.Verifone.VIPA
                 return (-1, fileStatus.VipaResponse);
             }
 
-            // Read File Contents at OFFSET 242
-            fileStatus = ReadBinaryDataFromSelectedFile(0xF2, 0x10);
+            // Read File Contents at OFFSET 240
+            fileStatus = ReadBinaryDataFromSelectedFile(0xF0, 0x20);
             if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
             {
                 Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",

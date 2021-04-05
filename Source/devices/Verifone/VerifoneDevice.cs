@@ -36,7 +36,7 @@ namespace Devices.Verifone
         DeviceSection deviceSectionConfig;
 
         [Inject]
-        internal IVIPADevice vipaDevice { get; set; } = new VIPADevice();
+        internal IVIPADevice vipaDevice { get; set; } = new VIPAImpl();
 
         public DeviceInformation DeviceInformation { get; private set; }
 
@@ -179,7 +179,7 @@ namespace Devices.Verifone
             //Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: SET TO IDLE.");
             if (vipaDevice != null)
             {
-                vipaDevice.DisplayMessage(VIPADevice.VIPADisplayMessageValue.Idle);
+                vipaDevice.DisplayMessage(VIPAImpl.VIPADisplayMessageValue.Idle);
             }
         }
 
