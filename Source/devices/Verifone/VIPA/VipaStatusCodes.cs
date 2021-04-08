@@ -11,6 +11,7 @@ namespace Devices.Verifone.VIPA
         CLessCardInField = 0x9f36,
         CommandCancelled = 0x9f41,
         UserEntryCancelled = 0x9f43,
+        DeviceNotSupported = 0xFFFE,
         Failure = 0xFFFF
     }
 }

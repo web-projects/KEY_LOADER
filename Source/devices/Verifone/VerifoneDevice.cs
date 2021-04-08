@@ -758,6 +758,59 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest UpdateIdleScreen(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        int vipaResponse = vipaDevice.UpdateIdleScreen(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+
+                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
+
+                            Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+
+                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine("SUCCESS!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            }
+                        }
+                        else if (vipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                        {
+                            Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                        }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         #endregion --- subworkflow mapping
     }
 }

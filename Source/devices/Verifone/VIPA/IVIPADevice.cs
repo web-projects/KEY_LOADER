@@ -53,5 +53,7 @@ namespace Devices.Verifone.VIPA
 
         int UpdateHMACKeys();
         void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
+
+        int UpdateIdleScreen(string deviceModel);
     }
 }

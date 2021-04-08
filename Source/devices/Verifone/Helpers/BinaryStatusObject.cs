@@ -329,6 +329,32 @@ namespace Devices.Verifone.Helpers
 
         #endregion --- emv configuration packages ---
 
+        #region --- IDLE SCREEN PACKAGE ---
+        public const string IDLE_MSG = "idle.msg";
+        public const string IDLE_MSG_HASH = "22C6918ACCDB2DF73AE95F57DBEB6BC8";
+        public const int IDLE_MSG_SIZE = 0x0000001D;
+
+        public const string RAPTOR_IMAGE = "SphereIdle.png";
+        public const string M400_IMAGE = "SphereIdleM400.png";
+        public const string M400_IMAGE_HASH = "67C675266D01D2039F17F7F921903CC1";
+        public const int M400_IMAGE_SIZE = 0x00083148;
+        public const string P200_IMAGE = "SphereIdleP200.png";
+        public const string P200_IMAGE_HASH = "D8BEC176F1CB634FECA4F94420B412B9";
+        public const int P200_IMAGE_SIZE = 0x00033503;
+        public const string P400_IMAGE = "SphereIdleP400.png";
+        public const string P400_IMAGE_HASH = "08784D82B6587D18E023D77191FA7094";
+        public const int P400_IMAGE_SIZE = 0x00016C87;
+
+        public static Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)> RaptorIdleScreen =
+            new Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)>()
+        {
+            [IDLE_MSG] = (BinaryStatusObject.ENGAGE_DEVICES, IDLE_MSG, IDLE_MSG, IDLE_MSG_HASH, IDLE_MSG_SIZE),
+            [M400_IMAGE] = (new string[] { DEVICE_M400 }, M400_IMAGE, RAPTOR_IMAGE, M400_IMAGE_HASH, M400_IMAGE_SIZE),
+            [P200_IMAGE] = (new string[] { DEVICE_P200 }, P200_IMAGE, RAPTOR_IMAGE, P200_IMAGE_HASH, P200_IMAGE_SIZE),
+            [P400_IMAGE] = (new string[] { DEVICE_P400 }, P400_IMAGE, RAPTOR_IMAGE, P400_IMAGE_HASH, P400_IMAGE_SIZE)
+        };
+        #endregion --- IDLE SCREEN PACKAGE ---
+
         public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";
 
         public bool FileNotFound { get; set; }

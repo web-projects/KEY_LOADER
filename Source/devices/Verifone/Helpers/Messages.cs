@@ -46,7 +46,9 @@ namespace Devices.Verifone.Helpers
             [StringValue("VIPA: CLESS READER CLOSED")]
             DeviceCLessReaderClosed,
             [StringValue("VIPA: GET SECURITY CONFIGURATION")]
-            GetSecurityConfiguration
+            GetSecurityConfiguration,
+            [StringValue("VIPA: UPDATE IDLE SCREEN")]
+            UpdateIdleScreen,
         }
     }
 }

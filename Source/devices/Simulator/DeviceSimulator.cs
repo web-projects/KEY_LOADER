@@ -244,6 +244,14 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest UpdateIdleScreen(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: UPDATE IDLE SCREEN for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         #endregion --- subworkflow mapping
     }
 }

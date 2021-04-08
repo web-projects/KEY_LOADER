@@ -3,9 +3,10 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
-VERSION.044.00 (03/25/2021)
+VERSION.044.00 (04/08/2021)
 
 1. EMV Configuration Signed Packages in TGZ format.
+2. Added Idle Screen Update for RAPTOR/ENGAGE devices (P200, P400, M400).
 
 -------------------------------------------------------------------------------
 VERSION.043.00 (03/19/2021)

@@ -19,6 +19,7 @@ namespace DEVICE_CORE
             " ",
             "============ [ MENU ] ============",
             " c => UPDATE EMV CONFIGURATION",
+            " i => UPDATE RAPTOR IDLE SCREEN",
             " k => EMV-KERNEL",
             " r => REBOOT",
             " s => STATUS",
@@ -80,6 +81,11 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
                         await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
+                        break;
+                    }
+                    case ConsoleKey.I:
+                    {
+                        await application.Command(LinkDeviceActionType.UpdateIdleScreen).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.O:

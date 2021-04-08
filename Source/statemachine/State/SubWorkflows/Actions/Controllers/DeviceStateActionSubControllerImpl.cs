@@ -24,6 +24,7 @@ namespace StateMachine.State.SubWorkflows.Actions.Controllers
                     [LockDeviceConfig0] = (IDeviceSubStateController _) => new DeviceLockConfiguration0SubStateAction(_),
                     [LockDeviceConfig8] = (IDeviceSubStateController _) => new DeviceLockConfiguration8SubStateAction(_),
                     [UnlockDeviceConfig] = (IDeviceSubStateController _) => new DeviceUnlockConfigurationSubStateAction(_),
+                    [UpdateIdleScreen] = (IDeviceSubStateController _) => new DeviceUpdateIdleScreenSubStateAction(_),
                     [AbortCommand] = (IDeviceSubStateController _) => new DeviceAbortCommandSubStateAction(_),
                     [ResetCommand] = (IDeviceSubStateController _) => new DeviceResetCommandSubStateAction(_),
                     [RebootDevice] = (IDeviceSubStateController _) => new DeviceRebootSubStateAction(_),

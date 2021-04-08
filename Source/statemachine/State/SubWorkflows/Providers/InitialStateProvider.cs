@@ -31,6 +31,7 @@ namespace StateMachine.State.SubWorkflows.Providers
                 LinkDeviceActionType.UnlockDeviceConfig => DeviceSubWorkflowState.UnlockDeviceConfig,
                 LinkDeviceActionType.GenerateHMAC => DeviceSubWorkflowState.GenerateHMAC,
                 LinkDeviceActionType.UpdateHMACKeys => DeviceSubWorkflowState.UpdateHMACKeys,
+                LinkDeviceActionType.UpdateIdleScreen => DeviceSubWorkflowState.UpdateIdleScreen,
                 _ => DeviceSubWorkflowState.Undefined
             });
 

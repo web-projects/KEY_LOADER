@@ -55,5 +55,7 @@ namespace Devices.Common.Interfaces
         LinkRequest UnlockDeviceConfiguration(LinkRequest linkRequest);
         LinkRequest UpdateHMACKeys(LinkRequest linkRequest);
         LinkRequest GenerateHMAC(LinkRequest linkRequest);
+        LinkRequest UpdateIdleScreen(LinkRequest linkRequest);
+
     }
 }

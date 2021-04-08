@@ -85,6 +85,11 @@ namespace StateMachine.State.Enums
         LockDeviceConfig8,
 
         /// <summary>
+        /// Represents a state when DAL updates Idle Screen to device
+        /// </summary>
+        UpdateIdleScreen,
+
+        /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL
         /// is in an operational state ready to receive the next command before a response
         /// is sent back to the caller.

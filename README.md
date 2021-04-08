@@ -69,4 +69,5 @@ This an application to load HMAC KEYS.
 * 20210211 - Added M400 device
 * 20210225 - Corrected IPP key reading slot
 * 20210325 - EMV Signed Configuration Packages
+* 20210408 - Added idle screen update for Raptor/Engage devices.
     
