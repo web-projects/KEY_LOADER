@@ -125,12 +125,14 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
                         break;
                     }
+                    case ConsoleKey.D0:
                     case ConsoleKey.NumPad0:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [LOCK]");
                         await application.Command(LinkDeviceActionType.LockDeviceConfig0).ConfigureAwait(false);
                         break;
                     }
+                    case ConsoleKey.D8:
                     case ConsoleKey.NumPad8:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [LOCK]");
