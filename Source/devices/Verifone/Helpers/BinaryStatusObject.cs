@@ -294,24 +294,24 @@ namespace Devices.Verifone.Helpers
         // ATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string ATTENDED_EMV_CONFIG_PKG_11 = "attended_emv_configuration_VIPA_6.8.2.11_p200.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "F6D0674AAE71F9DD56135F58545C94B5";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000A187;
+        public const string ATTENDED_EMV_CONFIG_PKG_11 = "Attended_emv_configuration_VIPA_6.8.2.11_V1.tgz";
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "11C8D54E6159A5C362F0BEF7359548F5";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x000101B1;
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string ATTENDED_EMV_CONFIG_PKG_17 = "attended_emv_configuration_VIPA_6.8.2.17_p200.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "D2F033DE0CE7A0C110312EB8D6C303DF";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0001079E;
+        public const string ATTENDED_EMV_CONFIG_PKG_17 = "Attended_emv_configuration_VIPA_6.8.2.17_V1.tgz";
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "1C0EEBBBCFBA395D906EA78263902339";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x00010AA5;
 
         // UNATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string UNATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string UNATTENDED_EMV_CONFIG_PKG_11 = "unattended_emv_configuration_VIPA_6.8.2.11_UX301.tgz";
+        public const string UNATTENDED_EMV_CONFIG_PKG_11 = "Unattended_emv_configuration_VIPA_6.8.2.11_UX301.tgz";
         public const string UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "E513E06E9F745E93ECABF2F00C2B8FD7";
         public const int UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x00009F65;
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string UNATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string UNATTENDED_EMV_CONFIG_PKG_17 = "unattended_emv_configuration_VIPA_6.8.2.17_UX301.tgz";
+        public const string UNATTENDED_EMV_CONFIG_PKG_17 = "Unattended_emv_configuration_VIPA_6.8.2.17_UX301.tgz";
         public const string UNATTENDED_EMV_CONFIG_PKG_HASH_17 = "7B160F4F4D310BE6FB94CF98D47DB1C9";
         public const int    UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000A6E8;
 
