@@ -76,10 +76,8 @@
     <None Remove="Assets\Config\Build.44\unattended\unattended_emv_configuration_VIPA_6.8.2.17_p200.tgz" />
     <None Remove="Assets\Config\Build.44\unattended\unattended_emv_configuration_VIPA_6.8.2.17_UX301.tgz" />
     <None Remove="Assets\Config\cicapp.cfg" />
-    <None Remove="Assets\Config\IdleScreen\idle.msg" />
-    <None Remove="Assets\Config\IdleScreen\M400\SphereIdleM400.png" />
-    <None Remove="Assets\Config\IdleScreen\P200\SphereIdleP200.png" />
-    <None Remove="Assets\Config\IdleScreen\P400\SphereIdleP400.png" />
+    <None Remove="Assets\Config\IdleScreen\P200\dl.idlescreen_spherep200_DevSigned.tgz" />
+    <None Remove="Assets\Config\IdleScreen\P400\dl.idlescreen_spherep400_DevSigned.tgz" />
     <None Remove="Assets\Config\mapp.cfg" />
     <None Remove="Assets\Config\tdol.cfg" />
     <None Remove="Assets\dl.bundle.Sphere_Config5-s0.tar" />
@@ -145,10 +143,8 @@
     <EmbeddedResource Include="Assets\Config\Build.44\unattended\unattended_emv_configuration_VIPA_6.8.2.11_UX301.tgz" />
     <EmbeddedResource Include="Assets\Config\Build.44\unattended\unattended_emv_configuration_VIPA_6.8.2.17_p200.tgz" />
     <EmbeddedResource Include="Assets\Config\Build.44\unattended\unattended_emv_configuration_VIPA_6.8.2.17_UX301.tgz" />
-    <EmbeddedResource Include="Assets\Config\IdleScreen\idle.msg" />
-    <EmbeddedResource Include="Assets\Config\IdleScreen\M400\SphereIdleM400.png" />
-    <EmbeddedResource Include="Assets\Config\IdleScreen\P200\SphereIdleP200.png" />
-    <EmbeddedResource Include="Assets\Config\IdleScreen\P400\SphereIdleP400.png" />
+    <EmbeddedResource Include="Assets\Config\IdleScreen\P200\dl.idlescreen_spherep200_DevSigned.tgz" />
+    <EmbeddedResource Include="Assets\Config\IdleScreen\P400\dl.idlescreen_spherep400_DevSigned.tgz" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_Config_nokeysigning.tar" />
     <EmbeddedResource Include="Assets\dl.bundle.Sphere_UpdKeyCmd_Enable.tar">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

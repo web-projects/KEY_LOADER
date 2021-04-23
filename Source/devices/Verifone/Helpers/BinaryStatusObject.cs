@@ -295,13 +295,13 @@ namespace Devices.Verifone.Helpers
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
         public const string ATTENDED_EMV_CONFIG_PKG_11 = "Attended_emv_configuration_VIPA_6.8.2.11_V1.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "11C8D54E6159A5C362F0BEF7359548F5";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x000101B1;
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "CDB35DF00E6E5C2EA42348896F040FFB";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0002B4ED;
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
         public const string ATTENDED_EMV_CONFIG_PKG_17 = "Attended_emv_configuration_VIPA_6.8.2.17_V1.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "1C0EEBBBCFBA395D906EA78263902339";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x00010AA5;
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "CDB35DF00E6E5C2EA42348896F040FFB";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0002B4ED;
 
         // UNATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
@@ -330,7 +330,7 @@ namespace Devices.Verifone.Helpers
         #endregion --- emv configuration packages ---
 
         #region --- IDLE SCREEN PACKAGE ---
-        public const string IDLE_MSG = "idle.msg";
+        /*public const string IDLE_MSG = "idle.msg";
         public const string IDLE_MSG_HASH = "22C6918ACCDB2DF73AE95F57DBEB6BC8";
         public const int IDLE_MSG_SIZE = 0x0000001D;
 
@@ -352,7 +352,26 @@ namespace Devices.Verifone.Helpers
             [M400_IMAGE] = (new string[] { DEVICE_M400 }, M400_IMAGE, RAPTOR_IMAGE, M400_IMAGE_HASH, M400_IMAGE_SIZE),
             [P200_IMAGE] = (new string[] { DEVICE_P200 }, P200_IMAGE, RAPTOR_IMAGE, P200_IMAGE_HASH, P200_IMAGE_SIZE),
             [P400_IMAGE] = (new string[] { DEVICE_P400 }, P400_IMAGE, RAPTOR_IMAGE, P400_IMAGE_HASH, P400_IMAGE_SIZE)
+        };*/
+
+        public const string M400_IMAGE_TGZ = "dl.idlescreen_spherem400_DevSigned.tgz";
+        public const string M400_IMAGE_TGZ_HASH = "7E4FF7A774BBBD9BF56CE7DE41D7562A";
+        public const int M400_IMAGE_TGZ_SIZE = 0x0009043E;
+        public const string P200_IMAGE_TGZ = "dl.idlescreen_spherep200_DevSigned.tgz";
+        public const string P200_IMAGE_TGZ_HASH = "226AE86B689FFAF7ACC0130D4403D51E";
+        public const int P200_IMAGE_TGZ_SIZE = 0x0004075A;
+        public const string P400_IMAGE_TGZ = "dl.idlescreen_spherep400_DevSigned.tgz";
+        public const string P400_IMAGE_TGZ_HASH = "9DC667E8056C0131DDED013868E3F5DD";
+        public const int P400_IMAGE_TGZ_SIZE = 0x0000D14B;
+
+        public static Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)> RaptorIdleScreenTGZ =
+            new Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)>()
+        {
+            [M400_IMAGE_TGZ] = (new string[] { DEVICE_M400 }, M400_IMAGE_TGZ, M400_IMAGE_TGZ, M400_IMAGE_TGZ_HASH, M400_IMAGE_TGZ_SIZE),
+            [P200_IMAGE_TGZ] = (new string[] { DEVICE_P200 }, P200_IMAGE_TGZ, P200_IMAGE_TGZ, P200_IMAGE_TGZ_HASH, P200_IMAGE_TGZ_SIZE),
+            [P400_IMAGE_TGZ] = (new string[] { DEVICE_P400 }, P400_IMAGE_TGZ, P400_IMAGE_TGZ, P400_IMAGE_TGZ_HASH, P400_IMAGE_TGZ_SIZE)
         };
+
         #endregion --- IDLE SCREEN PACKAGE ---
 
         public const string MAPP_SRED_CONFIG = "mapp_vsd_sred.cfg";

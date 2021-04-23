@@ -90,6 +90,11 @@ namespace StateMachine.State.Enums
         UpdateIdleScreen,
 
         /// <summary>
+        /// Represents a state when DAL request a custom screen be displayed on Device
+        /// </summary>
+        DisplayCustomScreen,
+
+        /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL
         /// is in an operational state ready to receive the next command before a response
         /// is sent back to the caller.

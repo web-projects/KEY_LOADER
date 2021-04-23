@@ -12,7 +12,7 @@
         public static byte[] Track1Tag = new byte[] { 0x5F, 0x21 };
         public static byte[] Track2Tag = new byte[] { 0x5F, 0x22 };
         public static byte[] MsrTrackStatus = new byte[] { 0xDF, 0xDF, 0x6E };
-        public static byte[] KeyPressTag = new byte[] { 0xDF, 0xA2, 0x05 };
+        public static byte[] KeyPress = new byte[] { 0xDF, 0xA2, 0x05 };
         public static byte[] PinpadCypherTag = new byte[] { 0xDF, 0xED, 0x6C };
         public static byte[] PinpadKSNTag = new byte[] { 0xDF, 0xED, 0x03 };
         public static byte[] PinEntryTimeoutTag = new byte[] { 0xDF, 0xA2, 0x0E };

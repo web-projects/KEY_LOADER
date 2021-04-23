@@ -49,6 +49,8 @@ namespace Devices.Verifone.Helpers
             GetSecurityConfiguration,
             [StringValue("VIPA: UPDATE IDLE SCREEN")]
             UpdateIdleScreen,
+            [StringValue("VIPA: DISPLAY CUSTOM SCREEN")]
+            DisplayCustomScreen
         }
     }
 }

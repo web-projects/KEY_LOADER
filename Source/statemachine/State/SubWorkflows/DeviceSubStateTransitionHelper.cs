@@ -90,6 +90,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeDisplayCustomScreenUpdateStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeUnlockDeviceConfigStateTransition(bool exception) =>
             exception switch
             {
@@ -143,6 +150,7 @@ namespace StateMachine.State.SubWorkflows
                 UpdateHMACKeys => ComputeGetLoadHMACKeysStateTransition(exception),
                 GenerateHMAC => ComputeGetGenerateHMACStateTransition(exception),
                 UpdateIdleScreen => ComputeUpdateIdleScreenUpdateStateTransition(exception),
+                DisplayCustomScreen => ComputeDisplayCustomScreenUpdateStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),
                 RequestComplete => ComputeRequestCompletedStateTransition(exception),
                 _ => throw new StateException($"Invalid state transition '{state}' requested.")

@@ -80,6 +80,8 @@ namespace Devices.Verifone.VIPA
         public TaskCompletionSource<(string HMAC, int VipaResponse)> DeviceGenerateHMAC = null;
         public TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)> DeviceBinaryStatusInformation = null;
 
+        public TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)> DeviceInteractionInformation { get; set; } = null;
+
         #endregion --- attributes ---
 
         #region --- connection ---
@@ -981,7 +983,7 @@ namespace Devices.Verifone.VIPA
 
             if (IsEngageDevice)
             {
-                foreach (var configFile in BinaryStatusObject.RaptorIdleScreen)
+                foreach (var configFile in BinaryStatusObject.RaptorIdleScreenTGZ)
                 {
                     // search for partial matches in P200 vs P200Plus
                     if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
@@ -1040,6 +1042,141 @@ namespace Devices.Verifone.VIPA
             }
 
             return fileStatus.VipaResponse;
+        }
+
+        public (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreen(string displayMessage)
+        {
+            Debug.WriteLine(ConsoleMessages.DisplayCustomScreen.GetStringValue());
+            
+            (int vipaResponse, int vipaData) verifyResult = VerifyAmountScreen(displayMessage);
+            LinkDALRequestIPA5Object linkActionRequestIPA5Object = new LinkDALRequestIPA5Object()
+            {
+                DALResponseData = new LinkDALActionResponse()
+                {
+                    Value = verifyResult.vipaData.ToString()
+                }
+            };
+            return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
+        }
+
+        private (int vipaResponse, int vipaData) VerifyAmountScreen(string displayMessage)
+        {
+            CancelResponseHandlers();
+
+            string[] messageFormat = displayMessage.Split(new char[] { '|' });
+
+            if (messageFormat.Length != 4)
+            {
+                return ((int)VipaSW1SW2Codes.Failure, 0);
+            }
+
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
+
+            byte[] screenTitle = Encoding.ASCII.GetBytes($"\t{messageFormat[0]}");
+            byte[] actualAmount = Encoding.ASCII.GetBytes($"\t{messageFormat[1]}");
+            byte[] skippedLine = Encoding.ASCII.GetBytes(" ");
+            byte[] optionYes = Encoding.ASCII.GetBytes($"\t1. {messageFormat[2]}");
+            byte[] optionNon = Encoding.ASCII.GetBytes($"\t2. {messageFormat[3]}");
+
+            List<TLV.TLV> customScreenData = new List<TLV.TLV>
+            {
+                new TLV.TLV
+                {
+                    Tag = new byte[] { 0xE0 },
+                    InnerTags = new List<TLV.TLV>
+                    {
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0x81, 0x04 },
+                            Data = screenTitle
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0x81, 0x04 },
+                            Data = actualAmount
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0x81, 0x04 },
+                            Data = skippedLine
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0x81, 0x04 },
+                            Data = optionYes
+                        },
+                        new TLV.TLV
+                        {
+                            Tag = new byte[] { 0xDF, 0x81, 0x04 },
+                            Data = optionNon
+                        },
+                    }
+                }
+            };
+            TLV.TLV tlv = new TLV.TLV();
+            byte[] customScreenDataData = tlv.Encode(customScreenData);
+
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD2, ins = 0x02, p1 = 0x00, p2 = 0x01, data = customScreenDataData };
+            WriteSingleCmd(command);
+
+            int displayCommandResponseCode = ResponseCodeResult.Task.Result;
+
+            ResponseTagsHandler -= ResponseCodeHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            (int vipaResponse, int vipaData) commandResult = ((int)VipaSW1SW2Codes.Failure, 0);
+
+            if (displayCommandResponseCode == (int)VipaSW1SW2Codes.Success)
+            {
+                // Setup reader to accept user input
+                DeviceInteractionInformation = new TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)>();
+
+                ResponseTagsHandlerSubscribed++;
+                ResponseTagsHandler += GetDeviceInteractionKeyboardResponseHandler;
+
+                // Bit 0 - Enter, Cancel, Clear keys
+                // Bit 1 - function keys
+                // Bit 2 - numeric keys
+                command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x61, p1 = 0x07, p2 = 0x00 };
+                WriteSingleCmd(command);
+
+                LinkDALRequestIPA5Object cardInfo = null;
+
+                do
+                {
+                    cardInfo = DeviceInteractionInformation.Task.Result.linkDALRequestIPA5Object;
+                    commandResult.vipaResponse = DeviceInteractionInformation.Task.Result.VipaResponse;
+
+                    if (cardInfo?.DALResponseData?.Status?.Equals("UserKeyPressed") ?? false)
+                    {
+                        Debug.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
+                        Console.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
+                        // <O> == 1 : YES
+                        // <X> == 2 : NO
+                        if (cardInfo.DALResponseData.Value.Equals("KEY_1") || cardInfo.DALResponseData.Value.Equals("KEY_GREEN"))
+                        {
+                            commandResult.vipaData = 1;
+                        }
+                        else if (cardInfo.DALResponseData.Value.Equals("KEY_2") || cardInfo.DALResponseData.Value.Equals("KEY_RED"))
+                        {
+                            commandResult.vipaData = 0;
+                        }
+                        else
+                        {
+                            commandResult.vipaResponse = (int)VipaSW1SW2Codes.Failure;
+                            DeviceInteractionInformation = new TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)>();
+                        }
+                    }
+                } while (commandResult.vipaResponse == (int)VipaSW1SW2Codes.Failure);
+
+                ResponseTagsHandler -= GetDeviceInteractionKeyboardResponseHandler;
+                ResponseTagsHandlerSubscribed--;
+            }
+
+            return commandResult;
         }
 
         private List<TLV.TLV> FormatE0Tag(byte[] hmackey, byte[] generated_hmackey)
@@ -1670,6 +1807,58 @@ namespace Devices.Verifone.VIPA
             }
 
             DeviceBinaryStatusInformation?.TrySetResult((deviceResponse, responseCode));
+        }
+
+        public void GetDeviceInteractionKeyboardResponseHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false)
+        {
+            bool returnResponse = false;
+
+            if ((cancelled || tags == null) && (responseCode != (int)VipaSW1SW2Codes.CommandCancelled) &&
+                (responseCode != (int)VipaSW1SW2Codes.UserEntryCancelled))
+            {
+                DeviceInteractionInformation?.TrySetResult((new LinkDALRequestIPA5Object(), responseCode));
+                return;
+            }
+
+            var cardResponse = new LinkDALRequestIPA5Object();
+
+            foreach (TLV.TLV tag in tags)
+            {
+                if (tag.Tag.SequenceEqual(E0Template.E0TemplateTag))
+                {
+                    foreach (TLV.TLV dataTag in tag.InnerTags)
+                    {
+                        //if (dataTag.Tag.SequenceEqual(E0Template.CardStatus) && ((dataTag.Data?[0] & 0x01) == 0x01))
+                        //{
+                        //    cardResponse.DALResponseData = new LinkDALActionResponse
+                        //    {
+                        //        Status = "CardPresented",
+                        //        CardPresented = true
+                        //    };
+
+                        //    returnResponse = true;
+                        //}
+                        //else 
+                        if (dataTag.Tag.SequenceEqual(E0Template.KeyPress))
+                        {
+                            cardResponse.DALResponseData = new LinkDALActionResponse
+                            {
+                                Status = "UserKeyPressed",
+                                Value = BCDConversion.StringFromByteData(dataTag.Data)
+                            };
+                            returnResponse = true;
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            if (returnResponse)
+            {
+                DeviceInteractionInformation?.TrySetResult((cardResponse, responseCode));
+            }
         }
 
         #endregion --- response handlers ---

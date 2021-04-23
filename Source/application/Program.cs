@@ -71,6 +71,11 @@ namespace DEVICE_CORE
                         DisplayMenu();
                         break;
                     }
+                    case ConsoleKey.A:
+                    {
+                        await application.Command(LinkDeviceActionType.DisplayCustomScreen).ConfigureAwait(false);
+                        break;
+                    }
                     case ConsoleKey.C:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");

@@ -10,11 +10,11 @@ using XO.Requests;
 
 namespace StateMachine.State.SubWorkflows.Actions
 {
-    internal class DeviceUpdateIdleScreenSubStateAction : DeviceBaseSubStateAction
+    internal class DeviceDisplayCustomScreenSubStateAction : DeviceBaseSubStateAction
     {
-        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.UpdateIdleScreen;
+        public override DeviceSubWorkflowState WorkflowStateType => DeviceSubWorkflowState.DisplayCustomScreen;
 
-        public DeviceUpdateIdleScreenSubStateAction(IDeviceSubStateController _) : base(_) { }
+        public DeviceDisplayCustomScreenSubStateAction(IDeviceSubStateController _) : base(_) { }
 
         public override SubStateActionLaunchRules LaunchRules => new SubStateActionLaunchRules
         {
@@ -25,8 +25,8 @@ namespace StateMachine.State.SubWorkflows.Actions
         {
             if (StateObject is null)
             {
-                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to update device idle screen.");
-                Console.WriteLine("Unable to find a state object while attempting to update device idle screen.");
+                //_ = Controller.LoggingClient.LogErrorAsync("Unable to find a state object while attempting to display custom screen.");
+                Console.WriteLine("Unable to find a state object while attempting to display custom screen.");
                 _ = Error(this);
             }
             else
@@ -41,14 +41,14 @@ namespace StateMachine.State.SubWorkflows.Actions
                     devicesRequest.Add(JsonConvert.DeserializeObject<LinkRequest>(JsonConvert.SerializeObject(linkRequest)));
 
                     var timeoutPolicy = await cancellationBroker.ExecuteWithTimeoutAsync<LinkRequest>(
-                        _ => device.UpdateIdleScreen(devicesRequest.Last()),
+                        _ => device.DisplayCustomScreen(devicesRequest.Last()),
                         DeviceConstants.CardCaptureTimeout,
                         System.Threading.CancellationToken.None);
 
                     if (timeoutPolicy.Outcome == Polly.OutcomeType.Failure)
                     {
                         //_ = Controller.LoggingClient.LogErrorAsync($"Unable to update device idle screen - '{Controller.DeviceEvent}'.");
-                        Console.WriteLine($"Unable to update device idle screen - '{Controller.DeviceEvent}'.");
+                        Console.WriteLine($"Unable to display custom screen - '{Controller.DeviceEvent}'.");
                         BuildSubworkflowErrorResponse(linkRequest, device.DeviceInformation, Controller.DeviceEvent);
                     }
                 }

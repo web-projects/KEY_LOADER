@@ -26,6 +26,7 @@ namespace XO.Requests
         UnlockDeviceConfig,
         UpdateHMACKeys,
         GenerateHMAC,
-        UpdateIdleScreen
+        UpdateIdleScreen,
+        DisplayCustomScreen
     }
 }

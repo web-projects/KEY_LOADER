@@ -56,6 +56,7 @@ namespace Devices.Common.Interfaces
         LinkRequest UpdateHMACKeys(LinkRequest linkRequest);
         LinkRequest GenerateHMAC(LinkRequest linkRequest);
         LinkRequest UpdateIdleScreen(LinkRequest linkRequest);
+        LinkRequest DisplayCustomScreen(LinkRequest linkRequest);
 
     }
 }

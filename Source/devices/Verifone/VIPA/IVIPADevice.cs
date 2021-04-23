@@ -7,6 +7,7 @@ using Config;
 using Devices.Common.AppConfig;
 using Devices.Common;
 using System;
+using XO.Private;
 
 namespace Devices.Verifone.VIPA
 {
@@ -52,8 +53,11 @@ namespace Devices.Verifone.VIPA
         (string HMAC, int VipaResponse) GenerateHMAC();
 
         int UpdateHMACKeys();
+        
         void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
 
         int UpdateIdleScreen(string deviceModel);
+
+        (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreen(string displayMessage);
     }
 }

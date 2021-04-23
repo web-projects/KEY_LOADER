@@ -8,3 +8,13 @@ SphereIdle.png D8BEC176F1CB634FECA4F94420B412B9  0x00033503
 
 P400
 SphereIdle.png 08784D82B6587D18E023D77191FA7094  0x00016C87
+
+--------------------------------------------------------------
+TGZ SIGNED FILES
+--------------------------------------------------------------
+
+dl.idlescreen_spherem400_DevSigned.tgz  7E4FF7A774BBBD9BF56CE7DE41D7562A 590,910  0x0009043E
+
+dl.idlescreen_spherep200_DevSigned.tgz  226AE86B689FFAF7ACC0130D4403D51E  264,026 0x0004075A
+
+dl.idlescreen_spherep400_DevSigned.tgz  9DC667E8056C0131DDED013868E3F5DD   53,579 0x0000D14B

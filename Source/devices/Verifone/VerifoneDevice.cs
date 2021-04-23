@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
+using XO.Private;
 using XO.Requests;
 using XO.Responses;
 
@@ -192,6 +193,18 @@ namespace Devices.Verifone
         public List<LinkRequest> GetDeviceResponse(LinkRequest deviceInfo)
         {
             throw new NotImplementedException();
+        }
+
+        public string AmountToDollar(string amount)
+        {
+            if (amount == null)
+            {
+                return null;
+            }
+
+            string dollarAmount = string.Format("{0:#0.00}", Convert.ToDecimal(amount) / 100);
+
+            return dollarAmount;
         }
 
         // ------------------------------------------------------------------------
@@ -434,21 +447,22 @@ namespace Devices.Verifone
 
                             (DevicePTID devicePTID, int VipaResponse) response = (null, (int)VipaSW1SW2Codes.Success);
 
-                            if (activePackageIsEpic)
-                            {
-                                Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+                            // TGZ files require reboot
+                            //if (activePackageIsEpic)
+                            //{
+                            //    Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                            //    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
 
-                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                                {
-                                    Console.WriteLine("SUCCESS!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
-                                }
-                            }
-                            else
+                            //    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            //    {
+                            //        Console.WriteLine("SUCCESS!");
+                            //    }
+                            //    else
+                            //    {
+                            //        Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            //    }
+                            //}
+                            //else
                             {
                                 Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
                                 (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
@@ -761,7 +775,7 @@ namespace Devices.Verifone
         public LinkRequest UpdateIdleScreen(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
-            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: CONFIGURATION for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: UPDATE IDLE SCREEN for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
 
             if (vipaDevice != null)
             {
@@ -782,10 +796,19 @@ namespace Devices.Verifone
 
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                            Console.WriteLine($"DEVICE: CONFIGURATION UPDATED SUCCESSFULLY\n");
+                            Console.WriteLine($"DEVICE: IDLE SCREEN CONFIGURATION UPDATED SUCCESSFULLY\n");
 
-                            Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+                            // TGZ files require REBOOT
+                            //Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                            //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+
+                            //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            //{
+                            //    Console.WriteLine("SUCCESS!");
+                            //}
+
+                            Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
 
                             if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
@@ -802,11 +825,60 @@ namespace Devices.Verifone
                         }
                         else
                         {
-                            Console.WriteLine(string.Format("DEVICE: FAILED CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                            Console.WriteLine(string.Format("DEVICE: FAILED IDLE SCREEN CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
                         }
                     }
                 }
             }
+
+            return linkRequest;
+        }
+
+        public LinkRequest DisplayCustomScreen(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: DISPLAY CUSTOM SCREEN for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        long amount = 9999999;
+                        string requestedAmount = amount.ToString();
+
+                        // Total..... (amount)| VERIFY AMOUNT| YES| NO
+                        string displayMessage = $"VERIFY AMOUNT|Total.....${AmountToDollar(requestedAmount)}|YES|NO";
+
+                        (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) verifyAmountResponse = vipaDevice.DisplayCustomScreen(displayMessage);
+
+                        if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine("DEVICE: CUSTOM SCREEN EXECUTED SUCCESSFULLY - RESPONSE={0}\n", verifyAmountResponse.LinkActionRequestIPA5Object.DALResponseData.Value.Equals("1", StringComparison.OrdinalIgnoreCase) ? "YES" : "NO");
+                        }
+                        else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                        {
+                            Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED DISPLAY CUSTOM SCREEN REQUEST WITH ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                        }
+                    }
+                }
+            }
+
+            DeviceSetIdle();
 
             return linkRequest;
         }
