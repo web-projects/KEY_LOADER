@@ -59,7 +59,7 @@ namespace Devices.Verifone.TLV
                 }
 
                 // protect from buffer overrun
-                if(dataoffset >= data.Length)
+                if (dataoffset >= data.Length)
                 {
                     return null;
                 }
@@ -72,10 +72,12 @@ namespace Devices.Verifone.TLV
                     ByteArrayComparer byteArrayComparer = new ByteArrayComparer();
                     if (byteArrayComparer.Equals(new byte[] { 0x9F, 0x0D }, new byte[] { tagByte0, data[dataoffset - 1] }))
                     {
+                        System.Diagnostics.Debug.WriteLine($"VIPA-READ [TAG 9F0D - internal error]");
+                        Console.WriteLine($"\nVIPA-READ [TAG 9F0D - internal error]");
                         continue;
                     }
                 }
-                
+
                 int tagDataLength = 0;
 
                 if ((lengthByte0 & 0x80) == 0x80)
@@ -145,6 +147,8 @@ namespace Devices.Verifone.TLV
                         // TAG 9F0D is an internal error status: datalen mismatch
                         // i.e. DDFDF12-08-398EF6C2AD1A
                         tagDataLength = data.Length - dataoffset;
+                        System.Diagnostics.Debug.WriteLine($"VIPA-READ [LENGTH MISMATCH FOR TAG {BitConverter.ToString(tag.Tag).Replace("-", "")}]");
+                        Console.WriteLine($"VIPA-READ [LENGTH MISMATCH FOR TAG {BitConverter.ToString(tag.Tag).Replace("-", "")}]\n");
                     }
                     tag.Data = new byte[tagDataLength];
                     Array.Copy(data, dataoffset, tag.Data, 0, tagDataLength);
