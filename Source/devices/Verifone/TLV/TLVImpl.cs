@@ -5,72 +5,82 @@ using System.Linq;
 
 namespace Devices.Verifone.TLV
 {
-    public class TLV
+    public class TLVImpl
     {
+        public TLVImpl()            //This will be used for more complex ones (with inner tags)
+        {
+        }
+
+        public TLVImpl(byte[] tag, byte[] data) //For simple ones (no inner tags)
+        {
+            this.Tag = tag;
+            this.Data = data;
+        }
+
         public byte[] Tag { get; set; }
         public byte[] Data { get; set; }     // Value should be null if innerTags is populated
 
-        public List<TLV> InnerTags { get; set; } // Value should be null if data is populated
+        public List<TLVImpl> InnerTags { get; set; } // Value should be null if data is populated
 
-        public List<TLV> Decode(byte[] data, int startoffset = 0, int datalength = -1, List<byte[]> tagoftagslist = null)
+        public static List<TLVImpl> Decode(byte[] data, int startOffset = 0, int datalength = -1, List<byte[]> tagofTagsList = null)
         {
             if (data == null)
             {
                 return null;
             }
 
-            List<TLV> alltags = new List<TLV>();
-            int dataoffset = startoffset;
+            List<TLVImpl> allTags = new List<TLVImpl>();
+            int dataOffset = startOffset;
 
             if (datalength == -1)
             {
                 datalength = data.Length;
             }
 
-            if (tagoftagslist == null)
+            if (tagofTagsList == null)
             {
-                tagoftagslist = new List<byte[]>();
+                tagofTagsList = new List<byte[]>();
             }
 
-            while (dataoffset < datalength)
+            while (dataOffset < datalength)
             {
                 int tagLength = 1;
-                int tagStartOffset = dataoffset;
-                byte tagByte0 = data[dataoffset];
+                int tagStartOffset = dataOffset;
+                byte tagByte0 = data[dataOffset];
 
                 if ((tagByte0 & 0x1F) == 0x1F)
                 {
                     // Long form tag
-                    dataoffset++;       // Skip first tag byte
+                    dataOffset++;       // Skip first tag byte
 
-                    while ((data[dataoffset] & 0x80) == 0x80)
+                    while ((data[dataOffset] & 0x80) == 0x80)
                     {
                         tagLength++;   // More bit set, so add middle byte to tagLength
-                        dataoffset++;
+                        dataOffset++;
                     }
 
                     tagLength++;       // Include final byte (where more=0)
-                    dataoffset++;
+                    dataOffset++;
                 }
                 else
                 {
                     // Short form (single byte) tag
-                    dataoffset++;       // Simply increment past single byte tag; tagLength is already 1
+                    dataOffset++;       // Simply increment past single byte tag; tagLength is already 1
                 }
 
                 // protect from buffer overrun
-                if (dataoffset >= data.Length)
+                if (dataOffset >= data.Length)
                 {
                     return null;
                 }
 
-                byte lengthByte0 = data[dataoffset];
+                byte lengthByte0 = data[dataOffset];
 
                 // TAG 9F0D is an internal error status
                 if (lengthByte0 > data.Length)
                 {
                     ByteArrayComparer byteArrayComparer = new ByteArrayComparer();
-                    if (byteArrayComparer.Equals(new byte[] { 0x9F, 0x0D }, new byte[] { tagByte0, data[dataoffset - 1] }))
+                    if (byteArrayComparer.Equals(new byte[] { 0x9F, 0x0D }, new byte[] { tagByte0, data[dataOffset - 1] }))
                     {
                         System.Diagnostics.Debug.WriteLine($"VIPA-READ [TAG 9F0D - internal error]");
                         Console.WriteLine($"\nVIPA-READ [TAG 9F0D - internal error]");
@@ -87,30 +97,30 @@ namespace Devices.Verifone.TLV
                     int tagDataLengthIndex = 0;
                     while (tagDataLengthIndex < tagDataLengthLength)
                     {
-                        if (dataoffset + tagDataLength > data.Length)
+                        if (dataOffset + tagDataLength > data.Length)
                         {
-                            tagDataLength = data.Length - dataoffset;
+                            tagDataLength = data.Length - dataOffset;
                         }
                         else
                         {
                             tagDataLength <<= 8;
                         }
 
-                        tagDataLength += data[dataoffset + tagDataLengthIndex + 1];
+                        tagDataLength += data[dataOffset + tagDataLengthIndex + 1];
 
                         tagDataLengthIndex++;
                     }
 
-                    dataoffset += 1 + tagDataLengthLength;  // Skip long form byte, plus all length bytes
+                    dataOffset += 1 + tagDataLengthLength;  // Skip long form byte, plus all length bytes
                 }
                 else
                 {
                     // Short form (single byte) length
                     tagDataLength = lengthByte0;
-                    dataoffset++;
+                    dataOffset++;
                 }
 
-                TLV tag = new TLV
+                TLVImpl tag = new TLVImpl
                 {
                     Tag = new byte[tagLength]
                 };
@@ -118,7 +128,7 @@ namespace Devices.Verifone.TLV
                 Array.Copy(data, tagStartOffset, tag.Tag, 0, tagLength);
 
                 bool foundTagOfTags = false;
-                foreach (var tagOftags in tagoftagslist)
+                foreach (var tagOftags in tagofTagsList)
                 {
                     if (tagOftags.SequenceEqual(tag.Tag))
                     {
@@ -128,46 +138,73 @@ namespace Devices.Verifone.TLV
 
                 if (foundTagOfTags)
                 {
-                    if (dataoffset + tagDataLength > data.Length)
+                    if (dataOffset + tagDataLength > data.Length)
                     {
-                        tagDataLength = data.Length - dataoffset;
+                        tagDataLength = data.Length - dataOffset;
                     }
 
-                    tag.InnerTags = Decode(data, dataoffset, dataoffset + tagDataLength, tagoftagslist);
+                    tag.InnerTags = Decode(data, dataOffset, dataOffset + tagDataLength, tagofTagsList);
                 }
                 else
                 {
                     // special handling of POS cancellation: "ABORTED" is in the data field without a length
                     if (tagDataLength > data.Length)
                     {
-                        tagDataLength = data.Length - dataoffset;
+                        tagDataLength = data.Length - dataOffset;
                     }
-                    else if (tagDataLength + dataoffset > data.Length)
+                    else if (tagDataLength + dataOffset > data.Length)
                     {
                         // TAG 9F0D is an internal error status: datalen mismatch
                         // i.e. DDFDF12-08-398EF6C2AD1A
-                        tagDataLength = data.Length - dataoffset;
+                        tagDataLength = data.Length - dataOffset;
                         System.Diagnostics.Debug.WriteLine($"VIPA-READ [LENGTH MISMATCH FOR TAG {BitConverter.ToString(tag.Tag).Replace("-", "")}]");
                         Console.WriteLine($"VIPA-READ [LENGTH MISMATCH FOR TAG {BitConverter.ToString(tag.Tag).Replace("-", "")}]\n");
                     }
                     tag.Data = new byte[tagDataLength];
-                    Array.Copy(data, dataoffset, tag.Data, 0, tagDataLength);
+                    Array.Copy(data, dataOffset, tag.Data, 0, tagDataLength);
                 }
 
-                alltags.Add(tag);
+                allTags.Add(tag);
 
-                dataoffset += tagDataLength;
+                dataOffset += tagDataLength;
             }
 
-            return /*(allTags.Count == 0) ? null :*/ alltags;
+            return /*(allTags.Count == 0) ? null :*/ allTags;
         }
 
-        public byte[] Encode(List<TLV> tags)
+        //When you want to automatically decode more than 1 layer of innertags
+        public static List<TLVImpl> DeepDecode(byte[] data, int count = 0)
+        {
+            if (count < 0)      //don't go deeper than needed
+            {
+                return null;
+            }
+
+            List<TLVImpl> firstLayer = Decode(data);
+            if (firstLayer == null || firstLayer.Count == 0)      //If this is no longer decodable, don't bother going deeper
+            {
+                return null;
+            }
+
+            foreach (TLVImpl nextLayer in firstLayer)
+            {
+                nextLayer.InnerTags = DeepDecode(nextLayer.Data, count - 1);
+            }
+
+            return firstLayer;
+        }
+
+        public static byte[] Encode(TLVImpl tags)
+        {
+            return Encode(new List<TLVImpl> { tags });
+        }
+
+        public static byte[] Encode(List<TLVImpl> tags)
         {
             List<byte[]> allTagBytes = new List<byte[]>();
             int allTagBytesLength = 0;
 
-            foreach (TLV tag in tags)
+            foreach (TLVImpl tag in tags)
             {
                 int len = tag.Tag.Length;
                 byte[] data = tag.Data;

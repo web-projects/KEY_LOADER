@@ -1,4 +1,5 @@
 ﻿using Devices.Common;
+using Devices.Verifone.TLV;
 using Devices.Verifone.VIPA;
 using System;
 using System.Collections.Generic;
@@ -160,12 +161,11 @@ namespace Devices.Verifone.Connection
 
                     if (ResponseTagsHandler != null || ResponseContactlessHandler != null)
                     {
-                        TLV.TLV tlv = new TLV.TLV();
-                        List<TLV.TLV> tags = null;
+                        List<TLVImpl> tags = null;
 
                         if (responseCode == (int)VipaSW1SW2Codes.Success)
                         {
-                            tags = tlv.Decode(totalDecodeBytes, 0, totalDecodeBytes.Length, nestedTagTags);
+                            tags = TLVImpl.Decode(totalDecodeBytes, 0, totalDecodeBytes.Length, nestedTagTags);
                         }
 
                         //PrintTags(tags);
@@ -403,9 +403,9 @@ namespace Devices.Verifone.Connection
                 dataLen++;  // Allow for Le byte
             }
 
-            var cmdLength = 7 /*NAD, PCB, LEN, CLA, INS, P1, P2*/ + dataLen + 1 /*LRC*/;
-            var cmdBytes = new byte[cmdLength];
-            var cmdIndex = 0;
+            int cmdLength = 7 /*NAD, PCB, LEN, CLA, INS, P1, P2*/ + dataLen + 1 /*LRC*/;
+            byte[] cmdBytes = new byte[cmdLength];
+            int cmdIndex = 0;
 
             cmdBytes[cmdIndex++] = command.nad;
             lrc ^= command.nad;
@@ -427,7 +427,7 @@ namespace Devices.Verifone.Connection
                 cmdBytes[cmdIndex++] = (byte)command.data.Length;
                 lrc ^= (byte)command.data.Length;
 
-                foreach (var byt in command.data)
+                foreach (byte byt in command.data)
                 {
                     cmdBytes[cmdIndex++] = byt;
                     lrc ^= byt;

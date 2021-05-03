@@ -166,7 +166,7 @@ namespace Devices.Verifone.TLV
             }
         };
 
-        public void PrintTags(List<TLV> tags, int indent = 0)
+        public void PrintTags(List<TLVImpl> tags, int indent = 0)
         {
             if (tags == null)
             {

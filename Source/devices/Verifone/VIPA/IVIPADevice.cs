@@ -17,7 +17,7 @@ namespace Devices.Verifone.VIPA
 
         void Dispose();
         
-        void ResponseCodeHandler(List<TLV.TLV> tags, int responseCode, bool cancelled = false);
+        void ResponseCodeHandler(List<TLVImpl> tags, int responseCode, bool cancelled = false);
 
         bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "");
 
