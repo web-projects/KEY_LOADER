@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,8 +19,8 @@ namespace Devices.Verifone.TLV
                 return null;
             }
 
-            var alltags = new List<TLV>();
-            var dataoffset = startoffset;
+            List<TLV> alltags = new List<TLV>();
+            int dataoffset = startoffset;
 
             if (datalength == -1)
             {
@@ -33,9 +34,9 @@ namespace Devices.Verifone.TLV
 
             while (dataoffset < datalength)
             {
-                var tagStartOffset = dataoffset;
-                var tagByte0 = data[dataoffset];
-                var tagLength = 1;
+                int tagLength = 1;
+                int tagStartOffset = dataoffset;
+                byte tagByte0 = data[dataoffset];
 
                 if ((tagByte0 & 0x1F) == 0x1F)
                 {
@@ -63,17 +64,36 @@ namespace Devices.Verifone.TLV
                     return null;
                 }
 
-                var lengthByte0 = data[dataoffset];
-                var tagDataLength = 0;
+                byte lengthByte0 = data[dataoffset];
+
+                // TAG 9F0D is an internal error status
+                if (lengthByte0 > data.Length)
+                {
+                    ByteArrayComparer byteArrayComparer = new ByteArrayComparer();
+                    if (byteArrayComparer.Equals(new byte[] { 0x9F, 0x0D }, new byte[] { tagByte0, data[dataoffset - 1] }))
+                    {
+                        continue;
+                    }
+                }
+                
+                int tagDataLength = 0;
 
                 if ((lengthByte0 & 0x80) == 0x80)
                 {
                     // Long form length
-                    var tagDataLengthLength = lengthByte0 & 0x7F;
-                    var tagDataLengthIndex = 0;
+                    int tagDataLengthLength = lengthByte0 & 0x7F;
+                    int tagDataLengthIndex = 0;
                     while (tagDataLengthIndex < tagDataLengthLength)
                     {
-                        tagDataLength <<= 8;
+                        if (dataoffset + tagDataLength > data.Length)
+                        {
+                            tagDataLength = data.Length - dataoffset;
+                        }
+                        else
+                        {
+                            tagDataLength <<= 8;
+                        }
+
                         tagDataLength += data[dataoffset + tagDataLengthIndex + 1];
 
                         tagDataLengthIndex++;
@@ -88,14 +108,14 @@ namespace Devices.Verifone.TLV
                     dataoffset++;
                 }
 
-                var tag = new TLV
+                TLV tag = new TLV
                 {
                     Tag = new byte[tagLength]
                 };
 
                 Array.Copy(data, tagStartOffset, tag.Tag, 0, tagLength);
 
-                var foundTagOfTags = false;
+                bool foundTagOfTags = false;
                 foreach (var tagOftags in tagoftagslist)
                 {
                     if (tagOftags.SequenceEqual(tag.Tag))
@@ -120,6 +140,12 @@ namespace Devices.Verifone.TLV
                     {
                         tagDataLength = data.Length - dataoffset;
                     }
+                    else if (tagDataLength + dataoffset > data.Length)
+                    {
+                        // TAG 9F0D is an internal error status: datalen mismatch
+                        // i.e. DDFDF12-08-398EF6C2AD1A
+                        tagDataLength = data.Length - dataoffset;
+                    }
                     tag.Data = new byte[tagDataLength];
                     Array.Copy(data, dataoffset, tag.Data, 0, tagDataLength);
                 }
@@ -134,13 +160,13 @@ namespace Devices.Verifone.TLV
 
         public byte[] Encode(List<TLV> tags)
         {
-            var allTagBytes = new List<byte[]>();
-            var allTagBytesLength = 0;
+            List<byte[]> allTagBytes = new List<byte[]>();
+            int allTagBytesLength = 0;
 
-            foreach (var tag in tags)
+            foreach (TLV tag in tags)
             {
-                var len = tag.Tag.Length;
-                var data = tag.Data;
+                int len = tag.Tag.Length;
+                byte[] data = tag.Data;
 
                 if (tag.InnerTags != null)
                 {
@@ -170,8 +196,8 @@ namespace Devices.Verifone.TLV
                     len += 1 + data.Length;
                 }
 
-                var tagData = new byte[len];
-                var tagDataOffset = 0;
+                byte[] tagData = new byte[len];
+                int tagDataOffset = 0;
 
                 Array.Copy(tag.Tag, 0, tagData, tagDataOffset, tag.Tag.Length);
                 tagDataOffset += tag.Tag.Length;
@@ -207,10 +233,10 @@ namespace Devices.Verifone.TLV
                 allTagBytesLength += tagDataOffset;
             }
 
-            var allBytes = new byte[allTagBytesLength];
-            var allBytesOffset = 0;
+            byte[] allBytes = new byte[allTagBytesLength];
+            int allBytesOffset = 0;
 
-            foreach (var tagBytes in allTagBytes)
+            foreach (byte[] tagBytes in allTagBytes)
             {
                 Array.Copy(tagBytes, 0, allBytes, allBytesOffset, tagBytes.Length);
                 allBytesOffset += tagBytes.Length;

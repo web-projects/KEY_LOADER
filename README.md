@@ -71,3 +71,4 @@ This an application to load HMAC KEYS.
 * 20210325 - V0 EMV Signed Configuration Packages
 * 20210408 - Added idle screen update for Raptor/Engage devices
 * 20210419 - V1 EMV Signed Configuration Packages 
+* 29210503 - Fixed TAG 9F0D reporting

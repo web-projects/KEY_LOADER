@@ -172,6 +172,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\common\core\Core.Patterns\Core.Patterns.csproj" />
+    <ProjectReference Include="..\common\helpers\Helpers.csproj" />
     <ProjectReference Include="..\common\xo\XO.csproj" />
     <ProjectReference Include="..\config\Config.csproj" />
     <ProjectReference Include="..\devices\common\Devices.Common.csproj" />
