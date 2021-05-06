@@ -564,6 +564,19 @@ namespace Devices.Verifone
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
+
+                            Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
+
+                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine("SUCCESS!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            }
+                            vipaDevice.DeviceReboot();
                         }
                         else
                         {
@@ -603,6 +616,19 @@ namespace Devices.Verifone
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
+
+                            Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
+
+                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine("SUCCESS!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            }
+                            vipaDevice.DeviceReboot();
                         }
                         else
                         {

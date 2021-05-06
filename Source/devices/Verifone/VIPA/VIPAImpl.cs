@@ -882,7 +882,7 @@ namespace Devices.Verifone.VIPA
             }
             else
             {
-                Console.WriteLine(string.Format("DEVICE: HMAC GENERATIN FAILED WITH ERROR=0x{0:X}", securityConfig.VipaResponse));
+                Console.WriteLine(string.Format("DEVICE: HMAC GENERATION FAILED WITH ERROR=0x{0:X}", securityConfig.VipaResponse));
             }
 
             return (securityConfig.securityConfigurationObject?.GeneratedHMAC, securityConfig.VipaResponse);
