@@ -3,6 +3,17 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.046.00 (05/10/2021)
+
+1. KIF EMV Configuration Signed Packages in TGZ format.
+
+-------------------------------------------------------------------------------
+VERSION.045.00 (05/03/2021)
+
+1. V1 EMV Configuration Signed Packages in TGZ format.
+
+
+-------------------------------------------------------------------------------
 VERSION.044.00 (04/19/2021)
 
 1. V1 EMV Configuration Signed Packages in TGZ format.
