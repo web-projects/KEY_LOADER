@@ -95,6 +95,11 @@ namespace StateMachine.State.Enums
         DisplayCustomScreen,
 
         /// <summary>
+        /// Represents a state when DAL set the 24-hour reboot time for the device
+        /// </summary>
+        Reboot24Hour,
+
+        /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL
         /// is in an operational state ready to receive the next command before a response
         /// is sent back to the caller.

@@ -88,6 +88,12 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
                         break;
                     }
+                    case ConsoleKey.H:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [24_HOUR_REBOOT]");
+                        await application.Command(LinkDeviceActionType.Reboot24Hour).ConfigureAwait(false);
+                        break;
+                    }
                     case ConsoleKey.I:
                     {
                         await application.Command(LinkDeviceActionType.UpdateIdleScreen).ConfigureAwait(false);

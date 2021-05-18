@@ -82,6 +82,8 @@ namespace Devices.Verifone.VIPA
 
         public TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)> DeviceInteractionInformation { get; set; } = null;
 
+        public TaskCompletionSource<(string Timestamp, int VipaResponse)> Reboot24HourInformation = null;
+
         #endregion --- attributes ---
 
         #region --- connection ---
@@ -1040,6 +1042,22 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
+        public (string Timestamp, int VipaResponse) Reboot24Hour(string timestamp)
+        {
+            Console.WriteLine($"VIPA: SET 24 HOUR REBOOT TO [{timestamp}]");
+            (string Timestamp, int VipaResponse) reboot24HourInformationObject = GetPCIRebootTime();
+
+            if(reboot24HourInformationObject.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                if (!timestamp.Equals(reboot24HourInformationObject.Timestamp))
+                {
+                    reboot24HourInformationObject = SetPCIRebootTime(timestamp);
+                }
+            }
+
+            return reboot24HourInformationObject;
+        }
+
         private (int vipaResponse, int vipaData) VerifyAmountScreen(string displayMessage)
         {
             CancelResponseHandlers();
@@ -1351,6 +1369,47 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed--;
 
             return deviceBinaryStatus;
+        }
+
+        private (string Timestamp, int VipaResponse) GetPCIRebootTime()
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += Get24HourRebootResponseHandler;
+
+            Reboot24HourInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
+
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x24, p1 = 0x00, p2 = 0x00 };
+            WriteSingleCmd(command);
+
+            var device24HourStatus = Reboot24HourInformation.Task.Result;
+
+            ResponseTagsHandler -= Get24HourRebootResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return device24HourStatus;
+        }
+
+        private (string Timestamp, int VipaResponse) SetPCIRebootTime(string timestamp)
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += Get24HourRebootResponseHandler;
+
+            Reboot24HourInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
+
+            byte[] timestampForRebootData = Encoding.ASCII.GetBytes(timestamp);
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x24, p1 = 0x00, p2 = 0x00, data = timestampForRebootData };
+            WriteSingleCmd(command);
+
+            var device24HourStatus = Reboot24HourInformation.Task.Result;
+
+            ResponseTagsHandler -= Get24HourRebootResponseHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return device24HourStatus;
         }
 
         #endregion --- VIPA commands ---
@@ -1785,6 +1844,29 @@ namespace Devices.Verifone.VIPA
             {
                 DeviceInteractionInformation?.TrySetResult((cardResponse, responseCode));
             }
+        }
+
+        public void Get24HourRebootResponseHandler(List<TLVImpl> tags, int responseCode, bool cancelled = false)
+        {
+            if (cancelled || tags == null)
+            {
+                Reboot24HourInformation?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            string deviceResponse = string.Empty;
+
+            foreach (var tag in tags)
+            {
+                if (tag.Tag.SequenceEqual(E0Template.Reboot24HourTag))
+                {
+                    deviceResponse = Encoding.UTF8.GetString(tag.Data);
+                    break;
+                }
+            }
+
+            // command must always be processed
+            Reboot24HourInformation?.TrySetResult((deviceResponse, responseCode));
         }
 
         #endregion --- response handlers ---

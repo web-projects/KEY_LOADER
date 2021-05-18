@@ -909,6 +909,74 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest Reboot24Hour(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: 24 HOUR REBOOT for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        string timestamp = linkRequest.Actions.First().DeviceActionRequest.Reboot24Hour;
+                        (string Timestamp, int VipaResponse) deviceResponse = vipaDevice.Reboot24Hour(timestamp);
+                        if (deviceResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            if (timestamp.Equals(deviceResponse.Timestamp))
+                            {
+                                //Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                                //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+
+                                //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                //{
+                                //    Console.WriteLine("SUCCESS!");
+                                //}
+                                //else
+                                //{
+                                //    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                //}
+                                Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
+
+                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    Console.WriteLine("SUCCESS!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                }
+                                vipaDevice.DeviceReboot();
+                            }
+                            else
+                            {
+                                Console.WriteLine($"FAILURE - INCORRECT TIMESTAMP SET: [{deviceResponse.Timestamp}]");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED 24 HOUR REBOOT REQUEST WITH ERROR=0x{0:X4}\n", deviceResponse.VipaResponse));
+                        }
+                    }
+                }
+            }
+
+            DeviceSetIdle();
+
+            return linkRequest;
+        }
+
         #endregion --- subworkflow mapping
     }
 }

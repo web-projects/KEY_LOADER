@@ -6,6 +6,7 @@ namespace XO.Requests
     public partial class LinkDeviceActionRequest
     {
         public LinkDeviceActionType? DeviceAction { get; set; }
+        public string? Reboot24Hour { get; set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -27,6 +28,7 @@ namespace XO.Requests
         UpdateHMACKeys,
         GenerateHMAC,
         UpdateIdleScreen,
-        DisplayCustomScreen
+        DisplayCustomScreen,
+        Reboot24Hour
     }
 }

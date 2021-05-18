@@ -31,6 +31,7 @@ namespace StateMachine.State.SubWorkflows.Actions.Controllers
                     [RebootDevice] = (IDeviceSubStateController _) => new DeviceRebootSubStateAction(_),
                     [UpdateHMACKeys] = (IDeviceSubStateController _) => new DeviceUpdateHMACKeysSubStateAction(_),
                     [GenerateHMAC] = (IDeviceSubStateController _) => new DeviceGenerateHMACSubStateAction(_),
+                    [Reboot24Hour] = (IDeviceSubStateController _) => new DeviceReboot24HourSubStateAction(_),
                     [SanityCheck] = (IDeviceSubStateController _) => new DeviceSanityCheckSubStateAction(_),
                     [RequestComplete] = (IDeviceSubStateController _) => new DeviceRequestCompleteSubStateAction(_)
                 }

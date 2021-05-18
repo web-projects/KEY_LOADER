@@ -224,69 +224,65 @@ namespace Devices.Verifone.Helpers
         #endregion --- packaged config files ---
 
         #region --- ADE SLOT CONFIGURATION ---
+
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string NJT_LOCK_CONFIG0_BUNDLE_11 = "SphereNJTConfig.v6-Slot0_6.8.2.11.tgz";
-        public const string NJT_LOCK_CONFIG0_HASH_11 = "2AAC0328E1FF99A18D835CBF45F8CC09";
-        public const int NJT_LOCK_CONFIG0_SIZE_11 = 0x7152;
-
-        public const string NJT_LOCK_CONFIG8_BUNDLE_11 = "SphereNJTConfig.v6-Slot8_6.8.2.11.tgz";
-        public const string NJT_LOCK_CONFIG8_HASH_11 = "53CFAA88F8987F1D833D8E1980A38266";
-        public const int NJT_LOCK_CONFIG8_SIZE_11 = 0x7158;
-
-        //public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "SphereEpicConfig.v2-Slot0.tgz";
-        //public const string EPIC_LOCK_CONFIG0_HASH_11 = "7B5B4150A92E0088C2C468F0EF637EDD";
-        //public const int EPIC_LOCK_CONFIG0_SIZE_11 = 0x7158;
-        public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "SphereEpicConfig.v3-Slot0_6.8.2.11.tgz";
-        public const string EPIC_LOCK_CONFIG0_HASH_11 = "2D3D027BBCFD3B941886B9DD6CB72101";
-        public const int EPIC_LOCK_CONFIG0_SIZE_11 = 0x7082;
-
-        //public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "SphereEpicConfig.v2-Slot8.tgz";
-        //public const string EPIC_LOCK_CONFIG8_HASH_11 = "51022622219103F9E2878642CBE1502B";
-        //public const int EPIC_LOCK_CONFIG8_SIZE_11 = 0x7161;
-        public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "SphereEpicConfig.v3-Slot8_6.8.2.11.tgz";
-        public const string EPIC_LOCK_CONFIG8_HASH_11 = "6F130E82A4A44BA76FDD6A22890CB069";
-        public const int EPIC_LOCK_CONFIG8_SIZE_11 = 0x7088;
+        // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string EPIC_LOCK_CONFIG0_BUNDLE_11 = "verifone_VIPA_cfg_68211_Epic_slot0_210519.tgz";
+        public const string EPIC_LOCK_CONFIG0_HASH_11 = "8F968901AA7ADC82D27F6F2C4152A5E6";
+        public const int EPIC_LOCK_CONFIG0_SIZE_11 = 0x0000752D;
+        // EPIC ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string EPIC_LOCK_CONFIG8_BUNDLE_11 = "verifone_VIPA_cfg_68211_Epic_slot8_210519.tgz";
+        public const string EPIC_LOCK_CONFIG8_HASH_11 = "0E9392A75908318B552F05234804DA9C";
+        public const int EPIC_LOCK_CONFIG8_SIZE_11 = 0x0000751D;
+        // NJT ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string NJT_LOCK_CONFIG0_BUNDLE_11 = "verifone_VIPA_cfg_68211_NJT_slot0_210519.tgz";
+        public const string NJT_LOCK_CONFIG0_HASH_11 = "4FECE8F62B02C46159EEEF5C4ECCB5E9";
+        public const int NJT_LOCK_CONFIG0_SIZE_11 = 0x0000752F;
+        // NJT ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string NJT_LOCK_CONFIG8_BUNDLE_11 = "verifone_VIPA_cfg_68211_NJT_slot8_210519.tgz";
+        public const string NJT_LOCK_CONFIG8_HASH_11 = "02C9FB6134F1962D2DC48E2C6B9CA261";
+        public const int NJT_LOCK_CONFIG8_SIZE_11 = 0x00007535;
 
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string NJT_LOCK_CONFIG0_BUNDLE_17 = "SphereNJTConfig.v7-Slot0_6.8.2.17.tgz";
-        public const string NJT_LOCK_CONFIG0_HASH_17 = "2D3D027BBCFD3B941886B9DD6CB72101";
-        public const int NJT_LOCK_CONFIG0_SIZE_17 = 0x70F3;
-
-        public const string NJT_LOCK_CONFIG8_BUNDLE_17 = "SphereNJTConfig.v7-Slot8_6.8.2.17.tgz";
-        public const string NJT_LOCK_CONFIG8_HASH_17 = "B2F7903398C54008B88D61E92403FF4C";
-        public const int NJT_LOCK_CONFIG8_SIZE_17 = 0x7081;
-
-        public const string EPIC_LOCK_CONFIG0_BUNDLE_17 = "SphereEpicConfig.v3-Slot0_6.8.2.17.tgz";
-        public const string EPIC_LOCK_CONFIG0_HASH_17 = "2D3D027BBCFD3B941886B9DD6CB72101";
-        public const int EPIC_LOCK_CONFIG0_SIZE_17 = 0x7082;
-
-        public const string EPIC_LOCK_CONFIG8_BUNDLE_17 = "SphereEpicConfig.v3-Slot8_6.8.2.17.tgz";
-        public const string EPIC_LOCK_CONFIG8_HASH_17 = "956DA292308375D5404823AEA162D10E";
-        public const int EPIC_LOCK_CONFIG8_SIZE_17 = 0x708B;
-
+        // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string EPIC_LOCK_CONFIG0_BUNDLE_17 = "verifone_VIPA_cfg_68217_Epic_slot0_210519.tgz";
+        public const string EPIC_LOCK_CONFIG0_HASH_17 = "B386A5931832C32923CB5D6F5C524F70";
+        public const int EPIC_LOCK_CONFIG0_SIZE_17 = 0x00007A6F;
+        // EPIC ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string EPIC_LOCK_CONFIG8_BUNDLE_17 = "verifone_VIPA_cfg_68217_Epic_slot8_210519.tgz";
+        public const string EPIC_LOCK_CONFIG8_HASH_17 = "01A88EEC231CFF476B7E7B3716F7F1EA";
+        public const int EPIC_LOCK_CONFIG8_SIZE_17 = 0x000079AB;
+        // NJT ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone_VIPA_cfg_68217_NJT_slot0_210519.tgz";
+        public const string NJT_LOCK_CONFIG0_HASH_17 = "0CEAA2DEE759EA51EA621CA4498C2CB4";
+        public const int NJT_LOCK_CONFIG0_SIZE_17 = 0x00007A85;
+        // NJT ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone_VIPA_cfg_68217_NJT_slot8_210519.tgz";
+        public const string NJT_LOCK_CONFIG8_HASH_17 = "220BCFF54EC37434096837331925A4AB";
+        public const int NJT_LOCK_CONFIG8_SIZE_17 = 0x00007A74;
 
         public static Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configBundlesSlot0 =
             new Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)>()
         {
             // VIPA 6.8.2.11
-            ["NJT-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG0_BUNDLE_11, NJT_LOCK_CONFIG0_HASH_11, NJT_LOCK_CONFIG0_SIZE_11),
             ["EPIC-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, EPIC_LOCK_CONFIG0_BUNDLE_11, EPIC_LOCK_CONFIG0_HASH_11, EPIC_LOCK_CONFIG0_SIZE_11),
+            ["NJT-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG0_BUNDLE_11, NJT_LOCK_CONFIG0_HASH_11, NJT_LOCK_CONFIG0_SIZE_11),
             // VIPA 6.8.2.17
-            ["NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG0_BUNDLE_17, NJT_LOCK_CONFIG0_HASH_17, NJT_LOCK_CONFIG0_SIZE_17),
             ["EPIC-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, EPIC_LOCK_CONFIG0_BUNDLE_17, EPIC_LOCK_CONFIG0_HASH_17, EPIC_LOCK_CONFIG0_SIZE_17),
+            ["NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG0_BUNDLE_17, NJT_LOCK_CONFIG0_HASH_17, NJT_LOCK_CONFIG0_SIZE_17),
         };
 
         public static Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configBundlesSlot8 =
             new Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)>()
         {
             // VIPA 6.8.2.11
-            ["NJT-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG8_BUNDLE_11, NJT_LOCK_CONFIG8_HASH_11, NJT_LOCK_CONFIG8_SIZE_11),
             ["EPIC-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, EPIC_LOCK_CONFIG8_BUNDLE_11, EPIC_LOCK_CONFIG8_HASH_11, EPIC_LOCK_CONFIG8_SIZE_11),
+            ["NJT-11"] = (VIPA_BUNDLES_11, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG8_BUNDLE_11, NJT_LOCK_CONFIG8_HASH_11, NJT_LOCK_CONFIG8_SIZE_11),
             // VIPA 6.8.2.17
-            ["NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG8_BUNDLE_17, NJT_LOCK_CONFIG8_HASH_17, NJT_LOCK_CONFIG8_SIZE_17),
             ["EPIC-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, EPIC_LOCK_CONFIG8_BUNDLE_17, EPIC_LOCK_CONFIG8_HASH_17, EPIC_LOCK_CONFIG8_SIZE_17),
+            ["NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, NJT_LOCK_CONFIG8_BUNDLE_17, NJT_LOCK_CONFIG8_HASH_17, NJT_LOCK_CONFIG8_SIZE_17),
         };
         #endregion --- ADE SLOT CONFIGURATION ---
 
@@ -294,24 +290,24 @@ namespace Devices.Verifone.Helpers
         // ATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string ATTENDED_EMV_CONFIG_PKG_11 = "Sphere_Attended_emv_configuration_VIPA_6.8.2.11.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "AD6F228B6A4F69EF9A1A87F68BD57D64";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF9C;
+        public const string ATTENDED_EMV_CONFIG_PKG_11 = "Sphere_FD_Attended_emv_configuration_68211.8.2.11.tgz";
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_11 = "61446B6F40F471DF45D913B768BDE742";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF92;
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string ATTENDED_EMV_CONFIG_PKG_17 = "Sphere_Attended_emv_configuration_VIPA_6.8.2.17.tgz";
-        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "9088ED10F572ED659765DD9B7E5F50B2";
-        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FFA5;
+        public const string ATTENDED_EMV_CONFIG_PKG_17 = "Sphere_FD_Attended_emv_configuration_68217.tgz";
+        public const string ATTENDED_EMV_CONFIG_PKG_HASH_17 = "BE70C01B1C8B45490DE7EBA0BFD9C825";
+        public const int    ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FF8E;
 
         // UNATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
         public const string UNATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        public const string UNATTENDED_EMV_CONFIG_PKG_11 = "Sphere_Unattended_emv_configuration_VIPA_6.8.2.11.tgz";
+        public const string UNATTENDED_EMV_CONFIG_PKG_11 = "Sphere_FD_Unttended_emv_configuration_68211.tgz";
         public const string UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "BD04C7D9866C64FD7AA5D712FBF988F6";
         public const int UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FFA4;
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string UNATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string UNATTENDED_EMV_CONFIG_PKG_17 = "Sphere_Unattended_emv_configuration_VIPA_6.8.2.17.tgz";
+        public const string UNATTENDED_EMV_CONFIG_PKG_17 = "Sphere_FD_Unttended_emv_configuration_68217.tgz";
         public const string UNATTENDED_EMV_CONFIG_PKG_HASH_17 = "08299B59CA865D6D2AFB274FA1642CD0";
         public const int    UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FEDA;
 

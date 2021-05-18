@@ -564,6 +564,11 @@ namespace StateMachine.State.Management
                     }
                 };
 
+                if (action == LinkDeviceActionType.Reboot24Hour)
+                {
+                    linkRequest.Actions.First().DeviceActionRequest.Reboot24Hour = Configuration.Verifone.Reboot24Hour;
+                }
+
                 SendDeviceCommand(JsonConvert.SerializeObject(linkRequest));
             }
             else

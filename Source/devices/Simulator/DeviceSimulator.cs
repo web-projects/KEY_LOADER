@@ -260,6 +260,14 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest Reboot24Hour(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: 24 HOUR REBOOT for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         #endregion --- subworkflow mapping
     }
 }

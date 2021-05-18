@@ -12,6 +12,7 @@ namespace Devices.Common.Config
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
         public List<string> ConfigurationPackages { get; internal set; } = new List<string>();
         public string ConfigurationPackageActive { get; set; } = VerifoneSettingsConfigurationPackages.Epic;
+        public string Reboot24Hour { get; set; } = "020000";
     }
 
     /// <summary>

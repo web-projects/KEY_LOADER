@@ -32,5 +32,6 @@
         public static byte[] KeySlotNumberTag = new byte[] { 0xDF, 0xEC, 0x46 };
         public static byte[] ApplicationAIDTag = new byte[] { 0x9F, 0x06 };
         public static byte[] KernelConfigurationTag = new byte[] { 0xDF, 0xDF, 0x05 };
+        public static byte[] Reboot24HourTag = new byte[] { 0xDF, 0xA2, 0x42 };
     }
 }

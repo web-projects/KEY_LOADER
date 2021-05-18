@@ -59,5 +59,7 @@ namespace Devices.Verifone.VIPA
         int UpdateIdleScreen(string deviceModel);
 
         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreen(string displayMessage);
+
+        (string Timestamp, int VipaResponse) Reboot24Hour(string timestamp);
     }
 }

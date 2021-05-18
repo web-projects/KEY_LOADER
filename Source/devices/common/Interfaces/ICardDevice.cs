@@ -57,6 +57,6 @@ namespace Devices.Common.Interfaces
         LinkRequest GenerateHMAC(LinkRequest linkRequest);
         LinkRequest UpdateIdleScreen(LinkRequest linkRequest);
         LinkRequest DisplayCustomScreen(LinkRequest linkRequest);
-
+        LinkRequest Reboot24Hour(LinkRequest linkRequest);
     }
 }
