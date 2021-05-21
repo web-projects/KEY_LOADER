@@ -1124,6 +1124,11 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
+        public (string Timestamp, int VipaResponse) Get24HourReboot()
+        {
+            return GetPCIRebootTime();
+        }
+
         public (string Timestamp, int VipaResponse) Reboot24Hour(string timestamp)
         {
             Console.WriteLine($"VIPA: SET 24 HOUR REBOOT TO [{timestamp}]");
@@ -1138,6 +1143,11 @@ namespace Devices.Verifone.VIPA
             }
 
             return reboot24HourInformationObject;
+        }
+
+        public (string Timestamp, int VipaResponse) GetTerminalDateTime()
+        {
+            return GetDeviceDateTime();
         }
 
         public (string Timestamp, int VipaResponse) SetTerminalDateTime(string timestamp)

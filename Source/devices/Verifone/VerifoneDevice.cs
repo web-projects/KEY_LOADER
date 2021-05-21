@@ -369,6 +369,39 @@ namespace Devices.Verifone
                                 Console.WriteLine($"DEVICE: ONLINE PIN KSN____={config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
                             }
 
+                            // Terminal datetime
+                            (string Timestamp, int VipaResponse) terminalDateTime = vipaDevice.GetTerminalDateTime();
+                            if (terminalDateTime.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
+                                {
+                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_=[ *** NOT FOUND *** ]");
+                                }
+                                else
+                                {
+                                    string terminalDateTimeStamp = string.Format("{1}/{2}/{0}-{3}:{4}:{5}",
+                                        terminalDateTime.Timestamp.Substring(0, 4), terminalDateTime.Timestamp.Substring(4, 2), terminalDateTime.Timestamp.Substring(6, 2),
+                                        terminalDateTime.Timestamp.Substring(8, 2), terminalDateTime.Timestamp.Substring(10, 2), terminalDateTime.Timestamp.Substring(12, 2));
+                                    Console.WriteLine($"DEVICE: TERMINAL DATETIME_={terminalDateTimeStamp}");
+                                }
+                            }
+
+                            // 24 HOUR REBOOT
+                            (string Timestamp, int VipaResponse) reboot24Hour = vipaDevice.Get24HourReboot();
+                            if (reboot24Hour.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
+                                {
+                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_=[ *** NOT FOUND *** ]");
+                                }
+                                else
+                                {
+                                    string rebootDateTimeStamp = string.Format("{0}:{1}:{2}",
+                                    reboot24Hour.Timestamp.Substring(0, 2), reboot24Hour.Timestamp.Substring(2, 2), reboot24Hour.Timestamp.Substring(4, 2));
+                                    Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___={rebootDateTimeStamp}");
+                                }
+                            }
+
                             // validate configuration
                             int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
