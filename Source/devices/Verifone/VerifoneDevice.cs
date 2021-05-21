@@ -45,9 +45,11 @@ namespace Devices.Verifone
 
         public int SortOrder { get; set; } = -1;
 
-        int ConfigurationHostId { get => deviceSectionConfig?.Verifone?.ConfigurationHostId ?? VerifoneSettingsOnlinePin.ConfigurationHostId; }
+        int ConfigurationHostId { get => deviceSectionConfig?.Verifone?.ConfigurationHostId ?? VerifoneSettingsSecurityConfiguration.ConfigurationHostId; }
 
-        int OnlinePinKeySetId { get => deviceSectionConfig?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId; }
+        int OnlinePinKeySetId { get => deviceSectionConfig?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsSecurityConfiguration.OnlinePinKeySetId; }
+
+        int ADEKeySetId { get => deviceSectionConfig?.Verifone?.ADEKeySetId ?? VerifoneSettingsSecurityConfiguration.ADEKeySetId; }
 
         string ConfigurationPackageActive { get => deviceSectionConfig?.Verifone?.ConfigurationPackageActive; }
 
@@ -89,7 +91,7 @@ namespace Devices.Verifone
             if (vipaDevice != null)
             {
                 Console.WriteLine($"\r\nACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
-                string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsOnlinePin.ConfigurationHostId ? "VSS" : "IPP";
+                string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "VSS" : "IPP";
                 Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
                 vipaDevice.LoadDeviceSectionConfig(deviceSectionConfig);
             }
@@ -341,7 +343,7 @@ namespace Devices.Verifone
                         bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
-                        config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADEProductionSlot);
+                        config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: FIRMARE VERSION___={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
@@ -359,11 +361,11 @@ namespace Devices.Verifone
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK KEY_ID_={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK TRSM ID={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
                             }
-                            Console.WriteLine($"DEVICE: VSS SLOT NUMBER___={config.securityConfigurationObject.VSSHostId - 0x01}");
+                            Console.WriteLine($"DEVICE: ADE SLOT NUMBER___=0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
                             config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: ONLINE PIN STORE__={(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsOnlinePin.ConfigurationHostId ? "VSS" : "IPP")}");
+                                Console.WriteLine($"DEVICE: ONLINE PIN STORE__={(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
                                 Console.WriteLine($"DEVICE: ONLINE PIN KSN____={config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
                             }
 

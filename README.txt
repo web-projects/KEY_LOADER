@@ -5,8 +5,11 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 -------------------------------------------------------------------------------
 VERSION.047.00 (05/21/2021)
 
-1. Device signing option: Sphere or Verifone-DEV
+1. Device signing option: Sphere or Verifone-DEV.
 2. KIF EMV Configuration Signed Packages in TGZ format.
+3. Idle images CustId: 199, 250. 
+4. Slot change 0,8 for both Sphere and NJT.
+5. Attended configurations: 05/21/2021
 
 -------------------------------------------------------------------------------
 VERSION.046.00 (05/10/2021)

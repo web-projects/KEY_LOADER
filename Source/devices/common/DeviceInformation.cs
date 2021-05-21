@@ -11,8 +11,9 @@ namespace Devices.Common
         public string VendorIdentifier { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
-        public byte ConfigurationHostId { get; set; } = VerifoneSettingsOnlinePin.ConfigurationHostId;
-        public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
+        public byte ConfigurationHostId { get; set; } = VerifoneSettingsSecurityConfiguration.ConfigurationHostId;
+        public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsSecurityConfiguration.OnlinePinKeySetId;
+        public byte ADEKeySetId { get; set; } = VerifoneSettingsSecurityConfiguration.ADEKeySetId;
         public string ConfigurationPackageActive { get; set; }
         public string SigningMethodActive { get; set; }
         public string ActiveCustomerId { get; set; }

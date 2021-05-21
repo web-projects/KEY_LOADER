@@ -1758,7 +1758,7 @@ namespace Devices.Verifone.VIPA
                     {
                         if (dataTag.Tag.SequenceEqual(E0Template.OnlinePINKSNTag))
                         {
-                            if (DeviceInformation.ConfigurationHostId != VerifoneSettingsOnlinePin.ConfigurationHostId)
+                            if (DeviceInformation.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId)
                             {
                                 string ksn = ConversionHelper.ByteArrayCodedHextoString(dataTag.Data);
                                 deviceResponse.OnlinePinKSN = ksn.PadLeft(20, 'F');
@@ -2037,8 +2037,9 @@ namespace Devices.Verifone.VIPA
         public void LoadDeviceSectionConfig(DeviceSection config)
         {
             //preSwipeCardStorage.SetConfig(config?.Verifone?.PreSwipeTimeout ?? 0);
-            DeviceInformation.ConfigurationHostId = config?.Verifone?.ConfigurationHostId ?? VerifoneSettingsOnlinePin.ConfigurationHostId;
-            DeviceInformation.OnlinePinKeySetId = config?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsOnlinePin.OnlinePinKeySetId;
+            DeviceInformation.ConfigurationHostId = config?.Verifone?.ConfigurationHostId ?? VerifoneSettingsSecurityConfiguration.ConfigurationHostId;
+            DeviceInformation.OnlinePinKeySetId = config?.Verifone?.OnlinePinKeySetId ?? VerifoneSettingsSecurityConfiguration.OnlinePinKeySetId;
+            DeviceInformation.ADEKeySetId = config?.Verifone?.ADEKeySetId ?? VerifoneSettingsSecurityConfiguration.ADEKeySetId;
         }
     }
 }
