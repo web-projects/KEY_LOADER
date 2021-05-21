@@ -125,6 +125,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeSetTerminalDateTimeStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeSanityCheckStateTransition(bool exception) =>
             exception switch
             {
@@ -159,6 +166,7 @@ namespace StateMachine.State.SubWorkflows
                 UpdateIdleScreen => ComputeUpdateIdleScreenUpdateStateTransition(exception),
                 DisplayCustomScreen => ComputeDisplayCustomScreenUpdateStateTransition(exception),
                 Reboot24Hour => ComputeReboot24HourStateTransition(exception),
+                SetTerminalDateTime => ComputeSetTerminalDateTimeStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),
                 RequestComplete => ComputeRequestCompletedStateTransition(exception),
                 _ => throw new StateException($"Invalid state transition '{state}' requested.")

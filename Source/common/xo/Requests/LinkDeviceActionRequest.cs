@@ -7,6 +7,7 @@ namespace XO.Requests
     {
         public LinkDeviceActionType? DeviceAction { get; set; }
         public string? Reboot24Hour { get; set; }
+        public string TerminalDateTime { get; set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -29,6 +30,7 @@ namespace XO.Requests
         GenerateHMAC,
         UpdateIdleScreen,
         DisplayCustomScreen,
-        Reboot24Hour
+        Reboot24Hour,
+        SetTerminalDateTime
     }
 }

@@ -34,6 +34,7 @@ namespace StateMachine.State.SubWorkflows.Providers
                 LinkDeviceActionType.UpdateIdleScreen => DeviceSubWorkflowState.UpdateIdleScreen,
                 LinkDeviceActionType.DisplayCustomScreen => DeviceSubWorkflowState.DisplayCustomScreen,
                 LinkDeviceActionType.Reboot24Hour => DeviceSubWorkflowState.Reboot24Hour,
+                LinkDeviceActionType.SetTerminalDateTime => DeviceSubWorkflowState.SetTerminalDateTime,
                 _ => DeviceSubWorkflowState.Undefined
             });
 

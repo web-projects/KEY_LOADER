@@ -12,6 +12,8 @@ namespace Devices.Common.Config
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
         public List<string> ConfigurationPackages { get; internal set; } = new List<string>();
         public string ConfigurationPackageActive { get; set; } = VerifoneSettingsConfigurationPackages.Epic;
+        public string SigningMethodActive { get; set; } = VerifoneSettingsSigningMethods.Sphere;
+        public string ActiveCustomerId { get; set; } = CustomerIdentifers.Default;
         public string Reboot24Hour { get; set; } = "020000";
     }
 
@@ -34,5 +36,27 @@ namespace Devices.Common.Config
     {
         public static string Epic = "EPIC";
         public static string NJT = "NJT";
+    }
+
+    /// <summary>
+    /// Verifone Signing Methods Support
+    /// SPHERE  : sphere signed
+    /// VERIFONE: development
+    /// </summary>
+    public static class VerifoneSettingsSigningMethods
+    {
+        public static string Sphere = "SPHERE";
+        public static string Verifone = "VERIFONE";
+    }
+
+    /// <summary>
+    /// Verifone Signing Methods Support
+    /// SPHERE  : sphere signed
+    /// VERIFONE: development
+    /// </summary>
+    public static class CustomerIdentifers
+    {
+        public static string Default = "199";
+        public static string NYU = "250";
     }
 }

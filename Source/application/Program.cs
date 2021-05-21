@@ -82,6 +82,12 @@ namespace DEVICE_CORE
                         await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
                         break;
                     }
+                    case ConsoleKey.D:
+                    {
+                        //Console.WriteLine("\r\nCOMMAND: [DATETIME]");
+                        await application.Command(LinkDeviceActionType.SetTerminalDateTime).ConfigureAwait(false);
+                        break;
+                    }
                     case ConsoleKey.F:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");

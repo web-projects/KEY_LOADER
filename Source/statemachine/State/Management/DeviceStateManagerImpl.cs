@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using XO.Requests;
 
@@ -567,6 +569,25 @@ namespace StateMachine.State.Management
                 if (action == LinkDeviceActionType.Reboot24Hour)
                 {
                     linkRequest.Actions.First().DeviceActionRequest.Reboot24Hour = Configuration.Verifone.Reboot24Hour;
+                }
+                else if (action == LinkDeviceActionType.SetTerminalDateTime)
+                {
+                    DateTimeOffset dateNow = DateTimeOffset.UtcNow;
+                    string pattern = @"\d";
+                    StringBuilder sb = new StringBuilder();
+
+                    // pattern YYYYMMDDHHMMSS
+                    foreach (Match m in Regex.Matches(dateNow.ToString("u"), pattern))
+                    {
+                        sb.Append(m);
+                    }
+                    // reset seconds
+                    if (sb.Length == 14)
+                    {
+                        sb[12] = '0';
+                        sb[13] = '0';
+                    }
+                    linkRequest.Actions.First().DeviceActionRequest.TerminalDateTime = sb.ToString();
                 }
 
                 SendDeviceCommand(JsonConvert.SerializeObject(linkRequest));

@@ -36,17 +36,17 @@ namespace Devices.Verifone.VIPA
         //[Obsolete]
         int ConfigurationFiles(string deviceModel);
 
-        int ConfigurationPackage(string deviceModel);
+        int ConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
 
-        int EmvConfigurationPackage(string deviceModel);
+        int EmvConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
 
-        int ValidateConfiguration(string deviceModel);
+        int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere );
 
         int FeatureEnablementToken();
 
-        int LockDeviceConfiguration0(bool activeConfigurationIsEpic);
+        int LockDeviceConfiguration0(bool activeConfigurationIsEpic, bool activeSigningMethodIsSphere);
 
-        int LockDeviceConfiguration8(bool activeConfigurationIsEpic);
+        int LockDeviceConfiguration8(bool activeConfigurationIsEpic, bool activeSigningMethodIsSphere);
 
         int UnlockDeviceConfiguration();
 
@@ -56,10 +56,12 @@ namespace Devices.Verifone.VIPA
         
         void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
 
-        int UpdateIdleScreen(string deviceModel);
+        int UpdateIdleScreen(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId);
 
         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreen(string displayMessage);
 
         (string Timestamp, int VipaResponse) Reboot24Hour(string timestamp);
+
+        (string Timestamp, int VipaResponse) SetTerminalDateTime(string timestamp);
     }
 }

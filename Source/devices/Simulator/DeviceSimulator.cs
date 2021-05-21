@@ -268,6 +268,14 @@ namespace Devices.Simulator
             return linkRequest;
         }
 
+        public LinkRequest SetTerminalDateTime(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: TERMINAL SET DATETIME for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
         #endregion --- subworkflow mapping
     }
 }

@@ -1,3 +1,29 @@
+------------------------------------------------------------------------------------------
+TGZ SIGNED FILES
+------------------------------------------------------------------------------------------
+
+M400 --- TGZ PACKAGES
+sphere_idlescreen_sphere_m400_199.tgz     E45E69B24DBC13DB27D1E95131748DB7  541143  0x000841D7
+sphere_idlescreen_sphere_m400_250.tgz     D25E04B5275A95D7B4FCD02E388CCEE9  230047  0x0003829F
+verifone_idlescreen_sphere_m400_199.tgz   650D2AC7A3923C093730725475B6EFD1  540497  0x00083F51
+verifone_idlescreen_sphere_m400_250.tgz   45E9AE70490715737AC4CA103ED5BA79  229478  0x00038066
+
+P200 --- TGZ PACKAGES
+sphere_idlescreen_sphere_p200_199.tgz      7171FF9F65DD70FFE33726B07AEFF2A9   214255  0x000344EF                    
+sphere_idlescreen_sphere_p200_250.tgz      2A0A70E9DF823831B1B9E907A5C0083C    57300  0x0000DFD4                         
+verifone_idlescreen_sphere_p200_199.tgz    60DA16BCAAD40C20FDD36E867B24DD74   213664  0x000342A0                    
+verifone_idlescreen_sphere_p200_250.tgz    C80EAE751463CC8373F9977F7310ADF9    56687  0x0000DD6F                    
+
+P400 --- TGZ PACKAGES
+sphere_idlescreen_sphere_p400_199.tgz	   0A9445CD3F497539F993D854CDA840AA    96655  0x0001798F                    
+sphere_idlescreen_sphere_p400_250.tgz      2C15366A323F841C66DD497A8DC4FE24   248842  0x0003CC0A                          
+verifone_idlescreen_sphere_p400_199.tgz    C886C9CE16F84E1874F78B771B7351E9    96070  0x00017746                    
+verifone_idlescreen_sphere_p400_250.tgz    20DDC7E460EF6C099EC74DF6E7794078   248259  0x0003C9C3  
+
+--------------------------------------------------------------
+RAW FILES
+--------------------------------------------------------------
+
 idle.msg       22C6918ACCDB2DF73AE95F57DBEB6BC8  0x0000001D
 
 M400
@@ -9,12 +35,3 @@ SphereIdle.png D8BEC176F1CB634FECA4F94420B412B9  0x00033503
 P400
 SphereIdle.png 08784D82B6587D18E023D77191FA7094  0x00016C87
 
---------------------------------------------------------------
-TGZ SIGNED FILES
---------------------------------------------------------------
-
-dl.idlescreen_spherem400_DevSigned.tgz  7E4FF7A774BBBD9BF56CE7DE41D7562A 590,910  0x0009043E
-
-dl.idlescreen_spherep200_DevSigned.tgz  226AE86B689FFAF7ACC0130D4403D51E  264,026 0x0004075A
-
-dl.idlescreen_spherep400_DevSigned.tgz  9DC667E8056C0131DDED013868E3F5DD   53,579 0x0000D14B

@@ -84,6 +84,8 @@ namespace Devices.Verifone.VIPA
 
         public TaskCompletionSource<(string Timestamp, int VipaResponse)> Reboot24HourInformation = null;
 
+        public TaskCompletionSource<(string Timestamp, int VipaResponse)> TerminalDateTimeInformation = null;
+
         #endregion --- attributes ---
 
         #region --- connection ---
@@ -163,7 +165,7 @@ namespace Devices.Verifone.VIPA
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD2, ins = 0x01, p1 = (byte)displayMessageValue, p2 = (byte)(enableBacklight ? 0x01 : 0x00), data = Encoding.ASCII.GetBytes(customMessage) };
             WriteSingleCmd(command);   // Display [D2, 01]
 
-            var displayCommandResponseCode = ResponseCodeResult.Task.Result;
+            int displayCommandResponseCode = ResponseCodeResult.Task.Result;
 
             ResponseTagsHandler -= ResponseCodeHandler;
             ResponseTagsHandlerSubscribed--;
@@ -511,7 +513,7 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int ConfigurationPackage(string deviceModel)
+        public int ConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
@@ -524,6 +526,22 @@ namespace Devices.Verifone.VIPA
                 // search for partial matches in P200 vs P200Plus
                 if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
                 {
+                    // validate signing method
+                    if (activeSigningMethodIsSphere)
+                    {
+                        if (!configFile.Value.fileName.StartsWith("sphere"))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (!configFile.Value.fileName.StartsWith("verifone"))
+                        {
+                            continue;
+                        }
+                    }
+
                     string fileName = configFile.Value.fileName;
                     if (BinaryStatusObject.EMV_CONFIG_FILES.Any(x => x.Contains(configFile.Value.fileName)))
                     {
@@ -570,6 +588,8 @@ namespace Devices.Verifone.VIPA
                         {
                             File.Delete(targetFile);
                         }
+
+                        break;
                     }
                     else
                     {
@@ -581,7 +601,7 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int EmvConfigurationPackage(string deviceModel)
+        public int EmvConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
@@ -596,6 +616,22 @@ namespace Devices.Verifone.VIPA
                     // search for partial matches in P200 vs P200Plus
                     if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
                     {
+                        // validate signing method
+                        if (activeSigningMethodIsSphere)
+                        {
+                            if (!configFile.Value.fileName.StartsWith("sphere"))
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (!configFile.Value.fileName.StartsWith("verifone"))
+                            {
+                                continue;
+                            }
+                        }
+
                         string fileName = configFile.Value.fileName;
                         string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
                         if (FindEmbeddedResourceByName(fileName, targetFile))
@@ -637,6 +673,8 @@ namespace Devices.Verifone.VIPA
                             {
                                 File.Delete(targetFile);
                             }
+
+                            break;
                         }
                         else
                         {
@@ -649,7 +687,7 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int ValidateConfiguration(string deviceModel)
+        public int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
@@ -738,7 +776,7 @@ namespace Devices.Verifone.VIPA
         }
 
         private int LockDeviceConfiguration(Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configurationBundle,
-            bool activeConfigurationIsEpic)
+            bool activeConfigurationIsEpic, bool activeSigningMethodIsSphere)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
             foreach (var configFile in configurationBundle)
@@ -746,10 +784,27 @@ namespace Devices.Verifone.VIPA
                 bool configurationBundleMatches = activeConfigurationIsEpic ? configFile.Key.Contains("EPIC") : configFile.Key.Contains("NJT");
                 if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase) && configurationBundleMatches)
                 {
+                    // validate signing method
+                    if (activeSigningMethodIsSphere)
+                    {
+                        if (!configFile.Value.fileName.StartsWith("sphere"))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (!configFile.Value.fileName.StartsWith("verifone"))
+                        {
+                            continue;
+                        }
+                    }
+
                     string fileName = configFile.Value.fileName;
                     string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
                     if (FindEmbeddedResourceByName(fileName, targetFile))
                     {
+ 
                         fileStatus = PutFile(configFile.Value.fileName, targetFile);
                         if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                         {
@@ -787,6 +842,8 @@ namespace Devices.Verifone.VIPA
                         {
                             File.Delete(targetFile);
                         }
+
+                        break;
                     }
                     else
                     {
@@ -797,14 +854,14 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int LockDeviceConfiguration0(bool activeConfigurationIsEpic)
+        public int LockDeviceConfiguration0(bool activeConfigurationIsEpic, bool activeSigningMethodIsSphere)
         {
-            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot0, activeConfigurationIsEpic);
+            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot0, activeConfigurationIsEpic, activeSigningMethodIsSphere);
         }
 
-        public int LockDeviceConfiguration8(bool activeConfigurationIsEpic)
+        public int LockDeviceConfiguration8(bool activeConfigurationIsEpic, bool activeSigningMethodIsSphere)
         {
-            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot8, activeConfigurationIsEpic);
+            return LockDeviceConfiguration(BinaryStatusObject.configBundlesSlot8, activeConfigurationIsEpic, activeSigningMethodIsSphere);
         }
 
         public int UnlockDeviceConfiguration()
@@ -956,7 +1013,8 @@ namespace Devices.Verifone.VIPA
             return vipaResponse;
         }
 
-        public int UpdateIdleScreen(string deviceModel)
+        private int IdleScreenUpdate(Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)> configObject,
+            string deviceModel, bool activeSigningMethodIsSphere)
         {
             (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
@@ -966,11 +1024,26 @@ namespace Devices.Verifone.VIPA
 
             if (IsEngageDevice)
             {
-                foreach (var configFile in BinaryStatusObject.RaptorIdleScreenTGZ)
+                foreach (var configFile in configObject)
                 {
                     // search for partial matches in P200 vs P200Plus
                     if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
                     {
+                        // validate signing method
+                        if (activeSigningMethodIsSphere)
+                        {
+                            if (!configFile.Value.fileName.StartsWith("sphere"))
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (!configFile.Value.fileName.StartsWith("verifone"))
+                            {
+                                continue;
+                            }
+                        }
                         string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
                         if (FindEmbeddedResourceByName(configFile.Value.fileName, targetFile))
                         {
@@ -1011,6 +1084,8 @@ namespace Devices.Verifone.VIPA
                             {
                                 File.Delete(targetFile);
                             }
+
+                            break;
                         }
                         else
                         {
@@ -1026,6 +1101,13 @@ namespace Devices.Verifone.VIPA
 
             return fileStatus.VipaResponse;
         }
+
+        public int UpdateIdleScreen(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId) => activeCustomerId switch
+        {
+            "199" => IdleScreenUpdate(BinaryStatusObject.RaptorIdleScreenTGZ_199, deviceModel, activeSigningMethodIsSphere),
+            "250" => IdleScreenUpdate(BinaryStatusObject.RaptorIdleScreenTGZ_250, deviceModel, activeSigningMethodIsSphere),
+            _ => throw new Exception($"Invalid customer identifier '{activeCustomerId}'.")
+        };
 
         public (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreen(string displayMessage)
         {
@@ -1056,6 +1138,27 @@ namespace Devices.Verifone.VIPA
             }
 
             return reboot24HourInformationObject;
+        }
+
+        public (string Timestamp, int VipaResponse) SetTerminalDateTime(string timestamp)
+        {
+            Console.WriteLine($"VIPA: SET TERMINAL DATE-TIME TO [{timestamp}]");
+            (string Timestamp, int VipaResponse) terminalDateTimeInformationObject = GetDeviceDateTime();
+
+            if (terminalDateTimeInformationObject.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                if (!timestamp.Equals(terminalDateTimeInformationObject.Timestamp))
+                {
+                    int vipaResponse = SetDeviceDateTime(timestamp);
+
+                    if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        terminalDateTimeInformationObject = GetDeviceDateTime();
+                    }
+                }
+            }
+
+            return terminalDateTimeInformationObject;
         }
 
         private (int vipaResponse, int vipaData) VerifyAmountScreen(string displayMessage)
@@ -1410,6 +1513,47 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed--;
 
             return device24HourStatus;
+        }
+
+        private (string Timestamp, int VipaResponse) GetDeviceDateTime()
+        {
+            CancelResponseHandlers();
+
+            ResponseTagsHandlerSubscribed ++;
+            ResponseTaglessHandler += GetTerminalDateTimeResponseHandler;
+
+            TerminalDateTimeInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
+
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDD, ins = 0x10, p1 = 0x01, p2 = 0x00 };
+            WriteSingleCmd(command);
+
+            (string Timestamp, int VipaResponse) deviceDateTimeStatus = TerminalDateTimeInformation.Task.Result;
+
+            ResponseTaglessHandler -= GetTerminalDateTimeResponseHandler;
+            ResponseTagsHandlerSubscribed --;
+
+            return deviceDateTimeStatus;
+        }
+        
+        private int SetDeviceDateTime(string timestamp)
+        {
+            CancelResponseHandlers();
+
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
+
+            byte[] timestampData = Encoding.ASCII.GetBytes(timestamp);
+            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDD, ins = 0x10, p1 = 0x00, p2 = 0x00, data = timestampData };
+            WriteSingleCmd(command);
+
+            int deviceCommandResponseCode = ResponseCodeResult.Task.Result;
+
+            ResponseTagsHandler -= ResponseCodeHandler;
+            ResponseTagsHandlerSubscribed--;
+
+            return deviceCommandResponseCode;
         }
 
         #endregion --- VIPA commands ---
@@ -1867,6 +2011,25 @@ namespace Devices.Verifone.VIPA
 
             // command must always be processed
             Reboot24HourInformation?.TrySetResult((deviceResponse, responseCode));
+        }
+
+        public void GetTerminalDateTimeResponseHandler(byte[] data, int responseCode, bool cancelled = false)
+        {
+            if (cancelled)
+            {
+                TerminalDateTimeInformation?.TrySetResult((null, responseCode));
+                return;
+            }
+
+            string deviceResponse = string.Empty;
+
+            if (responseCode == (int)VipaSW1SW2Codes.Success && data?.Length > 0)
+            {
+                deviceResponse = Encoding.UTF8.GetString(data);
+            }
+
+            // command must always be processed
+            TerminalDateTimeInformation?.TrySetResult((deviceResponse, responseCode));
         }
 
         #endregion --- response handlers ---

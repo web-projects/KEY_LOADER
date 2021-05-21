@@ -73,3 +73,4 @@ This an application to load HMAC KEYS.
 * 20210419 - V1 EMV Signed Configuration Packages 
 * 20210503 - Fixed TAG 9F0D reporting
 * 20210518 - Target Build 0.47
+* 20210520 - Added device signed option: Sphere and Verifone-DEV

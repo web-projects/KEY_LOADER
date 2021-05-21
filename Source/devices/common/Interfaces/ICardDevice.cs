@@ -58,5 +58,6 @@ namespace Devices.Common.Interfaces
         LinkRequest UpdateIdleScreen(LinkRequest linkRequest);
         LinkRequest DisplayCustomScreen(LinkRequest linkRequest);
         LinkRequest Reboot24Hour(LinkRequest linkRequest);
+        LinkRequest SetTerminalDateTime(LinkRequest linkRequest);
     }
 }

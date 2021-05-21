@@ -51,6 +51,10 @@ namespace Devices.Verifone
 
         string ConfigurationPackageActive { get => deviceSectionConfig?.Verifone?.ConfigurationPackageActive; }
 
+        string SigningMethodActive { get => deviceSectionConfig?.Verifone?.SigningMethodActive; }
+
+        string ActiveCustomerId { get => deviceSectionConfig?.Verifone?.ActiveCustomerId; }
+
         public VerifoneDevice()
         {
 
@@ -333,6 +337,9 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
+
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
                         config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADEProductionSlot);
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
@@ -361,7 +368,7 @@ namespace Devices.Verifone
                             }
 
                             // validate configuration
-                            int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                            int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
@@ -382,7 +389,7 @@ namespace Devices.Verifone
                                 Console.WriteLine($"DEVICE: VSS SLOT NUMBER  ={config.securityConfigurationObject.VSSHostId - 0x01}");
                                 Console.WriteLine($"DEVICE: ONLINE PIN KSN   ={config.securityConfigurationObject.OnlinePinKSN}");
                                 // validate configuration
-                                int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                                int vipaResponse = vipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                                 if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                                 {
                                     Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
@@ -423,18 +430,20 @@ namespace Devices.Verifone
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
                         int vipaResponse = (int)VipaSW1SW2Codes.Failure;
-                        
+
                         bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
                         bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
                         if (activePackageIsEpic)
                         {
                             //vipaResponse = vipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                            vipaResponse = vipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                            vipaResponse = vipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                         }
                         else if (activePackageIsNJT)
                         {
-                            vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                            vipaResponse = vipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                         }
                         else
                         {
@@ -559,8 +568,11 @@ namespace Devices.Verifone
                     {
                         bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
                         bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        int vipaResponse = vipaDevice.LockDeviceConfiguration0(activePackageIsEpic);
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration0(activePackageIsEpic, activeSigningMethodIsSphere);
+
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
@@ -611,8 +623,11 @@ namespace Devices.Verifone
                     {
                         bool activePackageIsEpic = ConfigurationPackageActive.Equals("EPIC");
                         bool activePackageIsNJT = ConfigurationPackageActive.Equals("NJT");
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        int vipaResponse = vipaDevice.LockDeviceConfiguration8(activePackageIsEpic);
+                        int vipaResponse = vipaDevice.LockDeviceConfiguration8(activePackageIsEpic, activeSigningMethodIsSphere);
+
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: CONFIGURATION LOCKED SUCCESSFULLY\n");
@@ -818,40 +833,50 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = vipaDevice.UpdateIdleScreen(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        if (vipaResponse == (int)VipaSW1SW2Codes.Success)
+                        try
                         {
-                            Console.WriteLine($"DEVICE: IDLE SCREEN CONFIGURATION UPDATED SUCCESSFULLY\n");
+                            int vipaResponse = vipaDevice.UpdateIdleScreen(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere, ActiveCustomerId);
 
-                            // TGZ files require REBOOT
-                            //Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                            //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
-
-                            //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                            //{
-                            //    Console.WriteLine("SUCCESS!");
-                            //}
-
-                            Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
-                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
-
-                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine("SUCCESS!");
+                                Console.WriteLine($"DEVICE: IDLE SCREEN CONFIGURATION UPDATED SUCCESSFULLY\n");
+
+                                // TGZ files require REBOOT
+                                //Console.Write("DEVICE: RELOADING CONFIGURATION...");
+                                //(DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceExtendedReset();
+
+                                //if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                //{
+                                //    Console.WriteLine("SUCCESS!");
+                                //}
+
+                                Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = vipaDevice.DeviceCommandReset();
+
+                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    Console.WriteLine("SUCCESS!");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                }
+                            }
+                            else if (vipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                            {
+                                Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", vipaResponse));
                             }
                             else
                             {
-                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                                Console.WriteLine(string.Format("DEVICE: FAILED IDLE SCREEN CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
                             }
                         }
-                        else if (vipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                        catch (Exception e)
                         {
-                            Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", vipaResponse));
-                        }
-                        else
-                        {
-                            Console.WriteLine(string.Format("DEVICE: FAILED IDLE SCREEN CONFIGURATION REQUEST WITH ERROR=0x{0:X4}\n", vipaResponse));
+                            Console.WriteLine($"UPDATE IDLE SCREEN COMMAND ERROR=[{e.Message}]");
                         }
                     }
                 }
@@ -958,6 +983,53 @@ namespace Devices.Verifone
                                     Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
                                 }
                                 vipaDevice.DeviceReboot();
+                            }
+                            else
+                            {
+                                Console.WriteLine($"FAILURE - INCORRECT TIMESTAMP SET: [{deviceResponse.Timestamp}]");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED 24 HOUR REBOOT REQUEST WITH ERROR=0x{0:X4}\n", deviceResponse.VipaResponse));
+                        }
+                    }
+                }
+            }
+
+            DeviceSetIdle();
+
+            return linkRequest;
+        }
+
+        public LinkRequest SetTerminalDateTime(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: 24 HOUR REBOOT for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = vipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        string timestamp = linkRequest.Actions.First().DeviceActionRequest.TerminalDateTime;
+                        (string Timestamp, int VipaResponse) deviceResponse = vipaDevice.SetTerminalDateTime(timestamp);
+                        if (deviceResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            // ignore seconds in timestamp comparison
+                            if (timestamp.Substring(0, 12).Equals(deviceResponse.Timestamp.Substring(0, 12)))
+                            {
+                                Console.WriteLine($"SUCCESS -TIMESTAMP SET: [{deviceResponse.Timestamp}]");
                             }
                             else
                             {

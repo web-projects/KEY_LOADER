@@ -14,5 +14,7 @@ namespace Devices.Common
         public byte ConfigurationHostId { get; set; } = VerifoneSettingsOnlinePin.ConfigurationHostId;
         public byte OnlinePinKeySetId { get; set; } = VerifoneSettingsOnlinePin.OnlinePinKeySetId;
         public string ConfigurationPackageActive { get; set; }
+        public string SigningMethodActive { get; set; }
+        public string ActiveCustomerId { get; set; }
     }
 }

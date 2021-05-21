@@ -3,11 +3,10 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
-VERSION.047.00 (05/20/2021)
+VERSION.047.00 (05/21/2021)
 
-1. KIF EMV CONFIGURATIONS
-2. SPHERE IDLE IMAGES
-3. SLOT SWITCH
+1. Device signing option: Sphere or Verifone-DEV
+2. KIF EMV Configuration Signed Packages in TGZ format.
 
 -------------------------------------------------------------------------------
 VERSION.046.00 (05/10/2021)
