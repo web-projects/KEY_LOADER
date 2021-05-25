@@ -339,24 +339,24 @@ namespace Devices.Verifone.Helpers
         public const string ATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
         // VIPA 6.8.2.11 CONFIGURATIONS
         // ---------- SPHERE SIGNED
-        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_11 = "sphere_VIPA6.8.2.11_emv_FD_attended_210519.tgz";
-        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "B3CAD655466C78EB46445A4567518D11";
-        public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF8E;
+        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_11 = "sphere_VIPA6.8.2.11_emv_FD_attended_210525.tgz";
+        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "23D42285BE93AE83EE8ED6FA196D63DE";
+        public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FCAE;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_11 = "verifone_VIPA6.8.2.11_emv_FD_attended_210519.tgz";
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "B3CAD655466C78EB46445A4567518D11";
-        public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF8E;
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_11 = "verifone_VIPA6.8.2.11_emv_FD_attended_210525.tgz";
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "DA3C795230AD9C5469D80624B19E1E8C";
+        public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FC56;
 
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string ATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
         // ---------- SPHERE SIGNED
-        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_17 = "sphere_VIPA6.8.2.17_emv_FD_attended_210520.tgz";
-        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "456D8AB4DE8C9F1D52E9C2BCD2628D6F";
-        public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FF93;
+        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_17 = "sphere_VIPA6.8.2.17_emv_FD_attended_210525.tgz";
+        public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "47E07C6302B84BC5E2007DD397E3ACB4";
+        public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FD12;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_17 = "verifone_VIPA6.8.2.17_emv_FD_attended_210520.tgz";
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "456D8AB4DE8C9F1D52E9C2BCD2628D6F";
-        public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FF93;
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_17 = "verifone_VIPA6.8.2.17_emv_FD_attended_210525.tgz";
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "E9323D5178874E2EE24FB7E21476C49E";
+        public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FD84;
 
         // UNATTENDED TERMINAL
         // VIPA 6.8.2.11 CONFIGURATIONS
