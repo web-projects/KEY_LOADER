@@ -91,7 +91,7 @@ namespace Devices.Verifone
             if (vipaDevice != null)
             {
                 Console.WriteLine($"\r\nACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
-                string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "VSS" : "IPP";
+                string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.DUKPTEngineIPP ? "IPP" : "VSS";
                 Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
                 vipaDevice.LoadDeviceSectionConfig(deviceSectionConfig);
             }
@@ -350,16 +350,16 @@ namespace Devices.Verifone
                             Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN____={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
                             if (config.securityConfigurationObject.SRedCardKSN != null)
                             {
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK KEY_ID_={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK TRSM ID={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID_={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
                             }
 
                             config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN____={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK KEY_ID_={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber} BDK TRSM ID={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID_={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6) ?? "[ *** NOT FOUND *** ]"}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5) ?? "[ *** NOT FOUND *** ]"}");
                             }
                             Console.WriteLine($"DEVICE: ADE SLOT NUMBER___=0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
                             config = vipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
@@ -392,13 +392,20 @@ namespace Devices.Verifone
                             {
                                 if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
                                 {
-                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_=[ *** NOT FOUND *** ]");
+                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_=[ *** NOT SET *** ]");
                                 }
                                 else
                                 {
-                                    string rebootDateTimeStamp = string.Format("{0}:{1}:{2}",
-                                    reboot24Hour.Timestamp.Substring(0, 2), reboot24Hour.Timestamp.Substring(2, 2), reboot24Hour.Timestamp.Substring(4, 2));
-                                    Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___={rebootDateTimeStamp}");
+                                    if (string.IsNullOrEmpty(reboot24Hour.Timestamp) || reboot24Hour.Timestamp.Length < 6)
+                                    {
+                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___=[ *** NOT SET *** ]");
+                                    }
+                                    else
+                                    { 
+                                        string rebootDateTimeStamp = string.Format("{0}:{1}:{2}",
+                                            reboot24Hour.Timestamp.Substring(0, 2), reboot24Hour.Timestamp.Substring(2, 2), reboot24Hour.Timestamp.Substring(4, 2));
+                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___={rebootDateTimeStamp}");
+                                    }
                                 }
                             }
 
