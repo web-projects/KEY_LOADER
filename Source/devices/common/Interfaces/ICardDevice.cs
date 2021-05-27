@@ -46,8 +46,10 @@ namespace Devices.Common.Interfaces
         LinkRequest GetEMVKernelChecksum(LinkRequest linkRequest);
         LinkRequest GetSecurityConfiguration(LinkRequest linkRequest);
         LinkRequest AbortCommand(LinkRequest linkRequest);
+        LinkRequest VIPARestart(LinkRequest linkRequest);
         LinkRequest ResetDevice(LinkRequest linkRequest);
         LinkRequest RebootDevice(LinkRequest linkRequest);
+        LinkRequest DeviceExtendedReset(LinkRequest linkRequest);
         LinkRequest Configuration(LinkRequest linkRequest);
         LinkRequest FeatureEnablementToken(LinkRequest linkRequest);
         LinkRequest LockDeviceConfiguration0(LinkRequest linkRequest);

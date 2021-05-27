@@ -21,6 +21,8 @@ namespace Devices.Verifone.VIPA
 
         bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "");
 
+        (DeviceInfoObject deviceInfoObject, int VipaResponse) VIPARestart();
+
         (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceCommandReset();
 
         (DeviceInfoObject deviceInfoObject, int VipaResponse) DeviceExtendedReset();

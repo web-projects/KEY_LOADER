@@ -45,6 +45,11 @@ namespace StateMachine.State.Enums
         ResetCommand,
 
         /// <summary>
+        /// Represents a state when DAL requests device to restart VIPA
+        /// </summary>
+        VIPARestart,
+
+        /// <summary>
         /// Represents a state when DAL updates HMAC keys to the device
         /// </summary>
         UpdateHMACKeys,
@@ -58,6 +63,11 @@ namespace StateMachine.State.Enums
         /// Represents a state when DAL reboots the device
         /// </summary>
         RebootDevice,
+
+        /// <summary>
+        /// Represents a state when DAL request an extended reset from the device
+        /// </summary>
+        DeviceExtendedReset,
 
         /// <summary>
         /// Represents a state when DAL updates Payment workflow configuration files on the device

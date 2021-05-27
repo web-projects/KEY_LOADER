@@ -48,7 +48,21 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeVIPARestartStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
         private static DeviceSubWorkflowState ComputeDeviceRebootStateTransition(bool exception) =>
+            exception switch
+            {
+                true => SanityCheck,
+                false => SanityCheck
+            };
+
+        private static DeviceSubWorkflowState ComputeDeviceExtendedResetStateTransition(bool exception) =>
             exception switch
             {
                 true => SanityCheck,
@@ -155,7 +169,9 @@ namespace StateMachine.State.SubWorkflows
                 GetSecurityConfiguration => ComputeGetSecurityConfigurationStateTransition(exception),
                 AbortCommand => ComputeDeviceAbortStateTransition(exception),
                 ResetCommand => ComputeDeviceResetStateTransition(exception),
+                VIPARestart => ComputeVIPARestartStateTransition(exception),
                 RebootDevice => ComputeDeviceRebootStateTransition(exception),
+                DeviceExtendedReset => ComputeDeviceExtendedResetStateTransition(exception),
                 Configuration => ComputeConfigurationStateTransition(exception),
                 FeatureEnablementToken => ComputeFeatureEnablementTokenStateTransition(exception),
                 LockDeviceConfig0 => ComputeLockDeviceConfig0StateTransition(exception),

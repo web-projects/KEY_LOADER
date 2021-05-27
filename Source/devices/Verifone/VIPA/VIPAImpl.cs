@@ -154,6 +154,13 @@ namespace Devices.Verifone.VIPA
             serialConnection?.WriteRaw(buffer);
         }
 
+        private void SendVipaCommand(VIPACommandType commandType, byte p1, byte p2, byte[] data = null, byte nad = 0x1, byte pcb = 0x0)
+        {
+            Debug.WriteLine($"Send VIPA Command:[{commandType}]");
+            VIPACommand command = new VIPACommand(commandType) { nad = nad, pcb = pcb, p1 = p1, p2 = p2, data = data };
+            WriteSingleCmd(command);
+        }
+
         #region --- VIPA commands ---
         public bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "")
         {
@@ -162,8 +169,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD2, ins = 0x01, p1 = (byte)displayMessageValue, p2 = (byte)(enableBacklight ? 0x01 : 0x00), data = Encoding.ASCII.GetBytes(customMessage) };
-            WriteSingleCmd(command);   // Display [D2, 01]
+            SendVipaCommand(VIPACommandType.Display, (byte)displayMessageValue, (byte)(enableBacklight ? 0x01 : 0x00), Encoding.ASCII.GetBytes(customMessage));
 
             int displayCommandResponseCode = ResponseCodeResult.Task.Result;
 
@@ -183,14 +189,37 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            Debug.WriteLine(ConsoleMessages.AbortCommand.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0xFF, p1 = 0x00, p2 = 0x00 };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.Abort, 0x00, 0x00);
 
             deviceResponse = ((int)VipaSW1SW2Codes.Success, ResponseCodeResult.Task.Result);
 
             ResponseTagsHandler -= ResponseCodeHandler;
             ResponseTagsHandlerSubscribed--;
+
+            return deviceResponse;
+        }
+
+        public (DeviceInfoObject deviceInfoObject, int VipaResponse) VIPARestart()
+        {
+            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
+
+            // abort previous user entries in progress
+            (int VipaData, int VipaResponse) vipaResult = DeviceCommandAbort();
+
+            if (vipaResult.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                DeviceIdentifier = new TaskCompletionSource<(DeviceInfoObject deviceInfoObject, int VipaResponse)>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+                ResponseTagsHandlerSubscribed++;
+                ResponseTagsHandler += GetDeviceInfoResponseHandler;
+
+                SendVipaCommand(VIPACommandType.ResetDevice, 0x02, 0x08);
+
+                deviceResponse = DeviceIdentifier.Task.Result;
+
+                ResponseTagsHandler -= GetDeviceInfoResponseHandler;
+                ResponseTagsHandlerSubscribed--;
+            }
 
             return deviceResponse;
         }
@@ -209,9 +238,7 @@ namespace Devices.Verifone.VIPA
                 ResponseTagsHandlerSubscribed++;
                 ResponseTagsHandler += GetDeviceInfoResponseHandler;
 
-                Debug.WriteLine(ConsoleMessages.DeviceReset.GetStringValue());
-                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x00, p2 = (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnAfterCardRemoval | ResetDeviceCfg.ReturnPinpadConfiguration) };
-                WriteSingleCmd(command);   // Device Info [D0, 00]
+                SendVipaCommand(VIPACommandType.ResetDevice, 0x00, (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnAfterCardRemoval | ResetDeviceCfg.ReturnPinpadConfiguration));
 
                 deviceResponse = DeviceIdentifier.Task.Result;
 
@@ -245,8 +272,7 @@ namespace Devices.Verifone.VIPA
                 // Bit  5 - 0 — ‘Immediate’ reset, 1 — Card Removal delayed reset
                 // Bit  6 - 1 — Do not add any information in the response, except serial number if Bit 1 is set.
                 // Bit  7 - 0 — Do not return PinPad configuration, 1 — return PinPad configuration (warning: it can take a few seconds)
-                // Bit  8 - 1 — Add V/OS components information (Vault, OpenProtocol, OS_SRED, AppManager) to
-                // response (V/OS only).
+                // Bit  8 - 1 — Add V/OS components information (Vault, OpenProtocol, OS_SRED, AppManager) to response (V/OS only).
                 // Bit  9 – 1 - Force contact EMV configuration reload
                 // Bit 10 – 1 – Force contactless EMV configuration reload
                 // Bit 11 – 1 – Force contactless CAPK reload
@@ -262,16 +288,14 @@ namespace Devices.Verifone.VIPA
                         Tag = new byte[] { 0xE0 },
                         InnerTags = new List<TLVImpl>
                         {
-                            new TLVImpl(new byte[] { 0xDF, 0xED, 0x0D }, new byte[] { 0x02, 0x0F })
+                            new TLVImpl(new byte[] { 0xDF, 0xED, 0x0D }, new byte[] { 0x0F, 0x0F })
                         }
                     }
                 };
 
                 byte[] dataForResetData = TLVImpl.Encode(dataForReset);
 
-                Debug.WriteLine(ConsoleMessages.DeviceExtendedReset.GetStringValue());
-                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x0A, p1 = 0x00, p2 = 0x00, data = dataForResetData };
-                WriteSingleCmd(command);   // Device Info [D0, 00]
+                SendVipaCommand(VIPACommandType.ExtendedSoftwareResetDevice, 0x00, 0x00, dataForResetData);
 
                 deviceResponse = DeviceIdentifier.Task.Result;
 
@@ -290,9 +314,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += DeviceResetResponseHandler;
 
-            Debug.WriteLine(ConsoleMessages.RebootDevice.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x01, p2 = 0x03 };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.ResetDevice, 0x01, 0x03);
 
             deviceResponse = DeviceResetConfiguration.Task.Result;
 
@@ -309,9 +331,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            Debug.WriteLine(ConsoleMessages.RebootDevice.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x00, p1 = 0x01, p2 = 0x00 };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.ResetDevice, 0x01, 0x00);
 
             ResponseCodeResult = new TaskCompletionSource<int>();
 
@@ -408,8 +428,7 @@ namespace Devices.Verifone.VIPA
             };
             var aidRequestedTransactionData = TLVImpl.Encode(aidRequestedTransaction);
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDE, ins = 0x01, p1 = 0x00, p2 = 0x00, data = aidRequestedTransactionData };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.GetEMVHashValues, 0x00, 0x00, aidRequestedTransactionData);
 
             var deviceKernelConfigurationInfo = DeviceKernelConfiguration.Task.Result;
 
@@ -428,9 +447,7 @@ namespace Devices.Verifone.VIPA
 
             DeviceSecurityConfiguration = new TaskCompletionSource<(SecurityConfigurationObject securityConfigurationObject, int VipaResponse)>();
 
-            System.Diagnostics.Debug.WriteLine(ConsoleMessages.GetSecurityConfiguration.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x11, p1 = hostID, p2 = vssSlot };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.GetSecurityConfiguration, hostID, vssSlot);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
 
@@ -970,8 +987,7 @@ namespace Devices.Verifone.VIPA
             };
             var dataForHMACData = TLVImpl.Encode(dataForHMAC);
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = dataForHMACData };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.GenerateHMAC, 0x00, 0x00, dataForHMACData);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
 
@@ -1210,8 +1226,7 @@ namespace Devices.Verifone.VIPA
             };
             byte[] customScreenDataData = TLVImpl.Encode(customScreenData);
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD2, ins = 0x02, p1 = 0x00, p2 = 0x01, data = customScreenDataData };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.DisplayHTML, 0x00, 0x01, customScreenDataData);
 
             int displayCommandResponseCode = ResponseCodeResult.Task.Result;
 
@@ -1231,8 +1246,7 @@ namespace Devices.Verifone.VIPA
                 // Bit 0 - Enter, Cancel, Clear keys
                 // Bit 1 - function keys
                 // Bit 2 - numeric keys
-                command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x61, p1 = 0x07, p2 = 0x00 };
-                WriteSingleCmd(command);
+                SendVipaCommand(VIPACommandType.KeyboardStatus, 0x07, 0x00);
 
                 LinkDALRequestIPA5Object cardInfo = null;
 
@@ -1310,9 +1324,7 @@ namespace Devices.Verifone.VIPA
 
             byte[] dataForHMACData = TLVImpl.Encode(dataForHMAC);
 
-            Debug.WriteLine(ConsoleMessages.UpdateHMACKeys.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x22, p1 = 0x00, p2 = 0x00, data = dataForHMACData };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.GenerateHMAC, 0x00, 0x00, dataForHMACData);
 
             var deviceSecurityConfigurationInfo = DeviceSecurityConfiguration.Task.Result;
 
@@ -1329,9 +1341,7 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            Debug.WriteLine(ConsoleMessages.UpdateHMACKeys.GetStringValue());
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xC4, ins = 0x0A, p1 = keyId, p2 = 0x01, data = dataForHMACData };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.UpdateKey, keyId, 0x01, dataForHMACData);
 
             int vipaResponse = ResponseCodeResult.Task.Result;
 
@@ -1378,8 +1388,8 @@ namespace Devices.Verifone.VIPA
                 byte[] fileInformationData = TLVImpl.Encode(fileInformation);
 
                 DeviceBinaryStatusInformation = new TaskCompletionSource<(BinaryStatusObject binaryStatusObject, int VipaResponse)>();
-                VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xA5, p1 = 0x05, p2 = 0x81, data = fileInformationData };
-                WriteSingleCmd(command);
+
+                SendVipaCommand(VIPACommandType.StreamUpload, 0x05, 0x81, fileInformationData);
 
                 // Tag 6F with size and checksum is returned on success
                 deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
@@ -1423,8 +1433,7 @@ namespace Devices.Verifone.VIPA
 
             var data = Encoding.ASCII.GetBytes(fileName);
             byte reportMD5 = 0x80;
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xC0, p1 = 0x00, p2 = reportMD5, data = Encoding.ASCII.GetBytes(fileName) };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.GetBinaryStatus, 0x00, reportMD5, Encoding.ASCII.GetBytes(fileName));
 
             var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
 
@@ -1446,9 +1455,8 @@ namespace Devices.Verifone.VIPA
 
             var data = Encoding.ASCII.GetBytes(fileName);
 
-            // Bit 2:  1 - Selection by DF name
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xA4, p1 = 0x04, p2 = 0x00, data = Encoding.ASCII.GetBytes(fileName) };
-            WriteSingleCmd(command);
+            // P1 Bit 2:  1 - Selection by DF name
+            SendVipaCommand(VIPACommandType.SelectFile, 0x04, 0x00, Encoding.ASCII.GetBytes(fileName));
 
             var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;
 
@@ -1493,8 +1501,7 @@ namespace Devices.Verifone.VIPA
 
             Reboot24HourInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x24, p1 = 0x00, p2 = 0x00 };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.Terminal24HourReboot, 0x00, 0x00);
 
             var device24HourStatus = Reboot24HourInformation.Task.Result;
 
@@ -1514,8 +1521,8 @@ namespace Devices.Verifone.VIPA
             Reboot24HourInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
 
             byte[] timestampForRebootData = Encoding.ASCII.GetBytes(timestamp);
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xD0, ins = 0x24, p1 = 0x00, p2 = 0x00, data = timestampForRebootData };
-            WriteSingleCmd(command);
+
+            SendVipaCommand(VIPACommandType.Terminal24HourReboot, 0x00, 0x00, timestampForRebootData);
 
             var device24HourStatus = Reboot24HourInformation.Task.Result;
 
@@ -1534,8 +1541,7 @@ namespace Devices.Verifone.VIPA
 
             TerminalDateTimeInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
 
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDD, ins = 0x10, p1 = 0x01, p2 = 0x00 };
-            WriteSingleCmd(command);
+            SendVipaCommand(VIPACommandType.TerminalSetGetDataTime, 0x01, 0x00);
 
             (string Timestamp, int VipaResponse) deviceDateTimeStatus = TerminalDateTimeInformation.Task.Result;
 
@@ -1555,8 +1561,8 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandler += ResponseCodeHandler;
 
             byte[] timestampData = Encoding.ASCII.GetBytes(timestamp);
-            VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0xDD, ins = 0x10, p1 = 0x00, p2 = 0x00, data = timestampData };
-            WriteSingleCmd(command);
+
+            SendVipaCommand(VIPACommandType.TerminalSetGetDataTime, 0x00, 0x00, timestampData);
 
             int deviceCommandResponseCode = ResponseCodeResult.Task.Result;
 

@@ -741,6 +741,38 @@ namespace Devices.Verifone
             return linkRequest;
         }
 
+        public LinkRequest VIPARestart(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: VIPA RESTART with SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) response = vipaDevice.VIPARestart();
+
+                    if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        Console.WriteLine($"DEVICE: VIPA RESTART REQUEST RECEIVED SUCCESSFULLY");
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Format("DEVICE: FAILED VIPA RESTART REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
         public LinkRequest ResetDevice(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
@@ -778,6 +810,38 @@ namespace Devices.Verifone
                         {
                             Console.WriteLine(string.Format("DEVICE: FAILED REBOOT REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
                         }
+                    }
+                }
+            }
+
+            return linkRequest;
+        }
+
+        public LinkRequest DeviceExtendedReset(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine($"DEVICE[{DeviceInformation.ComPort}]: DEVICE EXTENDED RESET with SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+
+            if (vipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    vipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = vipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) response = vipaDevice.DeviceExtendedReset();
+
+                    if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        Console.WriteLine($"DEVICE: EXTENDED RESET REQUEST RECEIVED SUCCESSFULLY");
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Format("DEVICE: FAILED EXTENDED RESET REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
                     }
                 }
             }

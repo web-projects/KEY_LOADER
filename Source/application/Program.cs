@@ -120,7 +120,8 @@ namespace DEVICE_CORE
                     case ConsoleKey.R:
                     {
                         //Console.WriteLine("\r\nCOMMAND: [REBOOT]");
-                        await application.Command(LinkDeviceActionType.RebootDevice).ConfigureAwait(false);
+                        //await application.Command(LinkDeviceActionType.RebootDevice).ConfigureAwait(false);
+                        await application.Command(LinkDeviceActionType.VIPARestart).ConfigureAwait(false);
                         break;
                     }
                     case ConsoleKey.S:
@@ -160,6 +161,11 @@ namespace DEVICE_CORE
                     {
                         //Console.WriteLine("\r\nCOMMAND: [LOCK]");
                         await application.Command(LinkDeviceActionType.LockDeviceConfig8).ConfigureAwait(false);
+                        break;
+                    }
+                    case ConsoleKey.X:
+                    {
+                        await application.Command(LinkDeviceActionType.DeviceExtendedReset).ConfigureAwait(false);
                         break;
                     }
                     default:
