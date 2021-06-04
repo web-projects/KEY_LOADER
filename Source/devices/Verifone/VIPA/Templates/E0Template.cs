@@ -36,9 +36,9 @@
         // Display Text
         public static byte[] DisplayText = new byte[] { 0xDF, 0x81, 0x04 };
         // HTML support
-        public static byte[] HTMLResourceName = new byte[] { 0xDF, 0xAA, 0x01 };
-        public static byte[] HTMLKeyName = new byte[] { 0xDF, 0xAA, 0x02 };
-        public static byte[] HTMLValueName = new byte[] { 0xDF, 0xAA, 0x03 };
-        public static byte[] HTMLKeyPress = new byte[] { 0xDF, 0xAA, 0x05 };
+        public static readonly uint HTMLResourceName = 0xDFAA01;
+        public static readonly uint HTMLKeyName = 0xDFAA02;
+        public static readonly uint HTMLValueName = 0xDFAA03;
+        public static readonly uint HTMLKeyPress = 0xDFAA05;
     }
 }

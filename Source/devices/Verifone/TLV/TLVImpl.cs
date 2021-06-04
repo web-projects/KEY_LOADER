@@ -7,6 +7,11 @@ namespace Devices.Verifone.TLV
 {
     public class TLVImpl
     {
+        public byte[] Tag { get; set; }
+        public byte[] Data { get; set; }     // Value should be null if innerTags is populated
+
+        public List<TLVImpl> InnerTags { get; set; } // Value should be null if data is populated
+
         public TLVImpl()            //This will be used for more complex ones (with inner tags)
         {
         }
@@ -17,12 +22,13 @@ namespace Devices.Verifone.TLV
             this.Data = data;
         }
 
-        public byte[] Tag { get; set; }
-        public byte[] Data { get; set; }     // Value should be null if innerTags is populated
+        public TLVImpl(uint tag, byte[] data) //For simple ones (no inner tags)
+        {
+            this.Tag = SplitUIntToByteArray(tag);
+            this.Data = data;
+        }
 
-        public List<TLVImpl> InnerTags { get; set; } // Value should be null if data is populated
-
-        public static List<TLVImpl> Decode(byte[] data, int startOffset = 0, int datalength = -1, List<byte[]> tagofTagsList = null)
+        public static List<TLVImpl> Decode(byte[] data, int startOffset = 0, int dataLength = -1, List<byte[]> tagofTagsList = null)
         {
             if (data == null)
             {
@@ -32,9 +38,9 @@ namespace Devices.Verifone.TLV
             List<TLVImpl> allTags = new List<TLVImpl>();
             int dataOffset = startOffset;
 
-            if (datalength == -1)
+            if (dataLength == -1)
             {
-                datalength = data.Length;
+                dataLength = data.Length;
             }
 
             if (tagofTagsList == null)
@@ -42,7 +48,7 @@ namespace Devices.Verifone.TLV
                 tagofTagsList = new List<byte[]>();
             }
 
-            while (dataOffset < datalength)
+            while (dataOffset < dataLength)
             {
                 int tagLength = 1;
                 int tagStartOffset = dataOffset;
@@ -284,6 +290,30 @@ namespace Devices.Verifone.TLV
             }
 
             return allBytes;
+        }
+
+        public static byte[] SplitUIntToByteArray(uint value)
+        {
+            //This is a lot faster than doing a loop (3s for 10M ops vs 5s for 10M ops using loops)
+            if (value <= 0xFF)
+                return new byte[] { (byte)value };
+            else if (value <= 0xFFFF)
+                return new byte[] { (byte)(value >> 8), (byte)(value & 0xFF) };
+            else if (value <= 0xFFFFFF)
+                return new byte[] { (byte)(value >> 16), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF) };
+            else
+                return new byte[] { (byte)(value >> 24), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF) };
+        }
+
+        private static uint CombineByteArray(ReadOnlySpan<byte> span)
+        {
+            uint result = 0;
+            for (int i = 0; i < span.Length; i++)
+            {
+                result += (uint)(span[i] << ((span.Length - i - 1) * 8));
+            }
+
+            return result;
         }
     }
 }

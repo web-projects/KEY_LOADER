@@ -1344,11 +1344,9 @@ namespace Devices.Verifone.VIPA
 
             if (commandResult.vipaResponse == (int)VipaSW1SW2Codes.Success)
             {
-                LinkDALRequestIPA5Object cardInfo = null;
-
                 do
                 {
-                    cardInfo = DeviceInteractionInformation.Task.Result.linkDALRequestIPA5Object;
+                    LinkDALRequestIPA5Object cardInfo = DeviceInteractionInformation.Task.Result.linkDALRequestIPA5Object;
                     commandResult.vipaResponse = DeviceInteractionInformation.Task.Result.VipaResponse;
 
                     if (cardInfo?.DALResponseData?.Status?.Equals("UserKeyPressed") ?? false)
@@ -2135,7 +2133,7 @@ namespace Devices.Verifone.VIPA
 
                     break;
                 }
-                else if (tag.Tag.SequenceEqual(E0Template.HTMLKeyPress))
+                else if (tag.Tag.SequenceEqual(TLVImpl.SplitUIntToByteArray(E0Template.HTMLKeyPress)))
                 {
                     cardResponse.DALResponseData = new LinkDALActionResponse
                     {
