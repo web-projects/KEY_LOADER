@@ -7,6 +7,7 @@ namespace Devices.Verifone.VIPA
     public enum VipaSW1SW2Codes
     {
         Success = 0x9000,
+        ResourceNotAvailable = 0x9f13,
         CLessTransactionFail = 0x9f33,
         CLessCardInField = 0x9f36,
         CommandCancelled = 0x9f41,

@@ -1017,7 +1017,40 @@ namespace Devices.Verifone
                         // Total..... (amount)| VERIFY AMOUNT| YES| NO
                         string displayMessage = $"VERIFY AMOUNT|Total.....${AmountToDollar(requestedAmount)}|YES|NO";
 
-                        (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) verifyAmountResponse = vipaDevice.DisplayCustomScreen(displayMessage);
+
+                        (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) verifyAmountResponse = vipaDevice.DisplayCustomScreenHTML(displayMessage);
+
+                        if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                        {
+                            Console.WriteLine("DEVICE: CUSTOM SCREEN EXECUTED SUCCESSFULLY - RESPONSE={0}\n", verifyAmountResponse.LinkActionRequestIPA5Object.DALResponseData.Value.Equals("1", StringComparison.OrdinalIgnoreCase) ? "YES" : "NO");
+                        }
+                        else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                        {
+                            Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                        }
+                        else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.ResourceNotAvailable)
+                        {
+                            verifyAmountResponse = vipaDevice.DisplayCustomScreen(displayMessage);
+
+                            if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            {
+                                Console.WriteLine("DEVICE: CUSTOM SCREEN EXECUTED SUCCESSFULLY - RESPONSE={0}\n", verifyAmountResponse.LinkActionRequestIPA5Object.DALResponseData.Value.Equals("1", StringComparison.OrdinalIgnoreCase) ? "YES" : "NO");
+                            }
+                            else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.DeviceNotSupported)
+                            {
+                                Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Format("DEVICE: FAILED DISPLAY CUSTOM SCREEN REQUEST WITH ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("DEVICE: FAILED DISPLAY CUSTOM SCREEN REQUEST WITH ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
+                        }
+
+                        /*(LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) verifyAmountResponse = vipaDevice.DisplayCustomScreen(displayMessage);
 
                         if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
@@ -1030,7 +1063,7 @@ namespace Devices.Verifone
                         else
                         {
                             Console.WriteLine(string.Format("DEVICE: FAILED DISPLAY CUSTOM SCREEN REQUEST WITH ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
-                        }
+                        }*/
                     }
                 }
             }

@@ -52,7 +52,9 @@ namespace Devices.Verifone.Helpers
             [StringValue("VIPA: UPDATE IDLE SCREEN")]
             UpdateIdleScreen,
             [StringValue("VIPA: DISPLAY CUSTOM SCREEN")]
-            DisplayCustomScreen
+            DisplayCustomScreen,
+            [StringValue("VIPA: DISPLAY CUSTOM SCREEN HTML")]
+            DisplayCustomScreenHTML,
         }
     }
 }

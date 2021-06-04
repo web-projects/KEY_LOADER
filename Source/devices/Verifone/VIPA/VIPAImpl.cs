@@ -41,11 +41,11 @@ namespace Devices.Verifone.VIPA
         private enum ResetDeviceCfg
         {
             ReturnSerialNumber = 1 << 0,
-            ReturnAfterCardRemoval = 1 << 1,
-            LeaveScreenDisplayUnchanged = 1 << 2,
-            SlideShowStartsNormalTiming = 1 << 3,
-            NoBeepDuringReset = 1 << 4,
-            ResetImmediately = 1 << 5,
+            ScreenDisplayState = 1 << 1,
+            SlideShowStartsNormalTiming = 1 << 2,
+            BeepDuringReset = 1 << 3,
+            ResetImmediately = 1 << 4,
+            NoAdditionalInformation = 1 << 5,
             ReturnPinpadConfiguration = 1 << 6,
             AddVOSComponentsInformation = 1 << 7
         }
@@ -213,7 +213,9 @@ namespace Devices.Verifone.VIPA
                 ResponseTagsHandlerSubscribed++;
                 ResponseTagsHandler += GetDeviceInfoResponseHandler;
 
-                SendVipaCommand(VIPACommandType.ResetDevice, 0x02, 0x08);
+                // VIPA restart with beep
+                byte p2 = (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ScreenDisplayState | ResetDeviceCfg.BeepDuringReset);
+                SendVipaCommand(VIPACommandType.ResetDevice, 0x02, p2);
 
                 deviceResponse = DeviceIdentifier.Task.Result;
 
@@ -238,7 +240,8 @@ namespace Devices.Verifone.VIPA
                 ResponseTagsHandlerSubscribed++;
                 ResponseTagsHandler += GetDeviceInfoResponseHandler;
 
-                SendVipaCommand(VIPACommandType.ResetDevice, 0x00, (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnAfterCardRemoval | ResetDeviceCfg.ReturnPinpadConfiguration));
+                SendVipaCommand(VIPACommandType.ResetDevice, 0x00,
+                    (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnPinpadConfiguration));
 
                 deviceResponse = DeviceIdentifier.Task.Result;
 
@@ -821,7 +824,7 @@ namespace Devices.Verifone.VIPA
                     string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
                     if (FindEmbeddedResourceByName(fileName, targetFile))
                     {
- 
+
                         fileStatus = PutFile(configFile.Value.fileName, targetFile);
                         if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                         {
@@ -1140,6 +1143,21 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
+        public (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreenHTML(string displayMessage)
+        {
+            Debug.WriteLine(ConsoleMessages.DisplayCustomScreenHTML.GetStringValue());
+
+            (int vipaResponse, int vipaData) verifyResult = VerifyAmountScreenHTML(displayMessage);
+            LinkDALRequestIPA5Object linkActionRequestIPA5Object = new LinkDALRequestIPA5Object()
+            {
+                DALResponseData = new LinkDALActionResponse()
+                {
+                    Value = verifyResult.vipaData.ToString()
+                }
+            };
+            return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
+        }
+
         public (string Timestamp, int VipaResponse) Get24HourReboot()
         {
             return GetPCIRebootTime();
@@ -1150,7 +1168,7 @@ namespace Devices.Verifone.VIPA
             Console.WriteLine($"VIPA: SET 24 HOUR REBOOT TO [{timestamp}]");
             (string Timestamp, int VipaResponse) reboot24HourInformationObject = GetPCIRebootTime();
 
-            if(reboot24HourInformationObject.VipaResponse == (int)VipaSW1SW2Codes.Success)
+            if (reboot24HourInformationObject.VipaResponse == (int)VipaSW1SW2Codes.Success)
             {
                 if (!timestamp.Equals(reboot24HourInformationObject.Timestamp))
                 {
@@ -1203,12 +1221,6 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed++;
             ResponseTagsHandler += ResponseCodeHandler;
 
-            byte[] screenTitle = Encoding.ASCII.GetBytes($"\t{messageFormat[0]}");
-            byte[] actualAmount = Encoding.ASCII.GetBytes($"\t{messageFormat[1]}");
-            byte[] skippedLine = Encoding.ASCII.GetBytes(" ");
-            byte[] optionYes = Encoding.ASCII.GetBytes($"\t1. {messageFormat[2]}");
-            byte[] optionNon = Encoding.ASCII.GetBytes($"\t2. {messageFormat[3]}");
-
             List<TLVImpl> customScreenData = new List<TLVImpl>
             {
                 new TLVImpl
@@ -1216,24 +1228,24 @@ namespace Devices.Verifone.VIPA
                     Tag = new byte[] { 0xE0 },
                     InnerTags = new List<TLVImpl>
                     {
-                        new TLVImpl(new byte[] { 0xDF, 0x81, 0x04 }, screenTitle),
-                        new TLVImpl(new byte[] { 0xDF, 0x81, 0x04 }, actualAmount),
-                        new TLVImpl(new byte[] { 0xDF, 0x81, 0x04 }, skippedLine),
-                        new TLVImpl(new byte[] { 0xDF, 0x81, 0x04 }, optionYes),
-                        new TLVImpl(new byte[] { 0xDF, 0x81, 0x04 }, optionNon)
+                        new TLVImpl(E0Template.DisplayText, Encoding.ASCII.GetBytes($"\t{messageFormat[0]}")),
+                        new TLVImpl(E0Template.DisplayText, Encoding.ASCII.GetBytes($"\t{messageFormat[1]}")),
+                        new TLVImpl(E0Template.DisplayText, Encoding.ASCII.GetBytes(" ")),
+                        new TLVImpl(E0Template.DisplayText, Encoding.ASCII.GetBytes($"\t1. {messageFormat[2]}")),
+                        new TLVImpl(E0Template.DisplayText, Encoding.ASCII.GetBytes($"\t2. {messageFormat[3]}"))
                     }
                 }
             };
             byte[] customScreenDataData = TLVImpl.Encode(customScreenData);
 
-            SendVipaCommand(VIPACommandType.DisplayHTML, 0x00, 0x01, customScreenDataData);
+            SendVipaCommand(VIPACommandType.DisplayText, 0x00, 0x01, customScreenDataData);
 
             int displayCommandResponseCode = ResponseCodeResult.Task.Result;
 
             ResponseTagsHandler -= ResponseCodeHandler;
             ResponseTagsHandlerSubscribed--;
 
-            (int vipaResponse, int vipaData) commandResult = ((int)VipaSW1SW2Codes.Failure, 0);
+            (int vipaResponse, int vipaData) commandResult = (displayCommandResponseCode, 0);
 
             if (displayCommandResponseCode == (int)VipaSW1SW2Codes.Success)
             {
@@ -1282,6 +1294,131 @@ namespace Devices.Verifone.VIPA
             }
 
             return commandResult;
+        }
+
+        private (int vipaResponse, int vipaData) VerifyAmountScreenHTML(string displayMessage)
+        {
+            CancelResponseHandlers();
+
+            string[] messageFormat = displayMessage.Split(new char[] { '|' });
+
+            if (messageFormat.Length != 4)
+            {
+                return ((int)VipaSW1SW2Codes.Failure, 0);
+            }
+
+            // Setup keyboard reader
+            if ((int)VipaSW1SW2Codes.Success != StartKeyboardReader())
+            {
+                return ((int)VipaSW1SW2Codes.Failure, 0);
+            }
+
+            byte[] htmlResource = Encoding.ASCII.GetBytes("mapp/verify_amount.html");
+            byte[] screenTitle = Encoding.ASCII.GetBytes($"\t{messageFormat[0]}");
+            byte[] actualAmount = Encoding.ASCII.GetBytes($"\t{messageFormat[1]}");
+            byte[] skippedLine = Encoding.ASCII.GetBytes(".");
+            byte[] optionYes = Encoding.ASCII.GetBytes($"\t1. {messageFormat[2]}");
+            byte[] optionNon = Encoding.ASCII.GetBytes($"\t2. {messageFormat[3]}");
+
+            List<TLVImpl> customScreenData = new List<TLVImpl>
+            {
+                new TLVImpl
+                {
+                    Tag = new byte[] { 0xE0 },
+                    InnerTags = new List<TLVImpl>
+                    {
+                        new TLVImpl(E0Template.HTMLResourceName, htmlResource),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("title")), new TLVImpl(E0Template.HTMLValueName, screenTitle),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item1")), new TLVImpl(E0Template.HTMLValueName, actualAmount),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item2")), new TLVImpl(E0Template.HTMLValueName, skippedLine),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item3")), new TLVImpl(E0Template.HTMLValueName, skippedLine),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("total")), new TLVImpl(E0Template.HTMLValueName, actualAmount),
+                    }
+                }
+            };
+            byte[] customScreenDataData = TLVImpl.Encode(customScreenData);
+
+            SendVipaCommand(VIPACommandType.DisplayHTML, 0x00, 0x01, customScreenDataData);
+
+            (int vipaResponse, int vipaData) commandResult = (ResponseCodeResult.Task.Result, 0);
+
+            if (commandResult.vipaResponse == (int)VipaSW1SW2Codes.Success)
+            {
+                LinkDALRequestIPA5Object cardInfo = null;
+
+                do
+                {
+                    cardInfo = DeviceInteractionInformation.Task.Result.linkDALRequestIPA5Object;
+                    commandResult.vipaResponse = DeviceInteractionInformation.Task.Result.VipaResponse;
+
+                    if (cardInfo?.DALResponseData?.Status?.Equals("UserKeyPressed") ?? false)
+                    {
+                        Debug.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
+                        Console.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
+                        // <O> == 1 : YES
+                        // <X> == 2 : NO
+                        if (cardInfo.DALResponseData.Value.Equals("KEY_1") || cardInfo.DALResponseData.Value.Equals("KEY_GREEN"))
+                        {
+                            commandResult.vipaData = 1;
+                        }
+                        else if (cardInfo.DALResponseData.Value.Equals("KEY_2") || cardInfo.DALResponseData.Value.Equals("KEY_RED"))
+                        {
+                            commandResult.vipaData = 0;
+                        }
+                        else
+                        {
+                            commandResult.vipaResponse = (int)VipaSW1SW2Codes.Failure;
+                            DeviceInteractionInformation = new TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)>();
+                        }
+                    }
+                } while (commandResult.vipaResponse == (int)VipaSW1SW2Codes.Failure);
+            }
+
+            // Stop keyboard reader
+            StopKeyboardReader();
+
+            return commandResult;
+        }
+
+        private int StartKeyboardReader()
+        {
+            CancelResponseHandlers();
+
+            ResponseCodeResult = new TaskCompletionSource<int>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += ResponseCodeHandler;
+
+            // Setup reader to accept user input
+            DeviceInteractionInformation = new TaskCompletionSource<(LinkDALRequestIPA5Object linkDALRequestIPA5Object, int VipaResponse)>();
+
+            ResponseTagsHandlerSubscribed++;
+            ResponseTagsHandler += GetDeviceInteractionKeyboardResponseHandler;
+
+            // collect response from user
+            // Bit 0 - Enter, Cancel, Clear keys
+            // Bit 1 - function keys
+            // Bit 2 - numeric keys
+            SendVipaCommand(VIPACommandType.KeyboardStatus, 0x07, 0x00);
+
+            return ResponseCodeResult.Task.Result;
+        }
+
+        private int StopKeyboardReader()
+        {
+            if (ResponseTagsHandlerSubscribed > 0)
+            {
+                SendVipaCommand(VIPACommandType.KeyboardStatus, 0x00, 0x00);
+
+                int response = DeviceInteractionInformation.Task.Result.VipaResponse;
+
+                ResponseTagsHandler -= GetDeviceInteractionKeyboardResponseHandler;
+                ResponseTagsHandlerSubscribed--;
+
+                return response;
+            }
+
+            return (int)VipaSW1SW2Codes.Failure;
         }
 
         private List<TLVImpl> FormatE0Tag(byte[] hmackey, byte[] generated_hmackey)
@@ -1536,7 +1673,7 @@ namespace Devices.Verifone.VIPA
         {
             CancelResponseHandlers();
 
-            ResponseTagsHandlerSubscribed ++;
+            ResponseTagsHandlerSubscribed++;
             ResponseTaglessHandler += GetTerminalDateTimeResponseHandler;
 
             TerminalDateTimeInformation = new TaskCompletionSource<(string Timestamp, int VipaResponse)>();
@@ -1546,11 +1683,11 @@ namespace Devices.Verifone.VIPA
             (string Timestamp, int VipaResponse) deviceDateTimeStatus = TerminalDateTimeInformation.Task.Result;
 
             ResponseTaglessHandler -= GetTerminalDateTimeResponseHandler;
-            ResponseTagsHandlerSubscribed --;
+            ResponseTagsHandlerSubscribed--;
 
             return deviceDateTimeStatus;
         }
-        
+
         private int SetDeviceDateTime(string timestamp)
         {
             CancelResponseHandlers();
@@ -1996,6 +2133,23 @@ namespace Devices.Verifone.VIPA
                         }
                     }
 
+                    break;
+                }
+                else if (tag.Tag.SequenceEqual(E0Template.HTMLKeyPress))
+                {
+                    cardResponse.DALResponseData = new LinkDALActionResponse
+                    {
+                        Status = "UserKeyPressed",
+                        Value = tag.Data[3] switch
+                        {
+                            0x00 => "KEY_2",
+                            0x1B => "KEY_RED",
+                            0x01 => "KEY_1",
+                            0x0D => "KEY_GREEEN",
+                            _ => "KEY_NONE"
+                        }
+                    };
+                    returnResponse = true;
                     break;
                 }
             }
