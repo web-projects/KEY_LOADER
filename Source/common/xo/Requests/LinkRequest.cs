@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using XO.Private;
 
 namespace XO.Requests
 {
@@ -7,5 +8,6 @@ namespace XO.Requests
         public string MessageID { get; set; }
         public int Timeout { get; set; }
         public List<LinkActionRequest> Actions { get; set; }
+        public LinkRequestIPA5Object LinkObjects { get; set; }
     }
 }

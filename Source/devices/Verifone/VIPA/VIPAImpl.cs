@@ -1158,6 +1158,74 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
+        public Dictionary<string, string> VIPAVersions()
+        {
+            Debug.WriteLine(ConsoleMessages.VIPAVersions.GetStringValue());
+
+            Dictionary<string, string> versions = new Dictionary<string, string>();
+
+            foreach (string filename in BinaryStatusObject.vipaVersions.Keys)
+            {
+                // assume version string is not found
+                string value = "NONE";
+                versions.Add(filename, value);
+
+                // check for access to the file
+                (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(filename);
+
+                // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+                if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                {
+                    //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                    continue;
+                }
+
+                // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+                if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                {
+                    //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                    continue;
+                }
+                else
+                {
+                    // Setup for FILE OPERATIONS
+                    fileStatus = SelectFileForOps(filename);
+                    if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                    {
+                        //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                        //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                        continue;
+                    }
+                    else
+                    {
+                        // Read File Contents
+                        fileStatus = ReadBinaryDataFromSelectedFile(0x00, (byte)fileStatus.binaryStatusObject.FileSize);
+                        if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                        {
+                            //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                            //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+
+                            // Clean up pool allocation, clearing the array
+                            if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
+                            {
+                                ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
+                            }
+                        }
+                        else
+                        {
+                            versions.Remove(filename, out value);
+                            versions.Add(filename, Encoding.UTF8.GetString(fileStatus.binaryStatusObject.ReadResponseBytes).Replace("\0", string.Empty));
+                        }
+                    }
+                }
+
+            }
+
+            return versions;
+        }
+
         public (string Timestamp, int VipaResponse) Get24HourReboot()
         {
             return GetPCIRebootTime();
@@ -1302,7 +1370,7 @@ namespace Devices.Verifone.VIPA
 
             string[] messageFormat = displayMessage.Split(new char[] { '|' });
 
-            if (messageFormat.Length != 4)
+            if (messageFormat.Length != 5)
             {
                 return ((int)VipaSW1SW2Codes.Failure, 0);
             }
@@ -1315,10 +1383,10 @@ namespace Devices.Verifone.VIPA
 
             byte[] htmlResource = Encoding.ASCII.GetBytes("mapp/verify_amount.html");
             byte[] screenTitle = Encoding.ASCII.GetBytes($"\t{messageFormat[0]}");
-            byte[] actualAmount = Encoding.ASCII.GetBytes($"\t{messageFormat[1]}");
-            byte[] skippedLine = Encoding.ASCII.GetBytes(".");
-            byte[] optionYes = Encoding.ASCII.GetBytes($"\t1. {messageFormat[2]}");
-            byte[] optionNon = Encoding.ASCII.GetBytes($"\t2. {messageFormat[3]}");
+            byte[] item1 = Encoding.ASCII.GetBytes($"\t{messageFormat[1]}");
+            byte[] item2 = Encoding.ASCII.GetBytes($"\t{messageFormat[2]}");
+            byte[] item3 = Encoding.ASCII.GetBytes($"\t{messageFormat[3]}");
+            byte[] totalAmount = Encoding.ASCII.GetBytes($"\t{messageFormat[4]}");
 
             List<TLVImpl> customScreenData = new List<TLVImpl>
             {
@@ -1329,10 +1397,10 @@ namespace Devices.Verifone.VIPA
                     {
                         new TLVImpl(E0Template.HTMLResourceName, htmlResource),
                         new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("title")), new TLVImpl(E0Template.HTMLValueName, screenTitle),
-                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item1")), new TLVImpl(E0Template.HTMLValueName, actualAmount),
-                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item2")), new TLVImpl(E0Template.HTMLValueName, skippedLine),
-                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item3")), new TLVImpl(E0Template.HTMLValueName, skippedLine),
-                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("total")), new TLVImpl(E0Template.HTMLValueName, actualAmount),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item1")), new TLVImpl(E0Template.HTMLValueName, item1),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item2")), new TLVImpl(E0Template.HTMLValueName, item2),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("item3")), new TLVImpl(E0Template.HTMLValueName, item3),
+                        new TLVImpl(E0Template.HTMLKeyName, Encoding.ASCII.GetBytes("total")), new TLVImpl(E0Template.HTMLValueName, totalAmount),
                     }
                 }
             };
@@ -2140,6 +2208,7 @@ namespace Devices.Verifone.VIPA
                         Status = "UserKeyPressed",
                         Value = tag.Data[3] switch
                         {
+                            // button actions as reported from HTML page
                             0x00 => "KEY_2",
                             0x1B => "KEY_RED",
                             0x01 => "KEY_1",

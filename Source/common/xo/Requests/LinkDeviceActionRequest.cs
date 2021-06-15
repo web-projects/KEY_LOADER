@@ -33,6 +33,7 @@ namespace XO.Requests
         UpdateIdleScreen,
         DisplayCustomScreen,
         Reboot24Hour,
-        SetTerminalDateTime
+        SetTerminalDateTime,
+        VIPAVersions
     }
 }

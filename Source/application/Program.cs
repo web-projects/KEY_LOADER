@@ -57,121 +57,142 @@ namespace DEVICE_CORE
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
 
             DisplayMenu();
-            ConsoleKey keypressed = GetKeyPressed(false);
+            ConsoleKeyInfo keypressed = GetKeyPressed(false);
 
-            while (keypressed != ConsoleKey.Q)
+            while (keypressed.Key != ConsoleKey.Q)
             {
                 bool redisplay = false;
 
-                switch (keypressed)
+                // Check for <ALT> key combinations
+                if ((keypressed.Modifiers & ConsoleModifiers.Alt) != 0)
                 {
-                    case ConsoleKey.M:
+#if DEBUG
+                    switch (keypressed.Key)
                     {
-                        Console.WriteLine("");
-                        DisplayMenu();
-                        break;
+                        case ConsoleKey.A:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [DISPLAY_CUSTOM_SCREEN]");
+                            await application.Command(LinkDeviceActionType.DisplayCustomScreen).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.D:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [DATETIME]");
+                            await application.Command(LinkDeviceActionType.SetTerminalDateTime).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.F:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
+                            await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.V:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [VERSION]");
+                            await application.Command(LinkDeviceActionType.VIPAVersions).ConfigureAwait(false);
+                            break;
+                        }
                     }
-                    case ConsoleKey.A:
+#endif
+                }
+                else
+                {
+                    switch (keypressed.Key)
                     {
-                        await application.Command(LinkDeviceActionType.DisplayCustomScreen).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.C:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
-                        await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.D:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [DATETIME]");
-                        await application.Command(LinkDeviceActionType.SetTerminalDateTime).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.F:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
-                        await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.H:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [24_HOUR_REBOOT]");
-                        await application.Command(LinkDeviceActionType.Reboot24Hour).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.I:
-                    {
-                        await application.Command(LinkDeviceActionType.UpdateIdleScreen).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.O:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
-                        await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.K:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [EMV-KERNEL]");
-                        await application.Command(LinkDeviceActionType.GetEMVKernelChecksum).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.R:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [REBOOT]");
-                        //await application.Command(LinkDeviceActionType.RebootDevice).ConfigureAwait(false);
-                        await application.Command(LinkDeviceActionType.VIPARestart).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.S:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [STATUS]");
-                        await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
-                        //Task.Run(async () => await application.Command(LinkDeviceActionType.GetSecurityConfiguration)).GetAwaiter().GetResult();
-                        break;
-                    }
-                    case ConsoleKey.T:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [TEST]");
-                        await application.Command(LinkDeviceActionType.GenerateHMAC).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.U:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [UPDATE]");
-                        await application.Command(LinkDeviceActionType.UpdateHMACKeys).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.V:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [SLOT]");
-                        await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.D0:
-                    case ConsoleKey.NumPad0:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
-                        await application.Command(LinkDeviceActionType.LockDeviceConfig0).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.D8:
-                    case ConsoleKey.NumPad8:
-                    {
-                        //Console.WriteLine("\r\nCOMMAND: [LOCK]");
-                        await application.Command(LinkDeviceActionType.LockDeviceConfig8).ConfigureAwait(false);
-                        break;
-                    }
-                    case ConsoleKey.X:
-                    {
-                        await application.Command(LinkDeviceActionType.DeviceExtendedReset).ConfigureAwait(false);
-                        break;
-                    }
-                    default:
-                    {
-                        redisplay = false;
-                        break;
+                        case ConsoleKey.M:
+                        {
+                            Console.WriteLine("");
+                            DisplayMenu();
+                            break;
+                        }
+                        case ConsoleKey.C:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [CONFIGURATION]");
+                            await application.Command(LinkDeviceActionType.Configuration).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.H:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [24_HOUR_REBOOT]");
+                            await application.Command(LinkDeviceActionType.Reboot24Hour).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.I:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [UPDATE_IDLE_SCREEN]");
+                            await application.Command(LinkDeviceActionType.UpdateIdleScreen).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.O:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [UNLOCK]");
+                            await application.Command(LinkDeviceActionType.UnlockDeviceConfig).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.K:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [EMV-KERNEL]");
+                            await application.Command(LinkDeviceActionType.GetEMVKernelChecksum).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.R:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [REBOOT]");
+                            //await application.Command(LinkDeviceActionType.RebootDevice).ConfigureAwait(false);
+                            await application.Command(LinkDeviceActionType.VIPARestart).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.S:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [STATUS]");
+                            await application.Command(LinkDeviceActionType.GetSecurityConfiguration).ConfigureAwait(false);
+                            //Task.Run(async () => await application.Command(LinkDeviceActionType.GetSecurityConfiguration)).GetAwaiter().GetResult();
+                            break;
+                        }
+                        case ConsoleKey.T:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [TEST]");
+                            await application.Command(LinkDeviceActionType.GenerateHMAC).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.U:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [UPDATE]");
+                            await application.Command(LinkDeviceActionType.UpdateHMACKeys).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.V:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [SLOT]");
+                            await application.Command(LinkDeviceActionType.GetActiveKeySlot).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.D0:
+                        case ConsoleKey.NumPad0:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [LOCK]");
+                            await application.Command(LinkDeviceActionType.LockDeviceConfig0).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.D8:
+                        case ConsoleKey.NumPad8:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [LOCK]");
+                            await application.Command(LinkDeviceActionType.LockDeviceConfig8).ConfigureAwait(false);
+                            break;
+                        }
+                        case ConsoleKey.X:
+                        {
+                            //Console.WriteLine("\r\nCOMMAND: [DEVICE-EXTENDED-RESET]");
+                            await application.Command(LinkDeviceActionType.DeviceExtendedReset).ConfigureAwait(false);
+                            break;
+                        }
+                        default:
+                        {
+                            redisplay = false;
+                            break;
+                        }
                     }
                 }
 
@@ -214,13 +235,13 @@ namespace DEVICE_CORE
             }
         }
 
-        static private ConsoleKey GetKeyPressed(bool redisplay)
+        static private ConsoleKeyInfo GetKeyPressed(bool redisplay)
         {
             if (redisplay)
             {
                 Console.Write("SELECT COMMAND: ");
             }
-            return Console.ReadKey(true).Key;
+            return Console.ReadKey(true);
         }
 
         static private void DisplayMenu()

@@ -14,7 +14,9 @@ namespace Devices.Common.Helpers
             CANCEL_KEY_PRESSED,
             USER_CANCELED,
             REQUEST_TIMEOUT,
-            CANCELLATION_REQUEST
+            CANCELLATION_REQUEST,
+            DEVICE_VERIFY_AMOUNT_APPROVED,
+            DEVICE_VERIFY_AMOUNT_DECLINED,
         }
     }
 }

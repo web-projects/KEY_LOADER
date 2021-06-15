@@ -55,6 +55,8 @@ namespace Devices.Verifone.Helpers
             DisplayCustomScreen,
             [StringValue("VIPA: DISPLAY CUSTOM SCREEN HTML")]
             DisplayCustomScreenHTML,
+            [StringValue("VIPA: VERSIONS")]
+            VIPAVersions
         }
     }
 }

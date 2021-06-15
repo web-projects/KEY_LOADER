@@ -146,6 +146,13 @@ namespace StateMachine.State.SubWorkflows
                 false => SanityCheck
             };
 
+        private static DeviceSubWorkflowState ComputeVIPAVersionsStateTransition(bool exception) =>
+        exception switch
+        {
+            true => SanityCheck,
+            false => SanityCheck
+        };
+
         private static DeviceSubWorkflowState ComputeSanityCheckStateTransition(bool exception) =>
             exception switch
             {
@@ -183,6 +190,7 @@ namespace StateMachine.State.SubWorkflows
                 DisplayCustomScreen => ComputeDisplayCustomScreenUpdateStateTransition(exception),
                 Reboot24Hour => ComputeReboot24HourStateTransition(exception),
                 SetTerminalDateTime => ComputeSetTerminalDateTimeStateTransition(exception),
+                VIPAVersions => ComputeVIPAVersionsStateTransition(exception),
                 SanityCheck => ComputeSanityCheckStateTransition(exception),
                 RequestComplete => ComputeRequestCompletedStateTransition(exception),
                 _ => throw new StateException($"Invalid state transition '{state}' requested.")

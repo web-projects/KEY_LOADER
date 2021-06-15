@@ -64,6 +64,8 @@ namespace Devices.Verifone.VIPA
 
         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreenHTML(string displayMessage);
 
+        Dictionary<string, string> VIPAVersions();
+
         (string Timestamp, int VipaResponse) Get24HourReboot();
 
         (string Timestamp, int VipaResponse) Reboot24Hour(string timestamp);

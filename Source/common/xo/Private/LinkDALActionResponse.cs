@@ -1,8 +1,11 @@
-﻿namespace XO.Private
+﻿using System.Collections.Generic;
+using XO.Responses;
+
+namespace XO.Private
 {
     public class LinkDALActionResponse
     {
-        //public List<LinkErrorValue> Errors { get; set; }
+        public List<LinkErrorValue> Errors { get; set; }
         public string Status { get; set; }
         public string Value { get; set; }
         public bool? CardPresented { get; set; }

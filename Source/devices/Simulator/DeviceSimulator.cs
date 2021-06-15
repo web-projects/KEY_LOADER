@@ -30,6 +30,7 @@ namespace Devices.Simulator
 
         //public event PublishEvent PublishEvent;
         public event DeviceEventHandler DeviceEventOccured;
+        public event PublishEvent PublishEvent;
 
         public List<LinkRequest> GetDeviceResponse(LinkRequest deviceInfo)
         {
@@ -100,7 +101,6 @@ namespace Devices.Simulator
         {
 
         }
-
 
         public List<LinkErrorValue> Probe(DeviceConfig config, DeviceInformation deviceInfo, out bool active)
         {
@@ -288,6 +288,14 @@ namespace Devices.Simulator
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
             Console.WriteLine("----------------------------------------------------------------------------------------------------");
             Console.WriteLine($"simulator: TERMINAL SET DATETIME for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
+            return linkRequest;
+        }
+
+        public LinkRequest VIPAVersions(LinkRequest linkRequest)
+        {
+            LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();
+            Console.WriteLine("----------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"simulator: VIPA VERSIONS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
 

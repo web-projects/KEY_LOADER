@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using XO.Requests.Payment;
 
 namespace XO.Requests
 {
@@ -14,6 +15,12 @@ namespace XO.Requests
         public LinkDeviceRequest DeviceRequest { get; set; }
         
         public LinkDeviceActionRequest DeviceActionRequest { get; set; }
+
+        public LinkDALActionRequest DALActionRequest { get; set; }
+
+        public LinkDALRequest DALRequest { get; set; }
+
+        public LinkPaymentRequest PaymentRequest { get; set; }
     }
 
     [JsonConverter(typeof(StringEnumConverter))]

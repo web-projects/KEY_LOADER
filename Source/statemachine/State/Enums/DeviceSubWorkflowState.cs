@@ -100,19 +100,24 @@ namespace StateMachine.State.Enums
         UpdateIdleScreen,
 
         /// <summary>
-        /// Represents a state when DAL request a custom screen be displayed on Device
+        /// Represents a state when DAL requests a custom screen be displayed on Device
         /// </summary>
         DisplayCustomScreen,
 
         /// <summary>
-        /// Represents a state when DAL set the 24-hour reboot time for the device
+        /// Represents a state when DAL sets the 24-hour reboot time for the device
         /// </summary>
         Reboot24Hour,
 
         /// <summary>
-        /// Represents a state when DAL set the device date-time
+        /// Represents a state when DAL sets the device date-time
         /// </summary>
         SetTerminalDateTime,
+
+        /// <summary>
+        /// Represents a state when DAL queries the device for VIPA bundle versions
+        /// </summary>
+        VIPAVersions,
 
         /// <summary>
         /// Represents a state where a sanity check is performed to ensure that the DAL

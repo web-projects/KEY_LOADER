@@ -3,15 +3,16 @@ using System;
 using System.Collections.Generic;
 using XO.Requests;
 using XO.Responses;
+using static XO.Responses.LinkEventResponse;
 
 namespace Devices.Common.Interfaces
 {
-    //public delegate void PublishEvent(EventTypeType eventType, EventCodeType eventCode,
-    //        List<object> devices, object request, string message);
+    public delegate void PublishEvent(EventTypeType eventType, EventCodeType eventCode,
+            List<LinkDeviceResponse> devices, object request, string message);
 
     public interface ICardDevice : ICloneable
     {
-        //event PublishEvent PublishEvent;
+        event PublishEvent PublishEvent;
         event DeviceEventHandler DeviceEventOccured;
 
         string Name { get; }
@@ -61,5 +62,6 @@ namespace Devices.Common.Interfaces
         LinkRequest DisplayCustomScreen(LinkRequest linkRequest);
         LinkRequest Reboot24Hour(LinkRequest linkRequest);
         LinkRequest SetTerminalDateTime(LinkRequest linkRequest);
+        LinkRequest VIPAVersions(LinkRequest linkRequest);
     }
 }
