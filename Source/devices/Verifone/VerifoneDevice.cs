@@ -456,7 +456,7 @@ namespace Devices.Verifone
                                         Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___=[ *** NOT SET *** ]");
                                     }
                                     else
-                                    { 
+                                    {
                                         string rebootDateTimeStamp = string.Format("{0}:{1}:{2}",
                                             reboot24Hour.Timestamp.Substring(0, 2), reboot24Hour.Timestamp.Substring(2, 2), reboot24Hour.Timestamp.Substring(4, 2));
                                         Console.WriteLine($"DEVICE: 24 HOUR REBOOT ___={rebootDateTimeStamp}");
@@ -1260,11 +1260,18 @@ namespace Devices.Verifone
 
                 if (IsConnected)
                 {
-                    Dictionary<string, string> vipaVersions = VipaDevice.VIPAVersions();
+                    LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions();
 
-                    foreach((string key, string value) in vipaVersions)
+                    if (vipaVersions.DALCdbData is { })
                     {
-                        Console.WriteLine($"DEVICE: VIPA VERSION FOR {key}=[{value}]");
+                        // VIPA BUNDLE
+                        Console.WriteLine($"DEVICE: VIPA BUNDLE VERSION {vipaVersions.DALCdbData.VIPAVersion.Version ?? "*** NONE ***"}");
+
+                        // EMV CONFIG BUNDLE
+                        Console.WriteLine($"DEVICE: EMV CONFIG VERSION  {vipaVersions.DALCdbData.EMVVersion.Version ?? "*** NONE ***"}");
+
+                        // IDLE IMAGE BUNDLE
+                        Console.WriteLine($"DEVICE: IDLE IMAGE VERSION  {vipaVersions.DALCdbData.IdleVersion.Version ?? "*** NONE ***"}");
                     }
                 }
             }

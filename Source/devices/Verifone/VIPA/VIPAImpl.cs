@@ -1158,9 +1158,19 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
-        public Dictionary<string, string> VIPAVersions()
+        public LinkDALRequestIPA5Object VIPAVersions()
         {
             Debug.WriteLine(ConsoleMessages.VIPAVersions.GetStringValue());
+
+            LinkDALRequestIPA5Object linkActionRequestIPA5Object = new LinkDALRequestIPA5Object()
+            {
+                DALCdbData = new DALCDBData()
+                {
+                    VIPAVersion = new DALBundleVersioning(),
+                    EMVVersion = new DALBundleVersioning(),
+                    IdleVersion = new DALBundleVersioning()
+                }
+            };
 
             Dictionary<string, string> versions = new Dictionary<string, string>();
 
@@ -1223,7 +1233,19 @@ namespace Devices.Verifone.VIPA
 
             }
 
-            return versions;
+            // populate response appropriately
+            foreach ((string key, string value) in versions)
+            {
+                _ = key switch
+                {
+                    BinaryStatusObject.VIPA_VER_FW => ProcessVersionString(linkActionRequestIPA5Object.DALCdbData.VIPAVersion, value),
+                    BinaryStatusObject.VIPA_VER_EMV => ProcessVersionString(linkActionRequestIPA5Object.DALCdbData.EMVVersion, value),
+                    BinaryStatusObject.VIPA_VER_IDLE => ProcessVersionString(linkActionRequestIPA5Object.DALCdbData.IdleVersion, value),
+                    _ => throw new Exception($"Invalid key identifier '{key}'.")
+                };
+            }
+
+            return linkActionRequestIPA5Object;
         }
 
         public (string Timestamp, int VipaResponse) Get24HourReboot()
@@ -1773,6 +1795,29 @@ namespace Devices.Verifone.VIPA
             ResponseTagsHandlerSubscribed--;
 
             return deviceCommandResponseCode;
+        }
+
+
+        private int ProcessVersionString(DALBundleVersioning bundle, string value)
+        {
+            if (!value.Equals("NONE", StringComparison.OrdinalIgnoreCase))
+            {
+                string[] elements = value.Split(new char[] { ',' });
+
+                if (elements.Length != 7)
+                {
+                    return (int)VipaSW1SW2Codes.Failure;
+                }
+
+                bundle.Application = elements[0];
+                bundle.Type = elements[1];
+                bundle.TerminalType = elements[2];
+                bundle.FrontEnd = elements[3];
+                bundle.Entity = elements[4];
+                bundle.Version = elements[5];
+                bundle.DateCode = elements[6];
+            }
+            return (int)VipaSW1SW2Codes.Success;
         }
 
         #endregion --- VIPA commands ---
