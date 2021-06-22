@@ -504,15 +504,23 @@ namespace Devices.Verifone.Helpers
 
         // VIPA bundle signatures
         public const string VIPA_VER_FW = "vipa_ver.txt";
-        public const string VIPA_VER_EMV = "emv_ver.txt";
-        public const string VIPA_VER_IDLE = "idle_ver.txt";
+        public const string VIPA_VER_FW_HASH = "7FCB0038F795ED9930F7536832BD3DD4";
+        public const int VIPA_VER_FW_FILESIZE = 0x00000018;
 
-        public static Dictionary<string, string> vipaVersions =
-            new Dictionary<string, string>()
+        public const string VIPA_VER_EMV = "emv_ver.txt";
+        public const string VIPA_VER_EMV_HASH = "BC68563F6128976CB885EEC6689E07B0";
+        public const int VIPA_VER_EMV_FILESIZE = 0x0000001B;
+
+        public const string VIPA_VER_IDLE = "idle_ver.txt";
+        public const string VIPA_VER_IDLE_HASH = "";
+        public const int VIPA_VER_IDLE_FILESIZE = 0x00000000;
+
+        public static Dictionary<string, (string fileName, string fileHash, int fileSize)> vipaVersions =
+            new Dictionary<string, (string fileName, string fileHash, int fileSize)>()
         {
-            [VIPA_VER_FW] = "",
-            [VIPA_VER_EMV] = "",
-            [VIPA_VER_IDLE] = ""
+            [VIPA_VER_FW] = (VIPA_VER_FW, VIPA_VER_FW_HASH, VIPA_VER_FW_FILESIZE),
+            [VIPA_VER_EMV] = (VIPA_VER_EMV, VIPA_VER_EMV_HASH, VIPA_VER_EMV_FILESIZE),
+            [VIPA_VER_IDLE] = (VIPA_VER_IDLE, VIPA_VER_IDLE_HASH, VIPA_VER_IDLE_FILESIZE)
         };
 
         public bool FileNotFound { get; set; }
