@@ -1158,7 +1158,7 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
-        public LinkDALRequestIPA5Object VIPAVersions()
+        public LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string ActiveCustomerId)
         {
             Debug.WriteLine(ConsoleMessages.VIPAVersions.GetStringValue());
 
@@ -1174,107 +1174,95 @@ namespace Devices.Verifone.VIPA
 
             Dictionary<string, string> versions = new Dictionary<string, string>();
 
-            //foreach (string filename in BinaryStatusObject.vipaVersions.Keys)
             foreach (var configFile in BinaryStatusObject.vipaVersions)
             {
-                // assume version string is not found
-                string value = "NONE";
-                versions.Add(configFile.Value.fileName, value);
-
-                // check for access to the file
-                (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(configFile.Value.fileName);
-
-                // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
-                if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                // VIPA version matching
+                if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase))
                 {
-                    //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                    //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
-                    continue;
-                }
-
-                // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
-                if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
-                {
-                    //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                    //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
-                    continue;
-                }
-                else
-                {
-                    // Setup for FILE OPERATIONS
-                    fileStatus = SelectFileForOps(configFile.Value.fileName);
-                    if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                    // Device model matching
+                    if (!configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
                     {
-                        //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                        //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
                         continue;
                     }
-                    else
+
+                    Debug.WriteLine($"VIPA: PROCESSING FILE=[{configFile.Value.fileName}]");
+
+                    // assume version string is not found
+                    string value = "NONE";
+                    versions.Add(configFile.Value.fileName, value);
+
+                    // check for access to the file
+                    (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(configFile.Value.fileName);
+
+                    // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
+                    if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success || fileStatus.binaryStatusObject?.FileSize == 0x00)
+                    {
+                        Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                            configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                        continue;
+                    }
+
+                    // Setup for FILE OPERATIONS
+                    fileStatus = SelectFileForOps(configFile.Value.fileName);
+
+                    if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                    {
+                        Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                            configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                        continue;
+                    }
+
+                    // Get Binary Status
+                    (BinaryStatusObject binaryStatusObject, int VipaResponse) fileBinaryStatus = GetBinaryStatus(configFile.Value.fileName);
+
+                    if (fileBinaryStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                    {
+                        Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                            configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+
+                        // Clean up pool allocation, clearing the array
+                        if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
+                        {
+                            ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
+                        }
+
+                        continue;
+                    }
+
+                    if (fileBinaryStatus.binaryStatusObject.FileSize != configFile.Value.fileSize)
+                    {
+                        Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+                        continue;
+                    }
+
+                    if (fileBinaryStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
                     {
                         // Read File Contents
                         fileStatus = ReadBinaryDataFromSelectedFile(0x00, (byte)fileStatus.binaryStatusObject.FileSize);
+
                         if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
                         {
-                            //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                            //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
-
+#if DEBUG
+                            Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                                configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+#endif
                             // Clean up pool allocation, clearing the array
                             if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
                             {
                                 ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
                             }
                         }
-                        else
-                        {
-                            // Get Binary Status
-                            var fileBinaryStatus = GetBinaryStatus(configFile.Value.fileName);
 
-                            if (fileBinaryStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
-                            {
-                                //Console.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                                //    filename, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
-
-                                // Clean up pool allocation, clearing the array
-                                if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
-                                {
-                                    ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
-                                }
-                            }
-                            else
-                            {
-                                if (fileBinaryStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
-                                {
-                                    //string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
-                                    //Console.WriteLine(formattedStr);
-                                    Console.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
-                                }
-
-                                if (fileBinaryStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    Console.WriteLine(", HASH MATCH");
-                                    versions.Remove(configFile.Value.fileName, out value);
-                                    versions.Add(configFile.Value.fileName,
-                                        Encoding.UTF8.GetString(fileStatus.binaryStatusObject.ReadResponseBytes).Replace("\0", string.Empty));
-                                }
-                                else
-                                {
-                                    Console.WriteLine($", HASH MISMATCH!");
-
-                                    // Clean up pool allocation, clearing the array
-                                    if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
-                                    {
-                                        ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
-                                    }
-                                }
-                            }
-                        }
+                        //Console.WriteLine(", HASH MATCH");
+                        versions.Remove(configFile.Value.fileName, out _);
+                        versions.Add(configFile.Value.fileName,
+                            Encoding.UTF8.GetString(fileStatus.binaryStatusObject.ReadResponseBytes).Replace("\0", string.Empty));
+                    }
+                    else
+                    {
+                        Console.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
                     }
                 }
-
             }
 
             // populate response appropriately

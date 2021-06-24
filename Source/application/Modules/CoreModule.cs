@@ -1,11 +1,11 @@
 ﻿using Config;
 using DEVICE_CORE.Providers;
 using Ninject.Modules;
-using StateMachine.Providers;
-using StateMachine.SerialPort;
-using StateMachine.SerialPort.Interfaces;
-using StateMachine.State.Management;
-using StateMachine.State.Providers;
+using Devices.Core.Providers;
+using Devices.Core.SerialPort;
+using Devices.Core.SerialPort.Interfaces;
+using Devices.Core.State.Management;
+using Devices.Core.State.Providers;
 
 namespace DEVICE_CORE.Modules
 {

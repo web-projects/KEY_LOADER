@@ -1,11 +1,11 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows.Actions
+namespace Devices.Core.State.SubWorkflows.Actions
 {
     internal interface IDeviceSubStateAction : IActionReceiver, IDisposable
     {

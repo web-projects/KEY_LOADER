@@ -1,11 +1,11 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using XO.Requests;
 using System.Diagnostics;
 
-namespace StateMachine.State.SubWorkflows.Actions
+namespace Devices.Core.State.SubWorkflows.Actions
 {
     internal class DeviceRequestCompleteSubStateAction : DeviceBaseSubStateAction
     {

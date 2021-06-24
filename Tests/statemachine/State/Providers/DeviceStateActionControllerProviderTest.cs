@@ -1,10 +1,10 @@
-﻿using StateMachine.State.Actions.Controllers;
-using StateMachine.State.Management;
+﻿using Devices.Core.State.Actions.Controllers;
+using Devices.Core.State.Management;
 using Moq;
 using System;
 using Xunit;
 
-namespace StateMachine.State.Providers.Tests
+namespace Devices.Core.State.Providers.Tests
 {
     public class DeviceStateActionControllerProviderTest
     {

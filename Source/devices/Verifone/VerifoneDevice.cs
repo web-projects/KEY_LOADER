@@ -1260,18 +1260,27 @@ namespace Devices.Verifone
 
                 if (IsConnected)
                 {
-                    LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions();
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = VipaDevice.DeviceCommandReset();
 
-                    if (vipaVersions.DALCdbData is { })
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        // VIPA BUNDLE
-                        Console.WriteLine($"DEVICE: VIPA BUNDLE VERSION {vipaVersions.DALCdbData.VIPAVersion.Version ?? "*** NONE ***"}");
+                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        // EMV CONFIG BUNDLE
-                        Console.WriteLine($"DEVICE: EMV CONFIG VERSION  {vipaVersions.DALCdbData.EMVVersion.Version ?? "*** NONE ***"}");
+                        LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model,
+                            activeSigningMethodIsSphere, ActiveCustomerId);
 
-                        // IDLE IMAGE BUNDLE
-                        Console.WriteLine($"DEVICE: IDLE IMAGE VERSION  {vipaVersions.DALCdbData.IdleVersion.Version ?? "*** NONE ***"}");
+                        if (vipaVersions.DALCdbData is { })
+                        {
+                            // VIPA BUNDLE
+                            Console.WriteLine($"DEVICE: VIPA BUNDLE VERSION {vipaVersions.DALCdbData.VIPAVersion.Version ?? "*** NONE ***"}");
+
+                            // EMV CONFIG BUNDLE
+                            Console.WriteLine($"DEVICE: EMV CONFIG VERSION  {vipaVersions.DALCdbData.EMVVersion.Version ?? "*** NONE ***"}");
+
+                            // IDLE IMAGE BUNDLE
+                            Console.WriteLine($"DEVICE: IDLE IMAGE VERSION  {vipaVersions.DALCdbData.IdleVersion.Version ?? "*** NONE ***"}");
+                        }
                     }
                 }
             }

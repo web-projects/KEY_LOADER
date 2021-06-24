@@ -1,11 +1,11 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.Management;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.Management;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace StateMachine.State.Actions.Controllers
+namespace Devices.Core.State.Actions.Controllers
 {
     internal class DeviceStateActionControllerImpl : IDeviceStateActionController
     {

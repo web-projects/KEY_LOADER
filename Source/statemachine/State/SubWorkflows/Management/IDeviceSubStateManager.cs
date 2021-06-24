@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Interfaces;
-using StateMachine.State.Visitors;
+﻿using Devices.Core.State.Interfaces;
+using Devices.Core.State.Visitors;
 using System;
 
-namespace StateMachine.State.SubWorkflows.Management
+namespace Devices.Core.State.SubWorkflows.Management
 {
     public delegate void OnSubWorkflowCompleted();
     public delegate void OnSubWorkflowError();

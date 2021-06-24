@@ -1,6 +1,6 @@
-﻿using StateMachine.Cancellation;
+﻿using Devices.Core.Cancellation;
 
-namespace StateMachine.Providers
+namespace Devices.Core.Providers
 {
     internal interface IDeviceCancellationBrokerProvider
     {

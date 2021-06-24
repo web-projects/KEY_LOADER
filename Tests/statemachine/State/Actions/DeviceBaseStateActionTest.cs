@@ -1,11 +1,11 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace StateMachine.State.Actions.Tests
+namespace Devices.Core.State.Actions.Tests
 {
     public class DeviceBaseStateActionTest
     {

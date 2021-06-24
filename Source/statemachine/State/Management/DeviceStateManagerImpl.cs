@@ -7,17 +7,17 @@ using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Newtonsoft.Json;
 using Ninject;
-using StateMachine.Cancellation;
-using StateMachine.Providers;
-using StateMachine.SerialPort.Interfaces;
-using StateMachine.State.Actions;
-using StateMachine.State.Actions.Controllers;
-using StateMachine.State.Actions.Preprocessing;
-using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.Providers;
-using StateMachine.State.SubWorkflows;
-using StateMachine.State.SubWorkflows.Management;
+using Devices.Core.Cancellation;
+using Devices.Core.Providers;
+using Devices.Core.SerialPort.Interfaces;
+using Devices.Core.State.Actions;
+using Devices.Core.State.Actions.Controllers;
+using Devices.Core.State.Actions.Preprocessing;
+using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.Providers;
+using Devices.Core.State.SubWorkflows;
+using Devices.Core.State.SubWorkflows.Management;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.Management
+namespace Devices.Core.State.Management
 {
     internal class DeviceStateManagerImpl : IInitializable, IDeviceStateController, IDeviceStateManager, ISubWorkflowHook
     {

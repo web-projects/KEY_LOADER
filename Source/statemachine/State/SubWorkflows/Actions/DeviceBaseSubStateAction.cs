@@ -1,16 +1,16 @@
 ﻿using Devices.Common;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
-using StateMachine.Helpers;
-using StateMachine.State.Enums;
-using StateMachine.State.SubWorkflows.Helpers;
+using Devices.Core.Helpers;
+using Devices.Core.State.Enums;
+using Devices.Core.State.SubWorkflows.Helpers;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using XO.Device;
 using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows.Actions
+namespace Devices.Core.State.SubWorkflows.Actions
 {
     internal abstract class DeviceBaseSubStateAction : IDeviceSubStateAction
     {

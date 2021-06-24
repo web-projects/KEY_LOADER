@@ -1,7 +1,7 @@
-﻿using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows;
+﻿using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows;
 
-namespace StateMachine.State.Visitors
+namespace Devices.Core.State.Visitors
 {
     internal interface IStateControllerVisitable<TVisitableController, TVisitorAcceptor>
         where TVisitableController : ISubWorkflowHook

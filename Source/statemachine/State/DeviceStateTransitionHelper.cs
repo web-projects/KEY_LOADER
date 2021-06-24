@@ -1,7 +1,7 @@
-﻿using StateMachine.State.Enums;
-using static StateMachine.State.Enums.DeviceWorkflowState;
+﻿using Devices.Core.State.Enums;
+using static Devices.Core.State.Enums.DeviceWorkflowState;
 
-namespace StateMachine.State
+namespace Devices.Core.State
 {
     public static class DeviceStateTransitionHelper
     {

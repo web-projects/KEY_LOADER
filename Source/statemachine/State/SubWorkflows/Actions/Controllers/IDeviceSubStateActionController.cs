@@ -1,6 +1,6 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 
-namespace StateMachine.State.SubWorkflows.Actions.Controllers
+namespace Devices.Core.State.SubWorkflows.Actions.Controllers
 {
     internal interface IDeviceSubStateActionController
     {

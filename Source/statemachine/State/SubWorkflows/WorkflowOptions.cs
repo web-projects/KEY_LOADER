@@ -1,6 +1,6 @@
 ﻿using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows
+namespace Devices.Core.State.SubWorkflows
 {
     internal class WorkflowOptions
     {

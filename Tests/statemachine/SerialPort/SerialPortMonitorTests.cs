@@ -1,5 +1,5 @@
-﻿using StateMachine.SerialPort;
-using StateMachine.SerialPort.Interfaces;
+﻿using Devices.Core.SerialPort;
+using Devices.Core.SerialPort.Interfaces;
 using System;
 using System.Management;
 using TestHelper;

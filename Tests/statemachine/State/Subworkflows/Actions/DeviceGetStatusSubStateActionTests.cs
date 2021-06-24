@@ -1,6 +1,6 @@
-﻿using StateMachine.Cancellation;
-using StateMachine.State.Actions.SubWorkflows.Tests;
-using StateMachine.State.Enums;
+﻿using Devices.Core.Cancellation;
+using Devices.Core.State.Actions.SubWorkflows.Tests;
+using Devices.Core.State.Enums;
 using Devices.Common;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
@@ -16,7 +16,7 @@ using XO.Device;
 using XO.Requests;
 using Xunit;
 
-namespace StateMachine.State.SubWorkflows.Actions.Tests
+namespace Devices.Core.State.SubWorkflows.Actions.Tests
 {
     public class DeviceGetStatusSubStateActionTests : IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace StateMachine.State.Enums
+﻿namespace Devices.Core.State.Enums
 {
     public enum DeviceWorkflowStopReason
     {

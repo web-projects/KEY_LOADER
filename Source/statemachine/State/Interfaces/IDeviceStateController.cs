@@ -2,14 +2,14 @@
 using DEVICE_SDK.Sdk;
 using Devices.Common.AppConfig;
 using Devices.Common.Interfaces;
-using StateMachine.Cancellation;
-using StateMachine.SerialPort.Interfaces;
-using StateMachine.State.Actions;
-using StateMachine.State.Actions.Preprocessing;
-using StateMachine.State.Providers;
+using Devices.Core.Cancellation;
+using Devices.Core.SerialPort.Interfaces;
+using Devices.Core.State.Actions;
+using Devices.Core.State.Actions.Preprocessing;
+using Devices.Core.State.Providers;
 using System.Collections.Generic;
 
-namespace StateMachine.State.Interfaces
+namespace Devices.Core.State.Interfaces
 {
     internal interface IDeviceStateController : IDeviceStateEventEmitter, IStateControlTrigger<IDeviceStateAction>
     {

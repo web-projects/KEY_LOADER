@@ -1,4 +1,4 @@
-﻿namespace StateMachine.State
+﻿namespace Devices.Core.State
 {
     internal class StateActionRules
     {

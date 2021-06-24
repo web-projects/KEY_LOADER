@@ -2,18 +2,18 @@
 using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
-using StateMachine.Cancellation;
-using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows;
-using StateMachine.State.SubWorkflows.Actions;
-using StateMachine.State.SubWorkflows.Management;
-using StateMachine.State.Visitors;
+using Devices.Core.Cancellation;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows;
+using Devices.Core.State.SubWorkflows.Actions;
+using Devices.Core.State.SubWorkflows.Management;
+using Devices.Core.State.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.TestStubs.Tests
+namespace Devices.Core.State.TestStubs.Tests
 {
     internal class StubGenericDeviceSubStateManager : IDeviceSubStateManager, IDeviceSubStateController, IStateControllerVisitable<ISubWorkflowHook, IDeviceSubStateController>
     {

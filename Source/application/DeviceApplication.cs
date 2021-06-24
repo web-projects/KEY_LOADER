@@ -1,6 +1,6 @@
 ﻿using Ninject;
-using StateMachine.State.Enums;
-using StateMachine.State.Management;
+using Devices.Core.State.Enums;
+using Devices.Core.State.Management;
 using System;
 using System.Threading.Tasks;
 using XO.Requests;

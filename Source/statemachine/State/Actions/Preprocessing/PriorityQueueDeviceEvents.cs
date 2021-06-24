@@ -1,7 +1,7 @@
 ﻿using Core.Patterns.Queuing;
 using System;
 
-namespace StateMachine.State.Actions.Preprocessing
+namespace Devices.Core.State.Actions.Preprocessing
 {
     public class PriorityQueueDeviceEvents : IComparable<PriorityQueueDeviceEvents>, IPriorityQueueItem
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StateMachine.State.Enums
+namespace Devices.Core.State.Enums
 {
     /// <summary>
     /// Represents a set of sub-workflow states that represent certain specific

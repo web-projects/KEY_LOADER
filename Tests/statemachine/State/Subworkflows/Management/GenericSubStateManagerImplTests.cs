@@ -1,9 +1,9 @@
 ﻿using DEVICE_CORE.Helpers.Tests;
-using StateMachine.State.Actions.SubWorkflows.Tests;
-using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows;
-using StateMachine.State.SubWorkflows.Actions;
-using StateMachine.State.SubWorkflows.Management;
+using Devices.Core.State.Actions.SubWorkflows.Tests;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows;
+using Devices.Core.State.SubWorkflows.Actions;
+using Devices.Core.State.SubWorkflows.Management;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;

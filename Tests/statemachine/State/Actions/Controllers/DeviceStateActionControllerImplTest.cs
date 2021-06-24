@@ -1,11 +1,11 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.TestStubs.Tests;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.TestStubs.Tests;
 using System;
 using System.Collections.ObjectModel;
 using Xunit;
 
-namespace StateMachine.State.Actions.Controllers.Tests
+namespace Devices.Core.State.Actions.Controllers.Tests
 {
     public class DeviceStateActionControllerImplTest
     {

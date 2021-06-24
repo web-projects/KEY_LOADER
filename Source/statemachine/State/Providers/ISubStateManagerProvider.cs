@@ -1,7 +1,7 @@
-﻿using StateMachine.State.SubWorkflows.Management;
-using StateMachine.State.Interfaces;
+﻿using Devices.Core.State.SubWorkflows.Management;
+using Devices.Core.State.Interfaces;
 
-namespace StateMachine.State.Providers
+namespace Devices.Core.State.Providers
 {
     internal interface ISubStateManagerProvider
     {

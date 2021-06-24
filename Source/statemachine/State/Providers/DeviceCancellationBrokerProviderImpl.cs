@@ -1,5 +1,5 @@
-﻿using StateMachine.Providers;
-using StateMachine.Cancellation;
+﻿using Devices.Core.Providers;
+using Devices.Core.Cancellation;
 
 namespace IPA5.DAL.Core.State.Providers
 {

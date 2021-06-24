@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StateMachine.Cancellation
+namespace Devices.Core.Cancellation
 {
     internal class DeviceCancellationBrokerImpl : IDeviceCancellationBroker
     {

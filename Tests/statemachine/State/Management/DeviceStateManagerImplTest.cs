@@ -1,9 +1,9 @@
 ﻿using Config;
 using DEVICE_CORE.Modules;
-using StateMachine.State.Actions;
-using StateMachine.State.Actions.Controllers;
-using StateMachine.State.Enums;
-using StateMachine.State.Providers;
+using Devices.Core.State.Actions;
+using Devices.Core.State.Actions.Controllers;
+using Devices.Core.State.Enums;
+using Devices.Core.State.Providers;
 using DEVICE_SDK.Sdk;
 using Devices.Common.Interfaces;
 using Moq;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Devices.Common.AppConfig;
 
-namespace StateMachine.State.Management.Tests
+namespace Devices.Core.State.Management.Tests
 {
     public class DeviceStateManagerImplTest
     {

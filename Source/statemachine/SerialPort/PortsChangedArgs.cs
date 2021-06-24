@@ -1,7 +1,7 @@
 ﻿using Devices.Common.Helpers;
 using System;
 
-namespace StateMachine.SerialPort
+namespace Devices.Core.SerialPort
 {
     public sealed class PortsChangedArgs : EventArgs
     {

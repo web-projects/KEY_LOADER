@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace StateMachine.State
+namespace Devices.Core.State
 {
     public interface IStateControlTrigger<TStateAction>
     {

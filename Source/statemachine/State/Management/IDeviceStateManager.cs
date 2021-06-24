@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using System;
 using XO.Requests;
 
-namespace StateMachine.State.Management
+namespace Devices.Core.State.Management
 {
     public interface IDeviceStateManager : IDisposable
     {

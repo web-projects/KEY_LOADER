@@ -1,4 +1,4 @@
-﻿namespace StateMachine.Helpers
+﻿namespace Devices.Core.Helpers
 {
     public static class DeviceConstants
     {

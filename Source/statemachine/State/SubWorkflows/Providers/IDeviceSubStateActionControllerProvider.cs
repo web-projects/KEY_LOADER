@@ -1,7 +1,7 @@
-﻿using StateMachine.State.SubWorkflows.Actions.Controllers;
-using StateMachine.State.SubWorkflows.Management;
+﻿using Devices.Core.State.SubWorkflows.Actions.Controllers;
+using Devices.Core.State.SubWorkflows.Management;
 
-namespace StateMachine.State.SubWorkflows.Providers
+namespace Devices.Core.State.SubWorkflows.Providers
 {
     internal interface IDeviceSubStateActionControllerProvider
     {

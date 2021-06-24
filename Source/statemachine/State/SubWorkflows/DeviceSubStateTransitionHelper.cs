@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 
-using static StateMachine.State.Enums.DeviceSubWorkflowState;
+using static Devices.Core.State.Enums.DeviceSubWorkflowState;
 
-namespace StateMachine.State.SubWorkflows
+namespace Devices.Core.State.SubWorkflows
 {
     public static class DeviceSubStateTransitionHelper
     {

@@ -1,11 +1,11 @@
 ﻿using Devices.Common;
 using Devices.Common.Helpers;
-using StateMachine.SerialPort.Interfaces;
+using Devices.Core.SerialPort.Interfaces;
 using System;
 using System.Linq;
 using System.Management;
 
-namespace StateMachine.SerialPort
+namespace Devices.Core.SerialPort
 {
     public class SerialPortMonitor : ISerialPortMonitor
     {

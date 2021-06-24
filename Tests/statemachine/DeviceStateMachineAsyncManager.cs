@@ -1,9 +1,9 @@
 ﻿using Moq;
-using StateMachine.State.Actions;
-using StateMachine.State.Interfaces;
+using Devices.Core.State.Actions;
+using Devices.Core.State.Interfaces;
 using System.Threading;
 
-namespace StateMachine.Tests
+namespace Devices.Core.Tests
 {
     class DeviceStateMachineAsyncManager
     {

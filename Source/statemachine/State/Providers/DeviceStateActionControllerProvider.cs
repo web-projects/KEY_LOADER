@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Actions.Controllers;
-using StateMachine.State.Management;
+﻿using Devices.Core.State.Actions.Controllers;
+using Devices.Core.State.Management;
 using System;
 
-namespace StateMachine.State.Providers
+namespace Devices.Core.State.Providers
 {
     class DeviceStateActionControllerProvider : IDeviceStateActionControllerProvider
     {

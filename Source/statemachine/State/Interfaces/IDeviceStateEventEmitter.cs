@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using Devices.Common;
 using XO.Requests;
 
-namespace StateMachine.State.Interfaces
+namespace Devices.Core.State.Interfaces
 {
     public delegate void OnRequestReceived(LinkRequest request);
     public delegate void OnWorkflowStopped(DeviceWorkflowStopReason reason);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StateMachine.Helpers
+namespace Devices.Core.Helpers
 {
     public static class Extensions
     {

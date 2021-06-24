@@ -1,9 +1,9 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using System;
 using System.Linq;
 using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows.Providers
+namespace Devices.Core.State.SubWorkflows.Providers
 {
     internal class InitialStateProvider
     {

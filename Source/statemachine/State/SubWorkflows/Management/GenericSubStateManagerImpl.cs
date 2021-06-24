@@ -2,13 +2,13 @@
 using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
-using StateMachine.Cancellation;
-using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows.Actions;
-using StateMachine.State.SubWorkflows.Actions.Controllers;
-using StateMachine.State.SubWorkflows.Providers;
-using StateMachine.State.Visitors;
+using Devices.Core.Cancellation;
+using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows.Actions;
+using Devices.Core.State.SubWorkflows.Actions.Controllers;
+using Devices.Core.State.SubWorkflows.Providers;
+using Devices.Core.State.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows.Management
+namespace Devices.Core.State.SubWorkflows.Management
 {
     internal class GenericSubStateManagerImpl : IDeviceSubStateManager, IDeviceSubStateController, IStateControllerVisitable<ISubWorkflowHook, IDeviceSubStateController>
     {

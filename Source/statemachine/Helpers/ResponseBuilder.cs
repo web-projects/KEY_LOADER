@@ -6,7 +6,7 @@ using XO.Private;
 using XO.Requests;
 using XO.Responses;
 
-namespace StateMachine.Helpers
+namespace Devices.Core.Helpers
 {
     public static class ResponseBuilder
     {

@@ -1,13 +1,13 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.SubWorkflows;
-using StateMachine.State.SubWorkflows.Actions;
-using StateMachine.State.SubWorkflows.Actions.Controllers;
-using StateMachine.State.TestStubs.Tests;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.SubWorkflows;
+using Devices.Core.State.SubWorkflows.Actions;
+using Devices.Core.State.SubWorkflows.Actions.Controllers;
+using Devices.Core.State.TestStubs.Tests;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace StateMachine.State.Actions.Controllers.Tests
+namespace Devices.Core.State.Actions.Controllers.Tests
 {
     public class DeviceStateActionSubControllerImplTest
     {

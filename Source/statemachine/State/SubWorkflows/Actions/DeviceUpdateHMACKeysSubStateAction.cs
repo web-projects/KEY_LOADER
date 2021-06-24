@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
-using StateMachine.Cancellation;
-using StateMachine.Helpers;
-using StateMachine.State.Enums;
+using Devices.Core.Cancellation;
+using Devices.Core.Helpers;
+using Devices.Core.State.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.SubWorkflows.Actions
+namespace Devices.Core.State.SubWorkflows.Actions
 {
     internal class DeviceUpdateHMACKeysSubStateAction : DeviceBaseSubStateAction
     {

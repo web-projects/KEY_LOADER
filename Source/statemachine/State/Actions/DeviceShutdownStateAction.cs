@@ -1,7 +1,7 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
 
-namespace StateMachine.State.Actions
+namespace Devices.Core.State.Actions
 {
     internal class DeviceShutdownStateAction : DeviceBaseStateAction
     {

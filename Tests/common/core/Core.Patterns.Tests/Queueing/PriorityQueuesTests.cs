@@ -1,5 +1,5 @@
 ﻿using Core.Patterns.Queuing;
-using StateMachine.State.Actions.Preprocessing;
+using Devices.Core.State.Actions.Preprocessing;
 using System;
 using System.Diagnostics;
 using Xunit;

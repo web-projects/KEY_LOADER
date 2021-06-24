@@ -1,7 +1,7 @@
 ﻿using DEVICE_CORE.Modules;
 using Moq;
 using Ninject;
-using StateMachine.State.Management;
+using Devices.Core.State.Management;
 using System;
 using Xunit;
 

@@ -1,12 +1,12 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.Tests;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.Tests;
 using Moq;
 using System;
 using XO.Requests;
 using Xunit;
 
-namespace StateMachine.State.Actions.Tests
+namespace Devices.Core.State.Actions.Tests
 {
     public class DeviceManageStateActionTest : IDisposable
     {

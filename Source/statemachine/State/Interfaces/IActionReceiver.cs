@@ -1,7 +1,7 @@
 ﻿using Devices.Common;
 using Devices.Common.Helpers;
 
-namespace StateMachine.State.Interfaces
+namespace Devices.Core.State.Interfaces
 {
     internal interface IActionReceiver
     {

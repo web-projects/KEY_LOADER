@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using System;
 using Xunit;
 
-namespace StateMachine.State.Tests
+namespace Devices.Core.State.Tests
 {
     public class DeviceStateTransitionHelperTest
     {

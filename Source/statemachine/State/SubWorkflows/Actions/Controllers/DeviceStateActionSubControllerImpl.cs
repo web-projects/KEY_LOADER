@@ -1,11 +1,11 @@
-﻿using StateMachine.State.SubWorkflows.Management;
-using StateMachine.State.Enums;
+﻿using Devices.Core.State.SubWorkflows.Management;
+using Devices.Core.State.Enums;
 using System;
 using System.Collections.Generic;
 
-using static StateMachine.State.Enums.DeviceSubWorkflowState;
+using static Devices.Core.State.Enums.DeviceSubWorkflowState;
 
-namespace StateMachine.State.SubWorkflows.Actions.Controllers
+namespace Devices.Core.State.SubWorkflows.Actions.Controllers
 {
     internal class DeviceStateActionSubControllerImpl : IDeviceSubStateActionController
     {

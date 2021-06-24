@@ -2,7 +2,7 @@
 using System;
 using static Devices.Common.Helpers.EventResponses;
 
-namespace StateMachine.State.SubWorkflows.Helpers
+namespace Devices.Core.State.SubWorkflows.Helpers
 {
     public static class DeviceEventDecoder
     {

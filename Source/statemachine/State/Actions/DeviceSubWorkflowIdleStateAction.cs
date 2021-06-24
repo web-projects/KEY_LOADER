@@ -1,9 +1,9 @@
-﻿using StateMachine.State.Providers;
-using StateMachine.State.SubWorkflows.Management;
+﻿using Devices.Core.State.Providers;
+using Devices.Core.State.SubWorkflows.Management;
 using System.Threading.Tasks;
-using static StateMachine.State.Enums.DeviceWorkflowState;
+using static Devices.Core.State.Enums.DeviceWorkflowState;
 
-namespace StateMachine.State.Actions
+namespace Devices.Core.State.Actions
 {
     internal class DeviceSubWorkflowIdleStateAction : DeviceBaseStateAction
     {
@@ -11,7 +11,7 @@ namespace StateMachine.State.Actions
 
         public DeviceSubWorkflowIdleStateAction(Interfaces.IDeviceStateController _) : base(_) { }
 
-        private StateMachine.State.SubWorkflows.Management.IDeviceSubStateManager currentManager;
+        private Devices.Core.State.SubWorkflows.Management.IDeviceSubStateManager currentManager;
 
         public override Task DoWork()
         {
@@ -58,7 +58,7 @@ namespace StateMachine.State.Actions
         {
             if (currentManager != null)
             {
-                StateMachine.State.Providers.IControllerVisitorProvider visitorProvider = Controller.GetCurrentVisitorProvider();
+                Devices.Core.State.Providers.IControllerVisitorProvider visitorProvider = Controller.GetCurrentVisitorProvider();
                 var visitor = visitorProvider.CreateBoundaryTeardownVisitor();
 
                 currentManager.Accept(visitor);

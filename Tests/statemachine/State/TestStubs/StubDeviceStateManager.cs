@@ -3,21 +3,21 @@ using DEVICE_SDK.Sdk;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Interfaces;
-using StateMachine.Cancellation;
-using StateMachine.SerialPort.Interfaces;
-using StateMachine.State.Actions;
-using StateMachine.State.Actions.Preprocessing;
-using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.Management;
-using StateMachine.State.Providers;
-using StateMachine.State.SubWorkflows.Management;
+using Devices.Core.Cancellation;
+using Devices.Core.SerialPort.Interfaces;
+using Devices.Core.State.Actions;
+using Devices.Core.State.Actions.Preprocessing;
+using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.Management;
+using Devices.Core.State.Providers;
+using Devices.Core.State.SubWorkflows.Management;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using XO.Requests;
 
-namespace StateMachine.State.TestStubs.Tests
+namespace Devices.Core.State.TestStubs.Tests
 {
     internal class StubDeviceStateManager : IDeviceStateManager, IDeviceStateController
     {

@@ -1,4 +1,4 @@
-﻿namespace StateMachine.State.Actions.Preprocessing
+﻿namespace Devices.Core.State.Actions.Preprocessing
 {
     public enum PriorityEventType : int
     {

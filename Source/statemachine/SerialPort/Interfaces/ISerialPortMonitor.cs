@@ -1,7 +1,7 @@
 ﻿using Devices.Common;
 using System;
 
-namespace StateMachine.SerialPort.Interfaces
+namespace Devices.Core.SerialPort.Interfaces
 {
     public interface ISerialPortMonitor : IDisposable
     {

@@ -1,11 +1,11 @@
 ﻿using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
-using StateMachine.Cancellation;
-using StateMachine.State.SubWorkflows.Actions;
+using Devices.Core.Cancellation;
+using Devices.Core.State.SubWorkflows.Actions;
 using System.Collections.Generic;
 
-namespace StateMachine.State.SubWorkflows
+namespace Devices.Core.State.SubWorkflows
 {
     internal interface IDeviceSubStateController : IStateControlTrigger<IDeviceSubStateAction>
     {

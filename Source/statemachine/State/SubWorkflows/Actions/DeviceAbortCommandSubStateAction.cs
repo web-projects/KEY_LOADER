@@ -1,15 +1,15 @@
 ﻿using Devices.Common.Interfaces;
 using LinkRequestExtensions;
-using StateMachine.Cancellation;
-using StateMachine.Helpers;
-using StateMachine.State.Enums;
+using Devices.Core.Cancellation;
+using Devices.Core.Helpers;
+using Devices.Core.State.Enums;
 using System;
 using System.Threading.Tasks;
 using XO.Device;
 using XO.Requests;
-using static StateMachine.State.Enums.DeviceSubWorkflowState;
+using static Devices.Core.State.Enums.DeviceSubWorkflowState;
 
-namespace StateMachine.State.SubWorkflows.Actions
+namespace Devices.Core.State.SubWorkflows.Actions
 {
     internal class DeviceAbortCommandSubStateAction : DeviceBaseSubStateAction
     {

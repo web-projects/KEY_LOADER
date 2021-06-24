@@ -1,6 +1,6 @@
-﻿using StateMachine.State.Enums;
-using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows;
+﻿using Devices.Core.State.Enums;
+using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows;
 using Devices.Common.Interfaces;
 using LinkRequestExtensions;
 using Newtonsoft.Json;
@@ -10,7 +10,7 @@ using XO.Device;
 using XO.Requests;
 using System.Diagnostics;
 
-namespace StateMachine.State.Actions
+namespace Devices.Core.State.Actions
 {
     internal class DeviceProcessRequestStateAction : DeviceBaseStateAction
     {

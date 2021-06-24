@@ -1,6 +1,6 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 
-namespace StateMachine.State.Actions.Controllers
+namespace Devices.Core.State.Actions.Controllers
 {
     internal interface IDeviceStateActionController
     {

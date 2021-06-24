@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Interfaces;
-using StateMachine.State.SubWorkflows;
-using StateMachine.State.Visitors;
+﻿using Devices.Core.State.Interfaces;
+using Devices.Core.State.SubWorkflows;
+using Devices.Core.State.Visitors;
 
-namespace StateMachine.State.Providers
+namespace Devices.Core.State.Providers
 {
     internal interface IControllerVisitorProvider
     {

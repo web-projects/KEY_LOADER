@@ -1,8 +1,8 @@
-﻿using StateMachine.State.Enums;
+﻿using Devices.Core.State.Enums;
 using System;
 using System.Runtime.Serialization;
 
-namespace StateMachine.State
+namespace Devices.Core.State
 {
     public class StateException : Exception
     {
