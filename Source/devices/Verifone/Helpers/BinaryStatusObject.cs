@@ -502,7 +502,7 @@ namespace Devices.Verifone.Helpers
 
         #region --- BASE_BUNDLE packages ---
         // VIPA bundle signatures
-        public const string VIPA_VER_FW = "vipa_ver.txt";
+        public const string VIPA_VER_FW = "www/vipa_ver.txt";
         public const string VIPA_VER_FW_HASH_11 = "7FCB0038F795ED9930F7536832BD3DD4";
         public const int VIPA_VER_FW_FILESIZE_11 = 0x00000018;
         public const string VIPA_VER_FW_HASH_17 = "7FCB0038F795ED9930F7536832BD3DD4";
@@ -511,11 +511,21 @@ namespace Devices.Verifone.Helpers
         public const string VIPA_VER_EMV = "emv_ver.txt";
         public const string VIPA_VER_EMV_HASH_EPIC_0_11 = "8D73517F3D7505298573E2C825F46649";
         public const int VIPA_VER_EMV_FILESIZE_EPIC_0_11 = 0x0000001B;
+        public const string VIPA_VER_EMV_HASH_EPIC_8_11 = "8D73517F3D7505298573E2C825F46649";
+        public const int VIPA_VER_EMV_FILESIZE_EPIC_8_11 = 0x0000001B;
+        public const string VIPA_VER_EMV_HASH_NJT_0_11 = "64491F3FA90BDDF0313A84E940BC193C";
+        public const int VIPA_VER_EMV_FILESIZE_NJT_0_11 = 0x0000001B;
         public const string VIPA_VER_EMV_HASH_NJT_8_11 = "64491F3FA90BDDF0313A84E940BC193C";
         public const int VIPA_VER_EMV_FILESIZE_NJT_8_11 = 0x0000001B;
 
         public const string VIPA_VER_EMV_HASH_EPIC_0_17 = "BC68563F6128976CB885EEC6689E07B0";
         public const int VIPA_VER_EMV_FILESIZE_EPIC_0_17 = 0x0000001B;
+        public const string VIPA_VER_EMV_HASH_EPIC_8_17 = "8D73517F3D7505298573E2C825F46649";
+        public const int VIPA_VER_EMV_FILESIZE_EPIC_8_17 = 0x0000001B;
+        public const string VIPA_VER_EMV_HASH_NJT_0_17 = "64491F3FA90BDDF0313A84E940BC193C";
+        public const int VIPA_VER_EMV_FILESIZE_NJT_0_17 = 0x0000001B;
+        public const string VIPA_VER_EMV_HASH_NJT_8_17 = "64491F3FA90BDDF0313A84E940BC193C";
+        public const int VIPA_VER_EMV_FILESIZE_NJT_8_17 = 0x0000001B;
 
         public const string VIPA_VER_IDLE = "idle_ver.txt";
         public const string VIPA_VER_IDLE_HASH_M400_17 = "2D02DA6A938D12BDA602AEDF929D0EB1";

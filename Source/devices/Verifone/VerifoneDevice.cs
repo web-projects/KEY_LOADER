@@ -1273,13 +1273,13 @@ namespace Devices.Verifone
                         if (vipaVersions.DALCdbData is { })
                         {
                             // VIPA BUNDLE
-                            Console.WriteLine($"DEVICE: VIPA BUNDLE VERSION {vipaVersions.DALCdbData.VIPAVersion.Version ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: VIPA BUNDLE DATECODE {vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
 
                             // EMV CONFIG BUNDLE
-                            Console.WriteLine($"DEVICE: EMV CONFIG VERSION  {vipaVersions.DALCdbData.EMVVersion.Version ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: EMV CONFIG DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
 
                             // IDLE IMAGE BUNDLE
-                            Console.WriteLine($"DEVICE: IDLE IMAGE VERSION  {vipaVersions.DALCdbData.IdleVersion.Version ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: IDLE IMAGE DATECODE  {vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
                         }
                     }
                 }

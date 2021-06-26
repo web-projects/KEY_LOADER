@@ -1829,25 +1829,26 @@ namespace Devices.Verifone.VIPA
             return deviceCommandResponseCode;
         }
 
-
         private int ProcessVersionString(DALBundleVersioning bundle, string value)
         {
             if (!value.Equals("NONE", StringComparison.OrdinalIgnoreCase))
             {
-                string[] elements = value.Split(new char[] { ',' });
+                string[] elements = value.Split(new char[] { '.' });
 
-                if (elements.Length != 7)
+                if (elements.Length != 9)
                 {
                     return (int)VipaSW1SW2Codes.Failure;
                 }
 
-                bundle.Application = elements[0];
-                bundle.Type = elements[1];
-                bundle.TerminalType = elements[2];
-                bundle.FrontEnd = elements[3];
-                bundle.Entity = elements[4];
-                bundle.Version = elements[5];
-                bundle.DateCode = elements[6];
+                bundle.Signature = elements[0];
+                bundle.Application = elements[1];
+                bundle.Type = elements[2];
+                bundle.TerminalType = elements[3];
+                bundle.FrontEnd = elements[4];
+                bundle.Entity = elements[5];
+                bundle.Model = elements[6];
+                bundle.Version = elements[7];
+                bundle.DateCode = elements[8];
             }
             return (int)VipaSW1SW2Codes.Success;
         }
