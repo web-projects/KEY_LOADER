@@ -40,7 +40,7 @@ namespace Devices.Verifone.VIPA
 
         int ConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
 
-        int EmvConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
+        int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic);
 
         int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere );
 
@@ -64,7 +64,7 @@ namespace Devices.Verifone.VIPA
 
         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreenHTML(string displayMessage);
 
-        LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string ActiveCustomerId);
+        LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId);
 
         (string Timestamp, int VipaResponse) Get24HourReboot();
 

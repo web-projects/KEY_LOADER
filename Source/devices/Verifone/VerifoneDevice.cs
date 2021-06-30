@@ -533,15 +533,16 @@ namespace Devices.Verifone
                         bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
                         bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        if (activePackageIsEpic)
+                        if (activePackageIsEpic || activePackageIsNJT)
                         {
                             //vipaResponse = VipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                            vipaResponse = VipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
+                            vipaResponse = VipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activePackageIsEpic);
                         }
-                        else if (activePackageIsNJT)
-                        {
-                            vipaResponse = VipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
-                        }
+                        // TTQ MSD ONLY
+                        //else if (activePackageIsNJT)
+                        //{
+                        //    vipaResponse = VipaDevice.ConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
+                        //}
                         else
                         {
                             Console.WriteLine($"DEVICE: INVALID CONFIGURATION {ConfigurationPackageActive}\n");
@@ -586,10 +587,11 @@ namespace Devices.Verifone
 
                             if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                if (activePackageIsNJT)
-                                {
-                                    Console.WriteLine($"DEVICE: REBOOT REQUEST SUCCESSFUL for ID={response.devicePTID.PTID}, SN={response.devicePTID.SerialNumber}\n");
-                                }
+                                // TTQ MSD ONLY
+                                //if (activePackageIsNJT)
+                                //{
+                                //    Console.WriteLine($"DEVICE: REBOOT REQUEST SUCCESSFUL for ID={response.devicePTID.PTID}, SN={response.devicePTID?.SerialNumber}\n");
+                                //}
                             }
                             else
                             {

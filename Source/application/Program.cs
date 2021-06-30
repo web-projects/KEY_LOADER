@@ -1,4 +1,5 @@
 ﻿using Config.Config;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Reflection;
@@ -53,6 +54,14 @@ namespace DEVICE_CORE
             IDeviceApplication application = activator.Start(pluginPath);
             await application.Run().ConfigureAwait(false);
 
+            // Get appsettings.json config - AddEnvironmentVariables() requires package: Microsoft.Extensions.Configuration.EnvironmentVariables
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            bool allowDebugCommands = AllowDebugCommands(configuration, 0);
+
             // GET STATUS
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
 
@@ -66,35 +75,36 @@ namespace DEVICE_CORE
                 // Check for <ALT> key combinations
                 if ((keypressed.Modifiers & ConsoleModifiers.Alt) != 0)
                 {
-#if DEBUG
-                    switch (keypressed.Key)
+                    if (allowDebugCommands)
                     {
-                        case ConsoleKey.A:
+                        switch (keypressed.Key)
                         {
-                            //Console.WriteLine("\r\nCOMMAND: [DISPLAY_CUSTOM_SCREEN]");
-                            await application.Command(LinkDeviceActionType.DisplayCustomScreen).ConfigureAwait(false);
-                            break;
-                        }
-                        case ConsoleKey.D:
-                        {
-                            //Console.WriteLine("\r\nCOMMAND: [DATETIME]");
-                            await application.Command(LinkDeviceActionType.SetTerminalDateTime).ConfigureAwait(false);
-                            break;
-                        }
-                        case ConsoleKey.F:
-                        {
-                            //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
-                            await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
-                            break;
-                        }
-                        case ConsoleKey.V:
-                        {
-                            //Console.WriteLine("\r\nCOMMAND: [VERSION]");
-                            await application.Command(LinkDeviceActionType.VIPAVersions).ConfigureAwait(false);
-                            break;
+                            case ConsoleKey.A:
+                            {
+                                //Console.WriteLine("\r\nCOMMAND: [DISPLAY_CUSTOM_SCREEN]");
+                                await application.Command(LinkDeviceActionType.DisplayCustomScreen).ConfigureAwait(false);
+                                break;
+                            }
+                            case ConsoleKey.D:
+                            {
+                                //Console.WriteLine("\r\nCOMMAND: [DATETIME]");
+                                await application.Command(LinkDeviceActionType.SetTerminalDateTime).ConfigureAwait(false);
+                                break;
+                            }
+                            case ConsoleKey.F:
+                            {
+                                //Console.WriteLine("\r\nCOMMAND: [FEATUREENABLEMENTTOKEN]");
+                                await application.Command(LinkDeviceActionType.FeatureEnablementToken).ConfigureAwait(false);
+                                break;
+                            }
+                            case ConsoleKey.V:
+                            {
+                                //Console.WriteLine("\r\nCOMMAND: [VERSION]");
+                                await application.Command(LinkDeviceActionType.VIPAVersions).ConfigureAwait(false);
+                                break;
+                            }
                         }
                     }
-#endif
                 }
                 else
                 {
@@ -252,6 +262,11 @@ namespace DEVICE_CORE
             }
 
             Console.Write("SELECT COMMAND: ");
+        }
+
+        static bool AllowDebugCommands(IConfiguration configuration, int index)
+        {
+            return configuration.GetSection("Devices:Verifone").GetValue<bool>("AllowDebugCommands");
         }
     }
 }

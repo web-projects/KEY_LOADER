@@ -16,11 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\common\core\Core.Patterns\Core.Patterns.csproj" />
-    <ProjectReference Include="..\common\xo\XO.csproj" />
-    <ProjectReference Include="..\config\Config.csproj" />
-    <ProjectReference Include="..\devices\common\Devices.Common.csproj" />
-    <ProjectReference Include="..\devices\sdk\Devices.SDK.csproj" />
+    <ProjectReference Include="..\..\common\core\Core.Patterns\Core.Patterns.csproj" />
+    <ProjectReference Include="..\..\config\Config.csproj" />
+    <ProjectReference Include="..\sdk\Devices.SDK.csproj" />
   </ItemGroup>
 
 </Project>
