@@ -513,7 +513,7 @@ namespace Devices.Verifone.Helpers
         public const string VIPA_VER_FW = "www/vipa_ver.txt";
         public const string VIPA_VER_FW_HASH_M400_11 = "E586E209CC93377C327452080C3630B8";
         public const int VIPA_VER_FW_FILESIZE_M400_11 = 0x0000002A;
-        public const string VIPA_VER_FW_HASH_P200_11 = "";
+        public const string VIPA_VER_FW_HASH_P200_11 = "421BAF90A4E53D8FEDE0D48A99A44EB8";
         public const int VIPA_VER_FW_FILESIZE_P200_11 = 0x0000002A;
         public const string VIPA_VER_FW_HASH_P400_11 = "AF3EFB12A673E5B4DD5A9C6C3C8031EC";
         public const int VIPA_VER_FW_FILESIZE_P400_11 = 0x0000002A;
@@ -572,16 +572,16 @@ namespace Devices.Verifone.Helpers
         //public const string VIPA_VER_EMV_HASH_NJT_8_19 = "";
         //public const int VIPA_VER_EMV_FILESIZE_NJT_8_19 = 0x0000002F;
 
-        // IDLE IMAGE VERSIONS
+        // IDLE IMAGE VERSIONS: extended implementation with HASH checks, requires CustomerId value during device discovery
         public const string VIPA_VER_IDLE = "idle_ver.txt";
         public const string VIPA_VER_IDLE_HASH_M400_199 = "BE6BEC9F77B42F7CD6A2CF19B6C2FA38";
         public const int VIPA_VER_IDLE_FILESIZE_M400_199 = 0x00000025;
         public const string VIPA_VER_IDLE_HASH_M400_250 = "E180AEF37FD1599977B8486A7778F96C";
         public const int VIPA_VER_IDLE_FILESIZE_M400_250 = 0x00000025;
 
-        public const string VIPA_VER_IDLE_HASH_P200_199 = "";
+        public const string VIPA_VER_IDLE_HASH_P200_199 = "003E5387001AD284BB05D365078A91AA";
         public const int VIPA_VER_IDLE_FILESIZE_P200_199 = 0x00000025;
-        public const string VIPA_VER_IDLE_HASH_P200_250 = "";
+        public const string VIPA_VER_IDLE_HASH_P200_250 = "F7090D1862D3A68C798B1BCD618ADA7F";
         public const int VIPA_VER_IDLE_FILESIZE_P200_250 = 0x00000025;
 
         public const string VIPA_VER_IDLE_HASH_P400_199 = "124B2E97C9A2E9ED23657A116225D4EA";
