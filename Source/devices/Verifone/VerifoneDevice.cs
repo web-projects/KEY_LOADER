@@ -61,6 +61,8 @@ namespace Devices.Verifone
 
         string ActiveCustomerId { get => deviceSectionConfig?.Verifone?.ActiveCustomerId; }
 
+        bool EnableHMAC { get => (bool)(deviceSectionConfig?.Verifone?.EnableHMAC); }
+
         public VerifoneDevice()
         {
 
@@ -133,6 +135,7 @@ namespace Devices.Verifone
                 Console.WriteLine($"\r\nACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
                 string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.DUKPTEngineIPP ? "IPP" : "VSS";
                 Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
+                Console.WriteLine($"HMAC ENABLEMENT ACTIVE: {EnableHMAC.ToString().ToUpper()}");
                 VipaConnection.LoadDeviceSectionConfig(deviceSectionConfig);
             }
         }

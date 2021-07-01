@@ -1158,7 +1158,8 @@ namespace Devices.Verifone.VIPA
             return (linkActionRequestIPA5Object, verifyResult.vipaResponse);
         }
 
-        public LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId)
+        private LinkDALRequestIPA5Object ReportVIPAVersions(Dictionary<string, (string configVersion, BinaryStatusObject.DeviceConfigurationTypes configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configObject,
+            string deviceModel, string activeCustomerId)
         {
             Debug.WriteLine(ConsoleMessages.VIPAVersions.GetStringValue());
 
@@ -1174,7 +1175,7 @@ namespace Devices.Verifone.VIPA
 
             Dictionary<string, string> versions = new Dictionary<string, string>();
 
-            foreach (var configFile in BinaryStatusObject.vipaVersions)
+            foreach (var configFile in configObject)
             {
                 // VIPA version matching
                 if (configFile.Value.configVersion.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase))
@@ -1294,6 +1295,12 @@ namespace Devices.Verifone.VIPA
 
             return linkActionRequestIPA5Object;
         }
+
+        public LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId) => activeSigningMethodIsSphere switch
+        {
+            true => ReportVIPAVersions(BinaryStatusObject.sphereVipaVersions, deviceModel, activeCustomerId),
+            false => ReportVIPAVersions(BinaryStatusObject.verifoneVipaVersions, deviceModel, activeCustomerId)
+        };
 
         public (string Timestamp, int VipaResponse) Get24HourReboot()
         {

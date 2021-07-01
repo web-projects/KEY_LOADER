@@ -16,6 +16,7 @@ namespace Devices.Common.Config
         public string SigningMethodActive { get; set; } = VerifoneSettingsSigningMethods.Sphere;
         public string ActiveCustomerId { get; set; } = CustomerIdentifers.Default;
         public string Reboot24Hour { get; set; } = "020000";
+        public bool EnableHMAC { get; set; } = false;
     }
 
     /// <summary>

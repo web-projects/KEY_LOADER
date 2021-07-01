@@ -17,5 +17,6 @@ namespace Devices.Common
         public string ConfigurationPackageActive { get; set; }
         public string SigningMethodActive { get; set; }
         public string ActiveCustomerId { get; set; }
+        public bool EnableHMAC { get; set; } = false;
     }
 }
