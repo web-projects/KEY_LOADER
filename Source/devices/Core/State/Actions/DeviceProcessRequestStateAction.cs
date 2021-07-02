@@ -6,8 +6,8 @@ using LinkRequestExtensions;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using XO.Device;
-using XO.Requests;
+using Common.XO.Device;
+using Common.XO.Requests;
 using System.Diagnostics;
 
 namespace Devices.Core.State.Actions

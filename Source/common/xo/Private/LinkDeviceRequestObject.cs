@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using XO.Device;
+﻿using Common.XO.Device;
 
-namespace XO.Private
+namespace Common.XO.Private
 {
     public partial class LinkDeviceRequestObject
     {

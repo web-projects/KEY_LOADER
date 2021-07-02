@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Common.XO.Requests;
 using System.Threading.Tasks;
-using XO.Requests;
 
 namespace DEVICE_CORE
 {

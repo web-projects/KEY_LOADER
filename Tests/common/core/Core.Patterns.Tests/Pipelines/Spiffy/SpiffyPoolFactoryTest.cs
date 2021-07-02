@@ -1,8 +1,8 @@
-﻿using Core.Patterns.Pipelines.Spiffy;
-using Core.Patterns.Pipelines.Spiffy.Pools;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
+using Common.Core.Patterns.Pipelines.Spiffy.Pools;
 using Xunit;
 
-namespace Core.Patterns.Tests.Pipelines.Spiffy
+namespace Common.Core.Patterns.Tests.Pipelines.Spiffy
 {
     public class SpiffyPoolFactoryTest
     {

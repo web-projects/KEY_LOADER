@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public partial class LinkDeviceActionRequest
     {

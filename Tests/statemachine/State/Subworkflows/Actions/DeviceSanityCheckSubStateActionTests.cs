@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TestHelper.Polly;
-using XO.Requests;
+using Common.XO.Requests;
 using Xunit;
-using XO.Device;
+using Common.XO.Device;
 using DEVICE_CORE.Helpers.Tests;
 
 namespace Devices.Core.State.SubWorkflows.Actions.Tests

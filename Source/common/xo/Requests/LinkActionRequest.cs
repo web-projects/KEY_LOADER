@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using XO.Requests.Payment;
+using Common.XO.Requests.Payment;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public class LinkActionRequest
     {

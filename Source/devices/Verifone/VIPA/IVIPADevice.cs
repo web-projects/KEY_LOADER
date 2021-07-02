@@ -1,13 +1,11 @@
-﻿using Devices.Verifone.Helpers;
-using Devices.Verifone.TLV;
+﻿using Common.XO.Private;
+using Devices.Common;
+using Devices.Common.AppConfig;
 using Devices.Verifone.Connection;
+using Devices.Verifone.Helpers;
+using Devices.Verifone.TLV;
 using System.Collections.Generic;
 using static Devices.Verifone.VIPA.VIPAImpl;
-using Config;
-using Devices.Common.AppConfig;
-using Devices.Common;
-using System;
-using XO.Private;
 
 namespace Devices.Verifone.VIPA
 {
@@ -16,7 +14,7 @@ namespace Devices.Verifone.VIPA
         bool Connect(SerialConnection connection, DeviceInformation deviceInformation);
 
         void Dispose();
-        
+
         void ResponseCodeHandler(List<TLVImpl> tags, int responseCode, bool cancelled = false);
 
         bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "");
@@ -42,7 +40,7 @@ namespace Devices.Verifone.VIPA
 
         int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic);
 
-        int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere );
+        int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere);
 
         int FeatureEnablementToken();
 
@@ -55,7 +53,7 @@ namespace Devices.Verifone.VIPA
         (string HMAC, int VipaResponse) GenerateHMAC();
 
         int UpdateHMACKeys();
-        
+
         void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
 
         int UpdateIdleScreen(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId);

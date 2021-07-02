@@ -1,9 +1,8 @@
-﻿using Devices.Core.State.Enums;
+﻿using Common.XO.Requests;
+using Devices.Core.State.Enums;
 using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
-using XO.Requests;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Devices.Core.State.SubWorkflows.Actions
 {

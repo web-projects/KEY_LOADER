@@ -1,7 +1,7 @@
-﻿using Core.Patterns.Pipelines.Spiffy.Pools;
+﻿using Common.Core.Patterns.Pipelines.Spiffy.Pools;
 using System;
 
-namespace Core.Patterns.Pipelines.Spiffy
+namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     public static class SpiffyWorkerPoolFactory
     {

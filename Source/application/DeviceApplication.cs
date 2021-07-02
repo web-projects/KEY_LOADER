@@ -3,7 +3,7 @@ using Devices.Core.State.Enums;
 using Devices.Core.State.Management;
 using System;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace DEVICE_CORE
 {

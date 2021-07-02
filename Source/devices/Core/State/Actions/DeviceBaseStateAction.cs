@@ -5,8 +5,8 @@ using Devices.Core.State.Enums;
 using Devices.Core.State.Interfaces;
 using System;
 using System.Threading.Tasks;
-using XO.Device;
-using XO.Requests;
+using Common.XO.Device;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.Actions
 {

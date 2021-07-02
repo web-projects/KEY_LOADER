@@ -11,7 +11,7 @@ using Devices.Core.State.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.TestStubs.Tests
 {

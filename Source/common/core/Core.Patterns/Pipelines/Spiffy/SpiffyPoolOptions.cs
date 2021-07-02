@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks.Dataflow;
 
-namespace Core.Patterns.Pipelines.Spiffy
+namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     public sealed class SpiffyPoolOptions
     {

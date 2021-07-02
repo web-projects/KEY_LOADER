@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Patterns.Search
+namespace Common.Core.Patterns.Search
 {
     public sealed class TrieNode
     {

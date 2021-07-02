@@ -1,4 +1,5 @@
-﻿using Devices.Common.Helpers;
+﻿using Common.Config;
+using Devices.Common.Helpers;
 using System;
 using Xunit;
 

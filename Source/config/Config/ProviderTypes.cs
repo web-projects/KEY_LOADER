@@ -1,4 +1,4 @@
-﻿namespace Config
+﻿namespace Common.Config
 {
     public enum DeviceProviderType
     {

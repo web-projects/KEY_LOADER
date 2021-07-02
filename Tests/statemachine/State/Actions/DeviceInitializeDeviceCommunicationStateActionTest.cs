@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TestHelper.Polly;
-using XO.Device;
-using XO.Requests;
-using XO.Responses;
+using Common.XO.Device;
+using Common.XO.Requests;
+using Common.XO.Responses;
 using Xunit;
 
 namespace Devices.Core.State.Actions.Tests

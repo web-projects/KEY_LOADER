@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Config.Config
+﻿namespace Common.Config.Config
 {
     public static class Constants
     {

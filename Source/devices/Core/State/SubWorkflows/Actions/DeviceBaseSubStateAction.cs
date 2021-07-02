@@ -7,8 +7,8 @@ using Devices.Core.State.SubWorkflows.Helpers;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using XO.Device;
-using XO.Requests;
+using Common.XO.Device;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.SubWorkflows.Actions
 {

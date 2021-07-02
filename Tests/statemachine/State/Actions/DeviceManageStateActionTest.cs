@@ -3,7 +3,7 @@ using Devices.Core.State.Interfaces;
 using Devices.Core.Tests;
 using Moq;
 using System;
-using XO.Requests;
+using Common.XO.Requests;
 using Xunit;
 
 namespace Devices.Core.State.Actions.Tests

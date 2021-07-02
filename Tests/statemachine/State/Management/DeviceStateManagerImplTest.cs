@@ -1,4 +1,4 @@
-﻿using Config;
+﻿using Common.Config;
 using DEVICE_CORE.Modules;
 using Devices.Core.State.Actions;
 using Devices.Core.State.Actions.Controllers;

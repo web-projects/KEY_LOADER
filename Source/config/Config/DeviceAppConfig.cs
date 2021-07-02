@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Config
+namespace Common.Config
 {
     public class DeviceAppConfig : IAppConfig
     {

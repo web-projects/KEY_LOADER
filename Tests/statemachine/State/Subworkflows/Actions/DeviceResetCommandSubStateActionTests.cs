@@ -12,8 +12,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TestHelper.Polly;
-using XO.Device;
-using XO.Requests;
+using Common.XO.Device;
+using Common.XO.Requests;
 using Xunit;
 
 namespace Devices.Core.State.SubWorkflows.Actions.Tests

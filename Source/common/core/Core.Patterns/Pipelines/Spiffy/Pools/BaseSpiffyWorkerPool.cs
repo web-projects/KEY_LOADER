@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Core.Patterns.Pipelines.Spiffy.Pools
+namespace Common.Core.Patterns.Pipelines.Spiffy.Pools
 {
     internal abstract class BaseSpiffyWorkerPool<T, TMessage> : ISpiffyWorkerPool<T, TMessage>, ISpiffyContext<T>
         where T : new()

@@ -2,10 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using static Core.Patterns.Pipelines.Spiffy.SpiffyLifetime;
-using static Core.Patterns.Pipelines.Spiffy.SpiffyState;
+using static Common.Core.Patterns.Pipelines.Spiffy.SpiffyLifetime;
+using static Common.Core.Patterns.Pipelines.Spiffy.SpiffyState;
 
-namespace Core.Patterns.Pipelines.Spiffy.Workers
+namespace Common.Core.Patterns.Pipelines.Spiffy.Workers
 {
     internal abstract class BaseSpiffyWorker<T> : ISpiffyNotifiable, ISpiffyWorker<T> where T : new()
     {

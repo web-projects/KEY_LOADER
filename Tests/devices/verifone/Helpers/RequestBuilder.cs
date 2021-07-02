@@ -1,10 +1,7 @@
-﻿using Devices.Common.Helpers;
-using System;
+﻿using Common.XO.Requests;
+using Common.XO.Requests.Payment;
+using Devices.Common.Helpers;
 using System.Collections.Generic;
-using System.Text;
-using XO.Device;
-using XO.Private;
-using XO.Requests;
 
 namespace Devices.Verifone.Tests.Helpers
 {
@@ -188,14 +185,14 @@ namespace Devices.Verifone.Tests.Helpers
                 {
                     DALAction = LinkDALActionType.GetPayment
                 },
-                PaymentRequest = new XO.Requests.Payment.LinkPaymentRequest
+                PaymentRequest = new LinkPaymentRequest
                 {
                     RequestedAmount = 378,
                     CurrencyCode = "USD",
-                    PaymentType = XO.Requests.Payment.LinkPaymentRequestType.Sale,
+                    PaymentType = LinkPaymentRequestType.Sale,
                     PartnerRegistryKeys = new List<string> { "CDTFsL8" },
-                    RequestedTenderType = XO.Requests.Payment.LinkPaymentRequestedTenderType.Card,
-                    //PaymentAttributes = new XO.Requests.Payment.LinkPaymentAttributes
+                    RequestedTenderType = LinkPaymentRequestedTenderType.Card,
+                    //PaymentAttributes = new LinkPaymentAttributes
                     //{
                     //    PartialPayment = true
                     //},

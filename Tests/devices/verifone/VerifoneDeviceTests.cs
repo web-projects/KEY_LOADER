@@ -1,8 +1,10 @@
-﻿using Devices.Common;
+﻿using Common.XO.Private;
+using Common.XO.Requests;
+using Common.XO.Responses;
+using Devices.Common;
 using Devices.Common.Helpers;
 using Devices.Verifone;
 using Devices.Verifone.Connection;
-using Devices.Verifone.Helpers;
 using Devices.Verifone.Tests.Helpers;
 using Devices.Verifone.VIPA;
 using Moq;
@@ -10,18 +12,13 @@ using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Channels;
 using System.Threading;
 using TestHelper;
-using XO.Private;
-using XO.Requests;
-using XO.Responses;
 using Xunit;
-using static Devices.Common.Helpers.EventResponses;
+using static Common.XO.Responses.LinkEventResponse;
 using static Devices.Verifone.VIPA.VIPAImpl;
 using static IPA5.XO.ProtoBuf.LogMessage.Types;
-using static XO.Responses.LinkEventResponse;
-using EventCodeType = XO.Responses.LinkEventResponse.EventCodeType;
+using EventCodeType = Common.XO.Responses.LinkEventResponse.EventCodeType;
 
 namespace Devices.Simulator.Tests
 {

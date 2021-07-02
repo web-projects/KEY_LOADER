@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace XO.Responses
+namespace Common.XO.Responses
 {
     public class LinkPaymentResponse
     {

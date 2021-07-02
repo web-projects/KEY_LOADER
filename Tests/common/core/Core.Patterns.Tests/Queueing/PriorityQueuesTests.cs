@@ -1,10 +1,10 @@
-﻿using Core.Patterns.Queuing;
+﻿using Common.Core.Patterns.Queuing;
 using Devices.Core.State.Actions.Preprocessing;
 using System;
 using System.Diagnostics;
 using Xunit;
 
-namespace Core.Patterns.Tests.Queueing
+namespace Common.Core.Patterns.Tests.Queueing
 {
     public class PriorityQueuesTests
     {

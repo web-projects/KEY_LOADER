@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace XO.Device
+namespace Common.XO.Device
 {
     public class LinkDALIdentifier
     {

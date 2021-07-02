@@ -1,4 +1,4 @@
-﻿using Core.Patterns.Queuing;
+﻿using Common.Core.Patterns.Queuing;
 using System;
 
 namespace Devices.Core.State.Actions.Preprocessing

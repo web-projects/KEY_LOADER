@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Core.Patterns.Pipelines.Spiffy
+namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     internal interface ISpiffyWorker<T> : IDisposable
         where T : new()

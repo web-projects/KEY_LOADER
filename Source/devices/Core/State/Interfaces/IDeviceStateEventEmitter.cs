@@ -1,6 +1,6 @@
 ﻿using Devices.Core.State.Enums;
 using Devices.Common;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.Interfaces
 {

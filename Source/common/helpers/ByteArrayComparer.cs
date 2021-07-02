@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Helpers
+namespace Common.Helpers
 {
     /// <summary>
     ///    Tests for equality between two byte arrays based on their value

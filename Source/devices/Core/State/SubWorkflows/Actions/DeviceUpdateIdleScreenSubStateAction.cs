@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.SubWorkflows.Actions
 {

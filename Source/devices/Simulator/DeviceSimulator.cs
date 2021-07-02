@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
+using Common.XO.Requests;
+using Common.XO.Responses;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
 using Devices.Common.Interfaces;
 using Devices.Simulator.Connection;
 using Ninject;
-using XO.Requests;
-using XO.Responses;
+using System;
+using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 
 namespace Devices.Simulator
 {
@@ -86,7 +84,7 @@ namespace Devices.Simulator
                 SerialNumber = "CEEEDEADBEEF",
                 ProductIdentification = "SIMULATOR",
                 VendorIdentifier = "BADDCACA"
-                
+
             });
 
             return deviceInformation;
@@ -250,7 +248,7 @@ namespace Devices.Simulator
             Console.WriteLine($"simulator: LOAD HMAC KEYS for SN='{linkActionRequest?.DeviceRequest?.DeviceIdentifier?.SerialNumber}'");
             return linkRequest;
         }
-        
+
         public LinkRequest GenerateHMAC(LinkRequest linkRequest)
         {
             LinkActionRequest linkActionRequest = linkRequest?.Actions?.First();

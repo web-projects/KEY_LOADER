@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Threading;
-using XO.Device;
-using XO.Private;
-using XO.Requests;
-using XO.Responses;
+using Common.XO.Device;
+using Common.XO.Private;
+using Common.XO.Requests;
+using Common.XO.Responses;
 
 namespace Devices.Verifone
 {

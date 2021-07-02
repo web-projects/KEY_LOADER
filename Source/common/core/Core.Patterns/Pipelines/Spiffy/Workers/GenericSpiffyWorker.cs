@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Core.Patterns.Pipelines.Spiffy.Workers
+namespace Common.Core.Patterns.Pipelines.Spiffy.Workers
 {
     internal sealed class GenericSpiffyWorker<T> : BaseSpiffyWorker<T>
         where T : new()

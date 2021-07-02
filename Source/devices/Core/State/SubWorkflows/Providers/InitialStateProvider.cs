@@ -1,7 +1,7 @@
 ﻿using Devices.Core.State.Enums;
 using System;
 using System.Linq;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.SubWorkflows.Providers
 {

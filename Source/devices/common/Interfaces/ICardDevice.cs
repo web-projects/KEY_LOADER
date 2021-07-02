@@ -1,9 +1,9 @@
 ﻿using Devices.Common.AppConfig;
 using System;
 using System.Collections.Generic;
-using XO.Requests;
-using XO.Responses;
-using static XO.Responses.LinkEventResponse;
+using Common.XO.Requests;
+using Common.XO.Responses;
+using static Common.XO.Responses.LinkEventResponse;
 
 namespace Devices.Common.Interfaces
 {

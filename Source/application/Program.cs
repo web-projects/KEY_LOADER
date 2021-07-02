@@ -1,12 +1,12 @@
 ﻿using Common.LoggerManager;
-using Config.Config;
+using Common.Config.Config;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace DEVICE_CORE
 {

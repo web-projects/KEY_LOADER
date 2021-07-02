@@ -1,4 +1,4 @@
-﻿namespace XO.Private
+﻿namespace Common.XO.Private
 {
     /// <summary>
     /// schema(7):

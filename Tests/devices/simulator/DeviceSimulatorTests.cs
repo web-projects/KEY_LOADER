@@ -2,7 +2,7 @@
 using Devices.Simulator.Connection;
 using Moq;
 using Ninject;
-using XO.Requests;
+using Common.XO.Requests;
 using Xunit;
 
 namespace Devices.Simulator.Tests

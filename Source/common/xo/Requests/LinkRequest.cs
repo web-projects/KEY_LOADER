@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XO.Private;
+using Common.XO.Private;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public partial class LinkRequest
     {

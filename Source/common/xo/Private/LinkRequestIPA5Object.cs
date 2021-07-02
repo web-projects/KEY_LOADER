@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using XO.Responses;
+using Common.XO.Responses;
 
-namespace XO.Private
+namespace Common.XO.Private
 {
     public partial class LinkRequestIPA5Object
     {

@@ -1,4 +1,4 @@
-﻿namespace XO.Responses.Device
+﻿namespace Common.XO.Device
 {
     public class LinkDevicePowerOnNotification
     {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Core.Patterns.Pipelines.Spiffy
+namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     /// <summary>
     /// When specified on a class, it marks the class as capable of being leveraged

@@ -1,4 +1,4 @@
-﻿namespace Core.Patterns.Pipelines.Spiffy
+﻿namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     /// <summary>
     /// A Spiffy notifiable object which contains an instance of the current class.

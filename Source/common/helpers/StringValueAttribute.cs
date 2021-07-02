@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Helpers
+namespace Common.Helpers
 {
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
     public class StringValueAttribute : Attribute

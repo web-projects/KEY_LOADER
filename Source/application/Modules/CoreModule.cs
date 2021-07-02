@@ -1,4 +1,4 @@
-﻿using Config;
+﻿using Common.Config;
 using DEVICE_CORE.Providers;
 using Ninject.Modules;
 using Devices.Core.Providers;

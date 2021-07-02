@@ -1,10 +1,10 @@
-﻿using Core.Patterns.Search;
+﻿using Common.Core.Patterns.Search;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Core.Patterns.Tests.Search
+namespace Common.Core.Patterns.Tests.Search
 {
     public class TrieNodeTest
     {

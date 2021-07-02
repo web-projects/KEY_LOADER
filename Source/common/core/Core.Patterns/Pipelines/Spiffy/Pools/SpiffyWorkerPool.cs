@@ -1,12 +1,12 @@
-﻿using Core.Patterns.Pipelines.Spiffy.Workers;
+﻿using Common.Core.Patterns.Pipelines.Spiffy.Workers;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using static Core.Patterns.Pipelines.Spiffy.SpiffyLifetime;
+using static Common.Core.Patterns.Pipelines.Spiffy.SpiffyLifetime;
 
-namespace Core.Patterns.Pipelines.Spiffy.Pools
+namespace Common.Core.Patterns.Pipelines.Spiffy.Pools
 {
     internal sealed class SpiffyWorkerPool<T, TMessage> : BaseSpiffyWorkerPool<T, TMessage>
         where T : new()

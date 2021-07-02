@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
+using Common.Core.Patterns.Pipelines.Spiffy.Pools;
+using Common.Core.Patterns.Tests.Stubs;
 using Moq;
-using Core.Patterns.Pipelines.Spiffy.Pools;
-using Core.Patterns.Tests.Stubs;
-using Core.Patterns.Pipelines.Spiffy;
-using System.Threading.Tasks.Dataflow;
-using System.Threading;
+using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using Xunit;
 
-namespace Core.Patterns.Tests.Pipelines.Spiffy.Pools
+namespace Common.Core.Patterns.Tests.Pipelines.Spiffy.Pools
 {
     public class SpiffyWorkerPoolTest : IDisposable
     {

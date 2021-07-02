@@ -1,6 +1,6 @@
 ﻿using Devices.Core.State.Enums;
 using System;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.Management
 {

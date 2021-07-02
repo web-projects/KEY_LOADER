@@ -1,6 +1,6 @@
-﻿using XO.Private;
+﻿using Common.XO.Private;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public class LinkDALRequest
     {

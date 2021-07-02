@@ -1,5 +1,5 @@
 ﻿using Common.LoggerManager;
-using Config.Config;
+using Common.Config.Config;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Config;
@@ -19,9 +19,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using XO.Private;
-using XO.Responses;
+using Common.XO.Private;
+using Common.XO.Responses;
 using static Devices.Verifone.Helpers.Messages;
+using Common.XO.Device;
 
 namespace Devices.Verifone.VIPA
 {
@@ -2031,7 +2032,7 @@ namespace Devices.Verifone.VIPA
                 }
                 else if (tag.Tag.SequenceEqual(E6Template.E6TemplateTag))
                 {
-                    deviceResponse.PowerOnNotification = new XO.Responses.Device.LinkDevicePowerOnNotification();
+                    deviceResponse.PowerOnNotification = new LinkDevicePowerOnNotification();
 
                     var _tags = TLVImpl.Decode(tag.Data, 0, tag.Data.Length);
 

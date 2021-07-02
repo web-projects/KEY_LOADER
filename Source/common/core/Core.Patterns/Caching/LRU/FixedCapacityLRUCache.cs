@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Core.Patterns.Caching.LRU
+namespace Common.Core.Patterns.Caching.LRU
 {
     internal sealed class FixedCapacityLRUCache<K, V> : IEnumerable<V>
     {

@@ -1,8 +1,8 @@
-﻿using Core.Patterns.Pipelines.Spiffy;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
 using System;
 using System.Threading.Tasks;
 
-namespace Core.Patterns.Tests.Stubs
+namespace Common.Core.Patterns.Tests.Stubs
 {
     internal class StubSpiffyable : ISpiffyable<int>, IDisposable
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using XO.Device;
+﻿using Common.XO.Device;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public class LinkDeviceRequest
     {

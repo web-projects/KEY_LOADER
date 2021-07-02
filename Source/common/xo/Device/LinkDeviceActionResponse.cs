@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Common.XO.Responses;
 using System.Collections.Generic;
-using System.Text;
-using XO.Responses;
 
-namespace XO.Device
+namespace Common.XO.Device
 {
     public class LinkDeviceActionResponse
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace XO.Requests.Payment
+namespace Common.XO.Requests.Payment
 {
     public class LinkPaymentRequest
     {

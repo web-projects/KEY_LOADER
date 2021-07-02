@@ -1,7 +1,7 @@
-﻿using Core.Patterns.Pipelines.Spiffy;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
 using Xunit;
 
-namespace Core.Patterns.Tests.Pipelines.Spiffy
+namespace Common.Core.Patterns.Tests.Pipelines.Spiffy
 {
     public class SpiffyPoolOptionsTest
     {

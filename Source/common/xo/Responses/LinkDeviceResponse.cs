@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using XO.Responses.Device;
+using Common.XO.Device;
 
-namespace XO.Responses
+namespace Common.XO.Responses
 {
     public class LinkDeviceResponse
     {

@@ -1,7 +1,7 @@
 ﻿using Devices.Common.AppConfig;
 using Microsoft.Extensions.Configuration;
 
-namespace Config
+namespace Common.Config
 {
     public interface IDeviceConfigurationProvider
     {

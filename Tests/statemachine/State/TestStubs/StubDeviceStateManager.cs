@@ -1,4 +1,4 @@
-﻿using Core.Patterns.Queuing;
+﻿using Common.Core.Patterns.Queuing;
 using DEVICE_SDK.Sdk;
 using Devices.Common;
 using Devices.Common.AppConfig;
@@ -15,7 +15,7 @@ using Devices.Core.State.SubWorkflows.Management;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.TestStubs.Tests
 {

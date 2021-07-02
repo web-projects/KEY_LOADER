@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.Patterns.Queuing
+﻿namespace Common.Core.Patterns.Queuing
 {
     public interface IPriorityQueueItem
     {

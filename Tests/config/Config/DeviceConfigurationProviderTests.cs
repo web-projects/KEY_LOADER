@@ -1,4 +1,4 @@
-﻿using Config;
+﻿using Common.Config;
 using Xunit;
 
 namespace Config.Tests

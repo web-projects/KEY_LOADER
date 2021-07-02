@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Core.Patterns.Queuing
+namespace Common.Core.Patterns.Queuing
 {
     public class PriorityQueue<T> 
         where T : IComparable<T>, IPriorityQueueItem

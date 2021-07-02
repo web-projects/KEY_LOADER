@@ -1,5 +1,5 @@
-﻿using XO.Device;
-using XO.Requests;
+﻿using Common.XO.Device;
+using Common.XO.Requests;
 
 namespace LinkRequestExtensions
 {

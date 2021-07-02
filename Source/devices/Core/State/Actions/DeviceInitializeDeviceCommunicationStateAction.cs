@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using XO.Responses;
+using Common.XO.Responses;
 
 namespace Devices.Core.State.Actions
 {

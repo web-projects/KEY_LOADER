@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Core.Patterns.Pipelines.Spiffy
+namespace Common.Core.Patterns.Pipelines.Spiffy
 {
     public interface ISpiffyWorkerPool<T, TMessage> : IDisposable
         where T : new()

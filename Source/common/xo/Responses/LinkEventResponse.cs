@@ -1,9 +1,9 @@
-﻿using Helpers;
+﻿using Common.Helpers;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Text.Json.Serialization;
 
-namespace XO.Responses
+namespace Common.XO.Responses
 {
     public class LinkEventResponse
     {

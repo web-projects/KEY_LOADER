@@ -1,9 +1,9 @@
 ﻿using Devices.Common.AppConfig;
 using Microsoft.Extensions.Configuration;
 using System;
-using static Config.DeviceConfigConstants;
+using static Common.Config.DeviceConfigConstants;
 
-namespace Config
+namespace Common.Config
 {
     public class DeviceConfigurationProvider : IDeviceConfigurationProvider
     {

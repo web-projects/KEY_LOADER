@@ -3,7 +3,6 @@ using Devices.Core.State.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using XO.Requests;
 
 namespace Devices.Core.State.SubWorkflows.Actions
 {

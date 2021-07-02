@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace DEVICE_CORE.Helpers.Tests
 {

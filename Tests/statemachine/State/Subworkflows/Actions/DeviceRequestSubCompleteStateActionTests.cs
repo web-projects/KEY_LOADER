@@ -4,7 +4,7 @@ using Moq;
 using Ninject;
 using System;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 using Xunit;
 
 namespace Devices.Core.State.SubWorkflows.Actions.Tests

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Common.XO.Private;
 using System.Collections.Generic;
-using System.Text;
-using XO.Private;
 
-namespace XO.Responses
+namespace Common.XO.Responses
 {
     public class LinkActionResponse
     {

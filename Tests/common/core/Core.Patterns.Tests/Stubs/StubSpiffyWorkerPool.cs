@@ -1,7 +1,7 @@
-﻿using Core.Patterns.Pipelines.Spiffy;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
 using System.Threading.Tasks;
 
-namespace Core.Patterns.Tests.Stubs
+namespace Common.Core.Patterns.Tests.Stubs
 {
     internal class StubSpiffyWorkerPool<T, TMessage> : ISpiffyWorkerPool<T, TMessage>, ISpiffyContext<T>
         where T : new()

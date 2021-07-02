@@ -1,6 +1,6 @@
 ﻿using Devices.Verifone.VIPA;
-using XO.Private;
-using XO.Responses;
+using Common.XO.Private;
+using Common.XO.Responses;
 
 namespace Devices.Verifone.Helpers
 {

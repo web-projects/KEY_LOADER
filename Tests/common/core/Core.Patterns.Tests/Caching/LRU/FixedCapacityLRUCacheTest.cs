@@ -1,11 +1,11 @@
-﻿using Core.Patterns.Caching.LRU;
+﻿using Common.Core.Patterns.Caching.LRU;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using Xunit;
-using static Core.Patterns.Caching.LRU.FixedCapacityLRUCache<int, int>;
+using static Common.Core.Patterns.Caching.LRU.FixedCapacityLRUCache<int, int>;
 
-namespace Core.Patterns.Tests.Caching.LRU
+namespace Common.Core.Patterns.Tests.Caching.LRU
 {
     public class FixedCapacityLRUCacheTest
     {

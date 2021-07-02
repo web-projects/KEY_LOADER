@@ -1,4 +1,4 @@
-﻿using Config;
+﻿using Common.Config;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Helpers;
@@ -12,7 +12,7 @@ using Devices.Core.State.Visitors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace Devices.Core.State.TestStubs.Tests
 {

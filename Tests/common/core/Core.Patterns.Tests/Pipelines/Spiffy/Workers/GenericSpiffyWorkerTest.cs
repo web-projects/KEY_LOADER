@@ -1,12 +1,12 @@
-﻿using Core.Patterns.Pipelines.Spiffy;
-using Core.Patterns.Pipelines.Spiffy.Workers;
-using Core.Patterns.Tests.Stubs;
+﻿using Common.Core.Patterns.Pipelines.Spiffy;
+using Common.Core.Patterns.Pipelines.Spiffy.Workers;
+using Common.Core.Patterns.Tests.Stubs;
 using Moq;
 using System;
 using System.Threading;
 using Xunit;
 
-namespace Core.Patterns.Tests.Pipelines.Spiffy.Workers
+namespace Common.Core.Patterns.Tests.Pipelines.Spiffy.Workers
 {
     public class GenericSpiffyWorkerTest
     {

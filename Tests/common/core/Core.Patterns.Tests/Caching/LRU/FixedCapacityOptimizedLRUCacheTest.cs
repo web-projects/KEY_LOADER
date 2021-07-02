@@ -1,9 +1,9 @@
-﻿using Core.Patterns.Caching.LRU;
+﻿using Common.Core.Patterns.Caching.LRU;
 using System;
 using System.Linq;
 using Xunit;
 
-namespace Core.Patterns.Tests.Caching.LRU
+namespace Common.Core.Patterns.Tests.Caching.LRU
 {
     public class FixedCapacityOptimizedLRUCacheTest
     {

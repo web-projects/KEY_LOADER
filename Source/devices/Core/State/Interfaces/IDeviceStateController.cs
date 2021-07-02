@@ -1,4 +1,4 @@
-﻿using Core.Patterns.Queuing;
+﻿using Common.Core.Patterns.Queuing;
 using DEVICE_SDK.Sdk;
 using Devices.Common.AppConfig;
 using Devices.Common.Interfaces;

@@ -1,5 +1,5 @@
-﻿using Config;
-using Core.Patterns.Queuing;
+﻿using Common.Config;
+using Common.Core.Patterns.Queuing;
 using DEVICE_SDK.Sdk;
 using Devices.Common;
 using Devices.Common.AppConfig;
@@ -25,7 +25,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using XO.Requests;
+using Common.XO.Requests;
+using Common.XO.Device;
 
 namespace Devices.Core.State.Management
 {
@@ -555,7 +556,7 @@ namespace Devices.Core.State.Management
                             },
                             DeviceRequest = new LinkDeviceRequest()
                             {
-                                DeviceIdentifier = new XO.Device.LinkDeviceIdentifier()
+                                DeviceIdentifier = new LinkDeviceIdentifier()
                                 {
                                     Manufacturer = TargetDevices[0].DeviceInformation?.Manufacturer,
                                     Model = TargetDevices[0].DeviceInformation?.Model,

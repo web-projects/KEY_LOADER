@@ -1,4 +1,4 @@
-﻿namespace XO.Responses
+﻿namespace Common.XO.Responses
 {
     public class LinkDALResponse
     {

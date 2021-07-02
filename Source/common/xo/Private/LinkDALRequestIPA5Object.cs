@@ -1,4 +1,4 @@
-﻿namespace XO.Private
+﻿namespace Common.XO.Private
 {
     public class LinkDALRequestIPA5Object
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Patterns.Search
+namespace Common.Core.Patterns.Search
 {
     /// <summary>
     /// A trie is a tree data structure that stores words by compressing common prefixes.

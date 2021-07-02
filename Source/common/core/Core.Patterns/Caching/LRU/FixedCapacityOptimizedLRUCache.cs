@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Core.Patterns.Caching.LRU
+namespace Common.Core.Patterns.Caching.LRU
 {
     /// <summary>
     /// The fixed Capacity Optimized LRU (Least Recently Used) Cache is a nifty high 

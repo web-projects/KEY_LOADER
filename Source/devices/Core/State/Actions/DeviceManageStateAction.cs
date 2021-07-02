@@ -1,9 +1,7 @@
-﻿using Devices.Core.State.Enums;
+﻿using Common.XO.Requests;
+using Devices.Core.State.Enums;
 using Devices.Core.State.Interfaces;
-using Devices.Common.Helpers;
-using System;
 using System.Threading.Tasks;
-using XO.Requests;
 
 namespace Devices.Core.State.Actions
 {
@@ -76,7 +74,6 @@ namespace Devices.Core.State.Actions
 
             return Task.CompletedTask;
         }
-
 
         public override void RequestReceived(LinkRequest request)
         {

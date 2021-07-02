@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XO.Responses
+﻿namespace Common.XO.Responses
 {
     public class LinkErrorValue
     {

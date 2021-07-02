@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Converters;
 using System.Text.Json.Serialization;
 
-namespace XO.Requests
+namespace Common.XO.Requests
 {
     public class LinkDALActionRequest
     {

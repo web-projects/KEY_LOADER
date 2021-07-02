@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 using Moq;
-using XO.Requests;
+using Common.XO.Requests;
 
 namespace IPA5.Devices.DAL.Core.Tests.State.Actions.SubWorkflows.Management
 {
