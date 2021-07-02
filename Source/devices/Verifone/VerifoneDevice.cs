@@ -1269,11 +1269,11 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
-                        bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
+                        //bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
+                        //bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
                         LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model,
-                            activeSigningMethodIsSphere, ActiveCustomerId);
+                            EnableHMAC, ActiveCustomerId);
 
                         if (vipaVersions.DALCdbData is { })
                         {

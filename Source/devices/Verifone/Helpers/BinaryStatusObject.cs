@@ -433,12 +433,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_M400_IMAGE_TGZ_250_HASH = "C5490C0A4A97A36D665319B36A6E7D20";
         public const int SPHERE_M400_IMAGE_TGZ_250_SIZE = 0x0003852B;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_M400_IMAGE_TGZ_199 = "verifone_idlescreen_sphere_m400_199_210623.tgz";
-        public const string VERIFONE_M400_IMAGE_TGZ_199_HASH = "724CE9548770966AB8D5DD387AA38776";
-        public const int VERIFONE_M400_IMAGE_TGZ_199_SIZE = 0x000844D0;
-        public const string VERIFONE_M400_IMAGE_TGZ_250 = "verifone_idlescreen_sphere_m400_250_210623.tgz";
-        public const string VERIFONE_M400_IMAGE_TGZ_250_HASH = "5E962F7DE578C6766DB8C77D7E20BA72";
-        public const int VERIFONE_M400_IMAGE_TGZ_250_SIZE = 0x00038562;
+        public const string VERIFONE_M400_IMAGE_TGZ_199 = "sphere.njt.idle...199.m400.1.210625.tgz";
+        public const string VERIFONE_M400_IMAGE_TGZ_199_HASH = "1C5BB0FBFFBAFB6BF36BF1D1D01C57BA";
+        public const int VERIFONE_M400_IMAGE_TGZ_199_SIZE = 0x000844E5;
+        public const string VERIFONE_M400_IMAGE_TGZ_250 = "sphere.njt.idle...250.m400.1.210625.tgz";
+        public const string VERIFONE_M400_IMAGE_TGZ_250_HASH = "46C9670BD4C86D851C620755A033ABA4";
+        public const int VERIFONE_M400_IMAGE_TGZ_250_SIZE = 0x00038575;
 
         // ---------- P200 SPHERE SIGNED
         public const string SPHERE_P200_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p200.1.210625.tgz";
@@ -448,12 +448,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_P200_IMAGE_TGZ_250_HASH = "D1D61F19B1D71520ED985D472EBFF53D";
         public const int SPHERE_P200_IMAGE_TGZ_250_SIZE = 0x0000E296;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_P200_IMAGE_TGZ_199 = "verifone_idlescreen_sphere_p200_199_210623.tgz";
-        public const string VERIFONE_P200_IMAGE_TGZ_199_HASH = "EC58191C8C2559DACA56EAB07C94C207";
-        public const int VERIFONE_P200_IMAGE_TGZ_199_SIZE = 0x000347E4;
-        public const string VERIFONE_P200_IMAGE_TGZ_250 = "verifone_idlescreen_sphere_p200_250_210623.tgz";
-        public const string VERIFONE_P200_IMAGE_TGZ_250_HASH = "2BF3BCC65532415C21950FF6C33D12EA";
-        public const int VERIFONE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2C6;
+        public const string VERIFONE_P200_IMAGE_TGZ_199 = "sphere.njt.idle...199.p200.1.210625.tgz";
+        public const string VERIFONE_P200_IMAGE_TGZ_199_HASH = "654D274353DFC0639BC094DAA1B6319A";
+        public const int VERIFONE_P200_IMAGE_TGZ_199_SIZE = 0x000347F8;
+        public const string VERIFONE_P200_IMAGE_TGZ_250 = "sphere.njt.idle...250.p200.1.210625.tgz";
+        public const string VERIFONE_P200_IMAGE_TGZ_250_HASH = "6954203AEDC0670F400AB3F2FB33C137";
+        public const int VERIFONE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2CE;
 
         // ---------- P400 SPHERE SIGNED
         public const string SPHERE_P400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p400.1.210625.tgz";
@@ -463,12 +463,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_P400_IMAGE_TGZ_250_HASH = "D656519D3584C8D4AE0981687C40FFB9";
         public const int SPHERE_P400_IMAGE_TGZ_250_SIZE = 0x0003CEC0;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_P400_IMAGE_TGZ_199 = "verifone_idlescreen_sphere_p400_199_210623.tgz";
-        public const string VERIFONE_P400_IMAGE_TGZ_199_HASH = "5C00EB2144EF171BDD663751092F0FA1";
-        public const int VERIFONE_P400_IMAGE_TGZ_199_SIZE = 0x00017C9C;
-        public const string VERIFONE_P400_IMAGE_TGZ_250 = "verifone_idlescreen_sphere_p400_250_210623.tgz";
-        public const string VERIFONE_P400_IMAGE_TGZ_250_HASH = "08BC71F3D21D1AE032FD5715ED5C07E8";
-        public const int VERIFONE_P400_IMAGE_TGZ_250_SIZE = 0x0003CEF9;
+        public const string VERIFONE_P400_IMAGE_TGZ_199 = "sphere.njt.idle...199.p400.1.210625.tgz";
+        public const string VERIFONE_P400_IMAGE_TGZ_199_HASH = "6F37FE246DD51822CD39E112E143B895";
+        public const int VERIFONE_P400_IMAGE_TGZ_199_SIZE = 0x00017CB6;
+        public const string VERIFONE_P400_IMAGE_TGZ_250 = "sphere.njt.idle...250.p400.1.210625.tgz";
+        public const string VERIFONE_P400_IMAGE_TGZ_250_HASH = "27CF6D41B7D96F6C307748EE65E655DB";
+        public const int VERIFONE_P400_IMAGE_TGZ_250_SIZE = 0x0003CF07;
 
         public static Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)> RaptorIdleScreenTGZ_199 =
             new Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)>()
@@ -547,8 +547,8 @@ namespace Devices.Verifone.Helpers
         //public const int VERIFONE_VIPA_VER_FW_FILESIZE_UX301_19 = 0x0000002A;
 
         // EMV CONFIGURATION VERSIONS
-        public const string VERIFONE_VIPA_VER_EMV_HASH_SLOT_0_11 = "";
-        public const int VERIFONE_VIPA_VER_EMV_FILESIZE_SLOT_0_11 = 0x00000012;
+        public const string VERIFONE_VIPA_VER_EMV_HASH_SLOT_0_11 = "1C11A8B275437703E64C95B38A330C16";
+        public const int VERIFONE_VIPA_VER_EMV_FILESIZE_SLOT_0_11 = 0x0000002F;
         public const string VERIFONE_VIPA_VER_EMV_HASH_SLOT_8_11 = "";
         public const int VERIFONE_VIPA_VER_EMV_FILESIZE_SLOT_8_11 = 0x00000013;
 
@@ -563,18 +563,18 @@ namespace Devices.Verifone.Helpers
         //public const string VERIFONE_VIPA_VER_EMV_HASH_SLOT_8_19 = "";
         //public const int VERIFONE_VIPA_VER_EMV_FILESIZE_SLOT_8_19 = 0x0000002F;
 
-        // IDLE IMAGE VERSIONS: extended implementation with HASH checks, requires CustomerId value during device discovery
-        public const string VERIFONE_VIPA_VER_IDLE_HASH_M400_199 = "2D02DA6A938D12BDA602AEDF929D0EB1";
-        public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_M400_199 = 0x00000014;
-        public const string VERIFONE_VIPA_VER_IDLE_HASH_M400_250 = "D213788CEFD5EE34D013ADFBC1DACE49";
-        public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_M400_250 = 0x00000014;
+        // IDLE IMAGE VERSIONS: extended implementation with HASH checks, requires CustId value during device discovery
+        public const string VERIFONE_VIPA_VER_IDLE_HASH_M400_199 = "89ABD4FF2840CA42B49087ABEF5C1F0F";
+        public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_M400_199 = 0x00000022;
+        public const string VERIFONE_VIPA_VER_IDLE_HASH_M400_250 = "B5C3CF0BE5E2F63ACD66DEE35C6AC225";
+        public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_M400_250 = 0x00000022;
 
         public const string VERIFONE_VIPA_VER_IDLE_HASH_P200_199 = "";
         public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_P200_199 = 0x00000025;
         public const string VERIFONE_VIPA_VER_IDLE_HASH_P200_250 = "";
         public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_P200_250 = 0x00000025;
 
-        public const string VERIFONE_VIPA_VER_IDLE_HASH_P400_199 = "";
+        public const string VERIFONE_VIPA_VER_IDLE_HASH_P400_199 = "124B2E97C9A2E9ED23657A116225D4EA";
         public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_P400_199 = 0x00000025;
         public const string VERIFONE_VIPA_VER_IDLE_HASH_P400_250 = "";
         public const int VERIFONE_VIPA_VER_IDLE_FILESIZE_P400_250 = 0x00000025;

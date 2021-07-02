@@ -64,7 +64,7 @@ namespace Devices.Verifone.VIPA
 
         (LinkDALRequestIPA5Object LinkActionRequestIPA5Object, int VipaResponse) DisplayCustomScreenHTML(string displayMessage);
 
-        LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId);
+        LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool hmacEnabled, string activeCustomerId);
 
         (string Timestamp, int VipaResponse) Get24HourReboot();
 

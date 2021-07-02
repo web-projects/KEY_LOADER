@@ -1,4 +1,5 @@
-﻿using Config.Config;
+﻿using Common.LoggerManager;
+using Config.Config;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Config;
@@ -1051,14 +1052,14 @@ namespace Devices.Verifone.VIPA
                         // validate signing method
                         if (activeSigningMethodIsSphere)
                         {
-                            if (!configFile.Value.fileName.StartsWith("sphere"))
+                            if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
                             {
                                 continue;
                             }
                         }
                         else
                         {
-                            if (!configFile.Value.fileName.StartsWith("verifone"))
+                            if (!configFile.Value.fileName.StartsWith("sphere.njt"))
                             {
                                 continue;
                             }
@@ -1173,6 +1174,7 @@ namespace Devices.Verifone.VIPA
                 }
             };
 
+            const string bundleNotFound = "NONE";
             Dictionary<string, string> versions = new Dictionary<string, string>();
 
             foreach (var configFile in configObject)
@@ -1198,8 +1200,7 @@ namespace Devices.Verifone.VIPA
                     Debug.WriteLine($"VIPA: PROCESSING FILE=[{configFile.Value.fileName}]");
 
                     // assume version string is not found
-                    string value = "NONE";
-                    versions.Add(configFile.Value.fileName, value);
+                    versions[configFile.Value.fileName] = bundleNotFound;
 
                     // check for access to the file
                     (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(configFile.Value.fileName);
@@ -1248,15 +1249,24 @@ namespace Devices.Verifone.VIPA
                     // Check for size match
                     if (fileBinaryStatus.binaryStatusObject.FileSize != configFile.Value.fileSize)
                     {
-                        Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
-                        continue;
+                        Logger.error($"VIPA: {configFile.Value.fileName} SIZE MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileSize}");
+                        
+                        // requires CustId to process proper image version
+                        //if (configFile.Value.configType != BinaryStatusObject.DeviceConfigurationTypes.IdleConfiguration)
+                        //{
+                        //    continue;
+                        //}
                     }
 
                     // Check for HASH Match
                     if (!fileBinaryStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
                     {
-                        Debug.WriteLine($"VIPA: {configFile.Value.fileName} HASH MISMATCH!");
-                        continue;
+                        Logger.error($"VIPA: {configFile.Value.fileName} HASH MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileCheckSum}");
+                        // requires CustId to process proper image version
+                        //if (configFile.Value.configType != BinaryStatusObject.DeviceConfigurationTypes.IdleConfiguration)
+                        //{
+                        //    continue;
+                        //}
                     }
 
                     // Read File Contents
@@ -1264,7 +1274,7 @@ namespace Devices.Verifone.VIPA
 
                     if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
                     {
-                        Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                        Logger.error(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
                             configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
 
                         // Clean up pool allocation, clearing the array
@@ -1293,13 +1303,15 @@ namespace Devices.Verifone.VIPA
                 };
             }
 
+            int bundleFoundcount = versions.Where(x => !x.Value.Equals(bundleNotFound)).Count();
+
             return linkActionRequestIPA5Object;
         }
 
-        public LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool activeSigningMethodIsSphere, string activeCustomerId) => activeSigningMethodIsSphere switch
+        public LinkDALRequestIPA5Object VIPAVersions(string deviceModel, bool hmacEnabled, string activeCustomerId) => hmacEnabled switch
         {
-            true => ReportVIPAVersions(BinaryStatusObject.sphereVipaVersions, deviceModel, activeCustomerId),
-            false => ReportVIPAVersions(BinaryStatusObject.verifoneVipaVersions, deviceModel, activeCustomerId)
+            true => ReportVIPAVersions(BinaryStatusObject.verifoneVipaVersions, deviceModel, activeCustomerId),
+            false => ReportVIPAVersions(BinaryStatusObject.sphereVipaVersions, deviceModel, activeCustomerId)
         };
 
         public (string Timestamp, int VipaResponse) Get24HourReboot()
