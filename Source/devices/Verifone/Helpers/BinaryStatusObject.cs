@@ -256,13 +256,13 @@ namespace Devices.Verifone.Helpers
         public const string VERIFONE_EPIC_LOCK_CONFIG8_HASH_11 = "0E9392A75908318B552F05234804DA9C";
         public const int VERIFONE_EPIC_LOCK_CONFIG8_SIZE_11 = 0x0000751D;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_11 = "verifone_VIPA_cfg_68211_NJT_slot0_210519.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_11 = "4FECE8F62B02C46159EEEF5C4ECCB5E9";
-        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_11 = 0x0000752F;
+        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_11 = "verifone.njt.emv.unattended.FD...6_2_8_11.210702.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_11 = "0E5BFE13A6BB27533DA35166171C1C7E";
+        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_11 = 0x0001034E;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_11 = "verifone_VIPA_cfg_68211_NJT_slot8_210519.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_11 = "02C9FB6134F1962D2DC48E2C6B9CA261";
-        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_11 = 0x00007535;
+        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_11 = "verifone.njt.emv.unattended.FD...6_2_8_11.210702_S8.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_11 = "D4F7F5A3E9E2718DE28CEFC486FF481A";
+        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_11 = 0x000101D1;
 
         // VIPA 6.8.2.17 CONFIGURATIONS
         public const string VIPA_BUNDLES_17 = "6.8.2.17";
@@ -277,13 +277,13 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_EPIC_LOCK_CONFIG8_HASH_17 = "B4DED7C9214B44F7E1276EB58717ADB4";
         public const int SPHERE_EPIC_LOCK_CONFIG8_SIZE_17 = 0x00007C27;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_17 = "sphere_VIPA_cfg_68217_NJT_slot0_210623.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_17 = "FD1727B54D9FFDC3490D433824ECEB2F";
-        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00007C28;
+        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_17 = "FB296545B4F02692D0211A3D07633783";
+        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00010217;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_17 = "sphere_VIPA_cfg_68217_NJT_slot8_210623.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_17 = "2436D5815F99DA1CB5EC9A27BBC3E7D3";
-        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_17 = 0x00007C26;
+        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702_S8.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_17 = "857A9AD4EFF0C5AABD725B090E14EA2C";
+        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_17 = 0x000102F4;
 
         // ---------- VERIFONE-DEV SIGNED
         // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
@@ -295,13 +295,52 @@ namespace Devices.Verifone.Helpers
         public const string VERIFONE_EPIC_LOCK_CONFIG8_HASH_17 = "01A88EEC231CFF476B7E7B3716F7F1EA";
         public const int VERIFONE_EPIC_LOCK_CONFIG8_SIZE_17 = 0x000079AB;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone_VIPA_cfg_68217_NJT_slot0_210519.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_17 = "0CEAA2DEE759EA51EA621CA4498C2CB4";
-        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00007A85;
+        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_17 = "FB296545B4F02692D0211A3D07633783";
+        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00010217;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone_VIPA_cfg_68217_NJT_slot8_210519.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_17 = "220BCFF54EC37434096837331925A4AB";
-        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_17 = 0x00007A74;
+        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702_S8.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_17 = "857A9AD4EFF0C5AABD725B090E14EA2C";
+        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_17 = 0x000102F4;
+
+        // VIPA 6.8.2.17 CONFIGURATIONS
+        public const string VIPA_BUNDLES_19 = "6.8.2.19";
+
+        // ---------- SPHERE SIGNED
+        // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string SPHERE_EPIC_LOCK_CONFIG0_BUNDLE_19 = "sphere_VIPA_cfg_68217_Epic_slot0_210623.tgz";
+        public const string SPHERE_EPIC_LOCK_CONFIG0_HASH_19 = "AF9A2D63C7F2A4FAA6F7619FD74E37AD";
+        public const int SPHERE_EPIC_LOCK_CONFIG0_SIZE_19 = 0x00007C24;
+        // EPIC ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string SPHERE_EPIC_LOCK_CONFIG8_BUNDLE_19 = "sphere_VIPA_cfg_68217_Epic_slot8_210623.tgz";
+        public const string SPHERE_EPIC_LOCK_CONFIG8_HASH_19 = "B4DED7C9214B44F7E1276EB58717ADB4";
+        public const int SPHERE_EPIC_LOCK_CONFIG8_SIZE_19 = 0x00007C27;
+        // NJT ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_19 = "sphere.njt.emv.unattended.FD...6_2_8_17.210702.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_19 = "FB296545B4F02692D0211A3D07633783";
+        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_19 = 0x00010217;
+        // NJT ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_19 = "sphere.njt.emv.unattended.FD...6_2_8_17.210702_S8.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_19 = "857A9AD4EFF0C5AABD725B090E14EA2C";
+        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_19 = 0x000102F4;
+
+        // ---------- VERIFONE-DEV SIGNED
+        // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string VERIFONE_EPIC_LOCK_CONFIG0_BUNDLE_19 = "verifone_VIPA_cfg_68217_Epic_slot0_210519.tgz";
+        public const string VERIFONE_EPIC_LOCK_CONFIG0_HASH_19 = "B386A5931832C32923CB5D6F5C524F70";
+        public const int VERIFONE_EPIC_LOCK_CONFIG0_SIZE_19 = 0x00007A6F;
+        // EPIC ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string VERIFONE_EPIC_LOCK_CONFIG8_BUNDLE_19 = "verifone_VIPA_cfg_68217_Epic_slot8_210519.tgz";
+        public const string VERIFONE_EPIC_LOCK_CONFIG8_HASH_19 = "01A88EEC231CFF476B7E7B3716F7F1EA";
+        public const int VERIFONE_EPIC_LOCK_CONFIG8_SIZE_19 = 0x000079AB;
+        // NJT ADE SLOT-0 LOCK CONFIGURATIONS
+        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_19 = "sphere.njt.emv.unattended.FD...6_2_8_17.210702.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_19 = "FB296545B4F02692D0211A3D07633783";
+        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_19 = 0x00010217;
+        // NJT ADE SLOT-8 LOCK CONFIGURATIONS
+        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_19 = "sphere.njt.emv.unattended.FD...6_2_8_17.210702_S8.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_19 = "857A9AD4EFF0C5AABD725B090E14EA2C";
+        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_19 = 0x000102F4;
 
         public static Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configBundlesSlot0 =
             new Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)>()
@@ -316,6 +355,11 @@ namespace Devices.Verifone.Helpers
                 ["SPHERE_NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, SPHERE_NJT_LOCK_CONFIG0_BUNDLE_17, SPHERE_NJT_LOCK_CONFIG0_HASH_17, SPHERE_NJT_LOCK_CONFIG0_SIZE_17),
                 ["VERIFO_EPIC-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, VERIFONE_EPIC_LOCK_CONFIG0_BUNDLE_17, VERIFONE_EPIC_LOCK_CONFIG0_HASH_17, VERIFONE_EPIC_LOCK_CONFIG0_SIZE_17),
                 ["VERIFO_NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_17, VERIFONE_NJT_LOCK_CONFIG0_HASH_17, VERIFONE_NJT_LOCK_CONFIG0_SIZE_17),
+                // VIPA 6.8.2.19
+                ["SPHERE_EPIC-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, SPHERE_EPIC_LOCK_CONFIG0_BUNDLE_19, SPHERE_EPIC_LOCK_CONFIG0_HASH_19, SPHERE_EPIC_LOCK_CONFIG0_SIZE_19),
+                ["SPHERE_NJT-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, SPHERE_NJT_LOCK_CONFIG0_BUNDLE_19, SPHERE_NJT_LOCK_CONFIG0_HASH_19, SPHERE_NJT_LOCK_CONFIG0_SIZE_19),
+                ["VERIFO_EPIC-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, VERIFONE_EPIC_LOCK_CONFIG0_BUNDLE_19, VERIFONE_EPIC_LOCK_CONFIG0_HASH_19, VERIFONE_EPIC_LOCK_CONFIG0_SIZE_19),
+                ["VERIFO_NJT-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_19, VERIFONE_NJT_LOCK_CONFIG0_HASH_19, VERIFONE_NJT_LOCK_CONFIG0_SIZE_19),
             };
 
         public static Dictionary<string, (string configVersion, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configBundlesSlot8 =
@@ -331,6 +375,11 @@ namespace Devices.Verifone.Helpers
                 ["SPHERE_NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, SPHERE_NJT_LOCK_CONFIG8_BUNDLE_17, SPHERE_NJT_LOCK_CONFIG8_HASH_17, SPHERE_NJT_LOCK_CONFIG8_SIZE_17),
                 ["VERIFO_EPIC-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, VERIFONE_EPIC_LOCK_CONFIG8_BUNDLE_17, VERIFONE_EPIC_LOCK_CONFIG8_HASH_17, VERIFONE_EPIC_LOCK_CONFIG8_SIZE_17),
                 ["VERIFO_NJT-17"] = (VIPA_BUNDLES_17, BinaryStatusObject.ALL_DEVICES, VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_17, VERIFONE_NJT_LOCK_CONFIG8_HASH_17, VERIFONE_NJT_LOCK_CONFIG8_SIZE_17),
+                // VIPA 6.8.2.19
+                ["SPHERE_EPIC-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, SPHERE_EPIC_LOCK_CONFIG8_BUNDLE_19, SPHERE_EPIC_LOCK_CONFIG8_HASH_19, SPHERE_EPIC_LOCK_CONFIG8_SIZE_19),
+                ["SPHERE_NJT-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, SPHERE_NJT_LOCK_CONFIG8_BUNDLE_19, SPHERE_NJT_LOCK_CONFIG8_HASH_19, SPHERE_NJT_LOCK_CONFIG8_SIZE_19),
+                ["VERIFO_EPIC-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, VERIFONE_EPIC_LOCK_CONFIG8_BUNDLE_19, VERIFONE_EPIC_LOCK_CONFIG8_HASH_19, VERIFONE_EPIC_LOCK_CONFIG8_SIZE_19),
+                ["VERIFO_NJT-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_19, VERIFONE_NJT_LOCK_CONFIG8_HASH_19, VERIFONE_NJT_LOCK_CONFIG8_SIZE_19),
             };
         #endregion --- ADE SLOT CONFIGURATION ---
 
@@ -343,7 +392,7 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "B2B1537C7BC8CB59F6DB1C970527FBE8";
         public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FEAF;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_11 = "sphere.njt.emv.attended.FD...6_2_8_11.210625.tgz";
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_11 = "verifone.njt.emv.attended.FD...6_2_8_11.210625.tgz";
         public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "608821B99CA50A29A8C5A6FD252F1D3C";
         public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x00010151;
 
@@ -354,7 +403,7 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "E7FC0083F733F8B44CBDA66E0CDA27CC";
         public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FEF5;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_17 = "sphere.njt.emv.attended.FD...6_2_8_17.210625.tgz";
+        public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_17 = "verifone.njt.emv.attended.FD...6_2_8_17.210625.tgz";
         public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "56CE9D3CB26C8BAB5F26C51C255EE428";
         public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x00010289;
 
@@ -366,7 +415,7 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "CB61852C57D1D86287A8921E1BE8E5F3";
         public const int SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF94;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_11 = "sphere.njt.emv.unattended.FD...6_2_8_11.210625.tgz";
+        public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_11 = "verifone.njt.emv.unattended.FD...6_2_8_11.210625.tgz";
         public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "BFC85B30170E4E5B537BF50C693C501A";
         public const int VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0001045A;
 
@@ -378,7 +427,7 @@ namespace Devices.Verifone.Helpers
         public const int SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0001009D;
         // ---------- VERIFONE-DEV SIGNED
         public const string VERIFONE_UNATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_17 = "sphere.njt.emv.unattended.FD...6_2_8_17.210625.tgz";
+        public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210625.tgz";
         public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_17 = "8B6B912D18E51CD9FEA31651C1D4B7BF";
         public const int VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x00010472;
 
@@ -433,12 +482,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_M400_IMAGE_TGZ_250_HASH = "C5490C0A4A97A36D665319B36A6E7D20";
         public const int SPHERE_M400_IMAGE_TGZ_250_SIZE = 0x0003852B;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_M400_IMAGE_TGZ_199 = "sphere.njt.idle...199.m400.1.210625.tgz";
-        public const string VERIFONE_M400_IMAGE_TGZ_199_HASH = "1C5BB0FBFFBAFB6BF36BF1D1D01C57BA";
-        public const int VERIFONE_M400_IMAGE_TGZ_199_SIZE = 0x000844E5;
-        public const string VERIFONE_M400_IMAGE_TGZ_250 = "sphere.njt.idle...250.m400.1.210625.tgz";
-        public const string VERIFONE_M400_IMAGE_TGZ_250_HASH = "46C9670BD4C86D851C620755A033ABA4";
-        public const int VERIFONE_M400_IMAGE_TGZ_250_SIZE = 0x00038575;
+        public const string VERIFONE_M400_IMAGE_TGZ_199 = "verifone.njt.idle...199.m400.1.210625.tgz";
+        public const string VERIFONE_M400_IMAGE_TGZ_199_HASH = "A5D80BC56912EF237289312EE0FDD926";
+        public const int VERIFONE_M400_IMAGE_TGZ_199_SIZE = 0x000844F3;
+        public const string VERIFONE_M400_IMAGE_TGZ_250 = "verifone.njt.idle...250.m400.1.210625.tgz";
+        public const string VERIFONE_M400_IMAGE_TGZ_250_HASH = "7F070A21BFC0CA195CF84935C3F3A2C1";
+        public const int VERIFONE_M400_IMAGE_TGZ_250_SIZE = 0x0003856F;
 
         // ---------- P200 SPHERE SIGNED
         public const string SPHERE_P200_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p200.1.210625.tgz";
@@ -448,12 +497,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_P200_IMAGE_TGZ_250_HASH = "D1D61F19B1D71520ED985D472EBFF53D";
         public const int SPHERE_P200_IMAGE_TGZ_250_SIZE = 0x0000E296;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_P200_IMAGE_TGZ_199 = "sphere.njt.idle...199.p200.1.210625.tgz";
-        public const string VERIFONE_P200_IMAGE_TGZ_199_HASH = "654D274353DFC0639BC094DAA1B6319A";
-        public const int VERIFONE_P200_IMAGE_TGZ_199_SIZE = 0x000347F8;
-        public const string VERIFONE_P200_IMAGE_TGZ_250 = "sphere.njt.idle...250.p200.1.210625.tgz";
-        public const string VERIFONE_P200_IMAGE_TGZ_250_HASH = "6954203AEDC0670F400AB3F2FB33C137";
-        public const int VERIFONE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2CE;
+        public const string VERIFONE_P200_IMAGE_TGZ_199 = "verifone.njt.idle...199.p200.1.210625.tgz";
+        public const string VERIFONE_P200_IMAGE_TGZ_199_HASH = "EBF16DA99FA497F9898327B30543E42A";
+        public const int VERIFONE_P200_IMAGE_TGZ_199_SIZE = 0x000347F9;
+        public const string VERIFONE_P200_IMAGE_TGZ_250 = "verifone.njt.idle...250.p200.1.210625.tgz";
+        public const string VERIFONE_P200_IMAGE_TGZ_250_HASH = "CF1856D7369CF8CD336159441816EB79";
+        public const int VERIFONE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2DD;
 
         // ---------- P400 SPHERE SIGNED
         public const string SPHERE_P400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p400.1.210625.tgz";
@@ -463,12 +512,12 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_P400_IMAGE_TGZ_250_HASH = "D656519D3584C8D4AE0981687C40FFB9";
         public const int SPHERE_P400_IMAGE_TGZ_250_SIZE = 0x0003CEC0;
         // ---------- VERIFONE-DEV SIGNED
-        public const string VERIFONE_P400_IMAGE_TGZ_199 = "sphere.njt.idle...199.p400.1.210625.tgz";
-        public const string VERIFONE_P400_IMAGE_TGZ_199_HASH = "6F37FE246DD51822CD39E112E143B895";
-        public const int VERIFONE_P400_IMAGE_TGZ_199_SIZE = 0x00017CB6;
-        public const string VERIFONE_P400_IMAGE_TGZ_250 = "sphere.njt.idle...250.p400.1.210625.tgz";
-        public const string VERIFONE_P400_IMAGE_TGZ_250_HASH = "27CF6D41B7D96F6C307748EE65E655DB";
-        public const int VERIFONE_P400_IMAGE_TGZ_250_SIZE = 0x0003CF07;
+        public const string VERIFONE_P400_IMAGE_TGZ_199 = "verifone.njt.idle...199.p400.1.210625.tgz";
+        public const string VERIFONE_P400_IMAGE_TGZ_199_HASH = "EA87F04B4E22275EEDC3342E82C093F4";
+        public const int VERIFONE_P400_IMAGE_TGZ_199_SIZE = 0x00017CB5;
+        public const string VERIFONE_P400_IMAGE_TGZ_250 = "verifone.njt.idle...250.p400.1.210625.tgz";
+        public const string VERIFONE_P400_IMAGE_TGZ_250_HASH = "92EE84A979EF8D2CFEF9F5A5EAC35B82";
+        public const int VERIFONE_P400_IMAGE_TGZ_250_SIZE = 0x0003CF06;
 
         public static Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)> RaptorIdleScreenTGZ_199 =
             new Dictionary<string, (string[] deviceTypes, string fileName, string fileTargetName, string fileHash, int fileSize)>()

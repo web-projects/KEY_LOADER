@@ -551,14 +551,14 @@ namespace Devices.Verifone.VIPA
                     // validate signing method
                     if (activeSigningMethodIsSphere)
                     {
-                        if (!configFile.Value.fileName.StartsWith("sphere"))
+                        if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
                         {
                             continue;
                         }
                     }
                     else
                     {
-                        if (!configFile.Value.fileName.StartsWith("verifone"))
+                        if (!configFile.Value.fileName.StartsWith("verifone.njt"))
                         {
                             continue;
                         }
@@ -648,7 +648,7 @@ namespace Devices.Verifone.VIPA
                         }
                         else
                         {
-                            if (!configFile.Value.fileName.StartsWith("sphere.njt"))
+                            if (!configFile.Value.fileName.StartsWith("verifone.njt"))
                             {
                                 continue;
                             }
@@ -804,19 +804,20 @@ namespace Devices.Verifone.VIPA
             foreach (var configFile in configurationBundle)
             {
                 bool configurationBundleMatches = activeConfigurationIsEpic ? configFile.Key.Contains("EPIC") : configFile.Key.Contains("NJT");
-                if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase) && configurationBundleMatches)
+                if (DeviceInformation.FirmwareVersion.StartsWith(configFile.Value.configType, StringComparison.OrdinalIgnoreCase) && configurationBundleMatches)
                 {
                     // validate signing method
                     if (activeSigningMethodIsSphere)
                     {
-                        if (!configFile.Value.fileName.StartsWith("sphere"))
+                        //TODO: update with new bundles
+                        if (!configFile.Value.fileName.StartsWith("sphere_VIPA"))
                         {
                             continue;
                         }
                     }
                     else
                     {
-                        if (!configFile.Value.fileName.StartsWith("verifone"))
+                        if (!configFile.Value.fileName.StartsWith("verifone.njt"))
                         {
                             continue;
                         }
@@ -1060,7 +1061,7 @@ namespace Devices.Verifone.VIPA
                         }
                         else
                         {
-                            if (!configFile.Value.fileName.StartsWith("sphere.njt"))
+                            if (!configFile.Value.fileName.StartsWith("verifone.njt"))
                             {
                                 continue;
                             }
