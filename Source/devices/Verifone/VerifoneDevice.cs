@@ -1278,13 +1278,13 @@ namespace Devices.Verifone
                         if (vipaVersions.DALCdbData is { })
                         {
                             // VIPA BUNDLE
-                            Console.WriteLine($"DEVICE: VIPA BUNDLE DATECODE {vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
 
                             // EMV CONFIG BUNDLE
-                            Console.WriteLine($"DEVICE: EMV CONFIG DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
 
                             // IDLE IMAGE BUNDLE
-                            Console.WriteLine($"DEVICE: IDLE IMAGE DATECODE  {vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
                         }
                     }
                 }
