@@ -16,6 +16,7 @@ using Common.XO.Device;
 using Common.XO.Private;
 using Common.XO.Requests;
 using Common.XO.Responses;
+using Common.LoggerManager;
 
 namespace Devices.Verifone
 {
@@ -1279,9 +1280,25 @@ namespace Devices.Verifone
                         {
                             // VIPA BUNDLE
                             Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
+                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.VIPAVersion?.Version) &&
+                                !DeviceInformation.FirmwareVersion.Equals(vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")))
+                            {
+                                Console.WriteLine($"!!!!!!: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
+                                    $"REPORTED [{vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
+                                Logger.error($"VIPA_VER.TXT: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
+                                    $"REPORTED [{vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
+                            }
 
                             // EMV CONFIG BUNDLE
                             Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
+                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.EMVVersion?.Version) && 
+                                !DeviceInformation.FirmwareVersion.Equals(vipaVersions.DALCdbData.EMVVersion?.Version?.Replace("_", ".")))
+                            {
+                                Console.WriteLine($"!!!!!!: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
+                                    $"REPORTED [{vipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
+                                Logger.error($"EMV_VER.TXT: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
+                                    $"REPORTED [{vipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
+                            }
 
                             // IDLE IMAGE BUNDLE
                             Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");

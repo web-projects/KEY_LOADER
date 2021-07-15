@@ -3,6 +3,13 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.048.00 (07/13/2021)
+
+1. <ALT><V> option to display VIPA bundle versions
+2. Signing artifact deployment via appsettings.json SigningMethodActive
+3. Configuration artifact deployment via appsettings.json ConfigurationPackageActive
+
+-------------------------------------------------------------------------------
 VERSION.047.00 (05/25/2021)
 
 1. Device signing option: Sphere or Verifone-DEV.
