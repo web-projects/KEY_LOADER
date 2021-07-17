@@ -38,7 +38,8 @@ namespace Devices.Verifone.VIPA
 
         int ConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
 
-        int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic);
+        //TODO: DELETE
+        //int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic);
 
         int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere);
 

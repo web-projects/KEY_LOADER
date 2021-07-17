@@ -3,6 +3,12 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.044.00 (07/16/2021)
+
+1. Corrected VIPA minor version transposition and added check to confirm version
+2. Added logger for troubleshooting purposes
+
+-------------------------------------------------------------------------------
 VERSION.048.00 (07/13/2021)
 
 1. <ALT><V> option to display VIPA bundle versions

@@ -76,3 +76,4 @@ This an application to load HMAC KEYS.
 * 20210520 - Added device signed option: Sphere and Verifone-DEV
 * 20210526 - Added VIPA restart command
 * 20210702 - LoggerManager added
+* 20210716 - Target Build 0.49

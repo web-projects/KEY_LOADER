@@ -1,0 +1,26 @@
+[EMVConfigs]
+SPHERE
+sphere.sphere.emv.attended.FD...6_8_2_11.210714.tgz  FB1E876C0CFA804DAE8D8ED818C05675  65192  0x0000FEA8
+sphere.sphere.emv.attended.FD...6_8_2_17.210714.tgz  1E8A745CC1ABFCBB8214C70E8260AD86  65277  0x0000FEFD
+NJT
+verifone.njt.emv.attended.FD...6_8_2_11.210714.tgz   197352E90033EE0DDCD7F4954E4F51E2  66139  0x0001025B
+verifone.njt.emv.attended.FD...6_8_2_17.210714.tgz   4C22BD34F2603AF81ABAFE4F806CAC0A  66239  0x000102BF
+
+=====================================================================================================
+--------------------------- SLOT SWITCH PROD/TEST ---------------------------------------------------
+=====================================================================================================
+[Epic]
+VIPA 6.8.2.11
+sphere.sphere.emv.attended.FD...6_8_2_11.210714.tgz     FB1E876C0CFA804DAE8D8ED818C05675  65192  0x0000FEA8
+sphere.sphere.emv.attended.FD...6_8_2_11.210714_S8.tgz  BF5BC7559859A457587C0DC0701E25B0  65208  0x0000FEB8
+VIPA 6.8.2.17
+sphere.sphere.emv.attended.FD...6_8_2_17.210714.tgz     1E8A745CC1ABFCBB8214C70E8260AD86  65277  0x0000FEFD
+sphere.sphere.emv.attended.FD...6_8_2_17.210714_S8.tgz  AF6CF38460B60BBFF98AA372995A2256  65083  0x0000FE3B
+
+[NJT]
+verifone.njt.emv.attended.FD...6_8_2_11.210714.tgz      197352E90033EE0DDCD7F4954E4F51E2  66139  0x0001025B
+verifone.njt.emv.attended.FD...6_8_2_11.210714_S8.tgz   E3A3FB53CFF9AE3FCB7107D270308661  66066  0x00010212
+verifone.njt.emv.attended.FD...6_8_2_17.210714.tgz      4C22BD34F2603AF81ABAFE4F806CAC0A  66239  0x000102BF
+verifone.njt.emv.attended.FD...6_8_2_17.210714_S8.tgz   569066A52B7AB239B0BAE2DBEB686ABB  66199  0x00010297
+
+

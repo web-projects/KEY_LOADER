@@ -26,4 +26,17 @@
         public string Version { get; set; }
         public string DateCode { get; set; }
     }
+
+    public enum VerifoneSchemaIndex : int
+	{
+        Sig = 0,
+        App = 1,
+        Type = 2,
+        TerminalType = 3,
+        FrontEnd = 4,
+        Entity = 5,
+        Model = 6,
+        Version = 7,
+        DateCode = 8
+    }
 }

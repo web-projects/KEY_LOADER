@@ -537,10 +537,12 @@ namespace Devices.Verifone
                         bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
                         bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
+                        //TODO: REFACTOR
                         if (activePackageIsEpic || activePackageIsNJT)
                         {
                             //vipaResponse = VipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                            vipaResponse = VipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activePackageIsEpic);
+                            //vipaResponse = VipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activePackageIsEpic);
+                            vipaResponse = VipaDevice.LockDeviceConfiguration0(activePackageIsEpic, activeSigningMethodIsSphere);
                         }
                         // TTQ MSD ONLY
                         //else if (activePackageIsNJT)

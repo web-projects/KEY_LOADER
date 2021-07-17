@@ -1,5 +1,8 @@
-﻿using Common.LoggerManager;
-using Common.Config.Config;
+﻿using Common.Config.Config;
+using Common.LoggerManager;
+using Common.XO.Device;
+using Common.XO.Private;
+using Common.XO.Responses;
 using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Config;
@@ -19,10 +22,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Common.XO.Private;
-using Common.XO.Responses;
 using static Devices.Verifone.Helpers.Messages;
-using Common.XO.Device;
 
 namespace Devices.Verifone.VIPA
 {
@@ -623,91 +623,92 @@ namespace Devices.Verifone.VIPA
             return fileStatus.VipaResponse;
         }
 
-        public int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic)
-        {
-            (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
+        //TODO: DELETE
+        //public int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic)
+        //{
+        //    (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = (null, (int)VipaSW1SW2Codes.Failure);
 
-            Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
+        //    Debug.WriteLine(ConsoleMessages.UpdateDeviceUpdate.GetStringValue());
 
-            bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceModel.Substring(0, 4)));
+        //    bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceModel.Substring(0, 4)));
 
-            foreach (var configFile in BinaryStatusObject.emvConfigurationPackages)
-            {
-                if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase))
-                {
-                    // search for partial matches in P200 vs P200Plus
-                    if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
-                    {
-                        // validate signing method
-                        if (activePackageIsEpic)
-                        {
-                            if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
-                            {
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            if (!configFile.Value.fileName.StartsWith("verifone.njt"))
-                            {
-                                continue;
-                            }
-                        }
+        //    foreach (var configFile in BinaryStatusObject.emvConfigurationPackages)
+        //    {
+        //        if (configFile.Value.configType.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            // search for partial matches in P200 vs P200Plus
+        //            if (configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
+        //            {
+        //                // validate signing method
+        //                if (activePackageIsEpic)
+        //                {
+        //                    if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    if (!configFile.Value.fileName.StartsWith("verifone.njt"))
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
 
-                        string fileName = configFile.Value.fileName;
-                        string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
-                        if (FindEmbeddedResourceByName(fileName, targetFile))
-                        {
-                            fileStatus = PutFile(configFile.Value.fileName, targetFile);
-                            if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
-                            {
-                                if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
-                                {
-                                    if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
-                                    {
-                                        string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
-                                        Console.WriteLine(formattedStr);
-                                        Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
-                                    }
-                                    else
-                                    {
-                                        Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
-                                    }
+        //                string fileName = configFile.Value.fileName;
+        //                string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
+        //                if (FindEmbeddedResourceByName(fileName, targetFile))
+        //                {
+        //                    fileStatus = PutFile(configFile.Value.fileName, targetFile);
+        //                    if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+        //                    {
+        //                        if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
+        //                        {
+        //                            if (fileStatus.binaryStatusObject.FileSize == configFile.Value.fileSize)
+        //                            {
+        //                                string formattedStr = string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13));
+        //                                Console.WriteLine(formattedStr);
+        //                                Debug.Write(string.Format("VIPA: '{0}' SIZE MATCH", configFile.Value.fileName.PadRight(13)));
+        //                            }
+        //                            else
+        //                            {
+        //                                Debug.WriteLine($"VIPA: {configFile.Value.fileName} SIZE MISMATCH!");
+        //                            }
 
-                                    if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        Debug.WriteLine(", HASH MATCH");
-                                    }
-                                    else
-                                    {
-                                        Debug.WriteLine($", HASH MISMATCH!");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
-                                    configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
-                                Console.WriteLine(formattedStr);
-                            }
-                            // clean up
-                            if (File.Exists(targetFile))
-                            {
-                                File.Delete(targetFile);
-                            }
+        //                            if (fileStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+        //                            {
+        //                                Debug.WriteLine(", HASH MATCH");
+        //                            }
+        //                            else
+        //                            {
+        //                                Debug.WriteLine($", HASH MISMATCH!");
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        string formattedStr = string.Format("VIPA: FILE '{0}' FAILED TRANSFERRED WITH ERROR=0x{1:X4}",
+        //                            configFile.Value.fileName.PadRight(13), fileStatus.VipaResponse);
+        //                        Console.WriteLine(formattedStr);
+        //                    }
+        //                    // clean up
+        //                    if (File.Exists(targetFile))
+        //                    {
+        //                        File.Delete(targetFile);
+        //                    }
 
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' NOT FOUND!");
-                        }
-                    }
-                }
-            }
+        //                    break;
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' NOT FOUND!");
+        //                }
+        //            }
+        //        }
+        //    }
 
-            return fileStatus.VipaResponse;
-        }
+        //    return fileStatus.VipaResponse;
+        //}
 
         public int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere)
         {
@@ -810,7 +811,7 @@ namespace Devices.Verifone.VIPA
                     if (activeSigningMethodIsSphere)
                     {
                         //TODO: update with new bundles
-                        if (!configFile.Value.fileName.StartsWith("sphere_VIPA"))
+                        if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
                         {
                             continue;
                         }
@@ -1252,7 +1253,7 @@ namespace Devices.Verifone.VIPA
                     if (fileBinaryStatus.binaryStatusObject.FileSize != configFile.Value.fileSize)
                     {
                         Logger.error($"VIPA: {configFile.Value.fileName} SIZE MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileSize}");
-                        
+
                         // requires CustId to process proper image version
                         //if (configFile.Value.configType != BinaryStatusObject.DeviceConfigurationTypes.IdleConfiguration)
                         //{
@@ -1876,15 +1877,15 @@ namespace Devices.Verifone.VIPA
                     return (int)VipaSW1SW2Codes.Failure;
                 }
 
-                bundle.Signature = elements[0];
-                bundle.Application = elements[1];
-                bundle.Type = elements[2];
-                bundle.TerminalType = elements[3];
-                bundle.FrontEnd = elements[4];
-                bundle.Entity = elements[5];
-                bundle.Model = elements[6];
-                bundle.Version = elements[7];
-                bundle.DateCode = elements[8];
+                bundle.Signature = elements[(int)VerifoneSchemaIndex.Sig];
+                bundle.Application = elements[((int)VerifoneSchemaIndex.App)];
+                bundle.Type = elements[(int)VerifoneSchemaIndex.Type];
+                bundle.TerminalType = elements[(int)VerifoneSchemaIndex.TerminalType];
+                bundle.FrontEnd = elements[(int)VerifoneSchemaIndex.FrontEnd];
+                bundle.Entity = elements[(int)VerifoneSchemaIndex.Entity];
+                bundle.Model = elements[(int)VerifoneSchemaIndex.Model];
+                bundle.Version = elements[(int)VerifoneSchemaIndex.Version];
+                bundle.DateCode = elements[(int)VerifoneSchemaIndex.DateCode];
             }
             return (int)VipaSW1SW2Codes.Success;
         }
