@@ -1,4 +1,9 @@
-﻿using Devices.Common;
+﻿using Common.LoggerManager;
+using Common.XO.Device;
+using Common.XO.Private;
+using Common.XO.Requests;
+using Common.XO.Responses;
+using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Common.Config;
 using Devices.Common.Helpers;
@@ -12,11 +17,6 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Threading;
-using Common.XO.Device;
-using Common.XO.Private;
-using Common.XO.Requests;
-using Common.XO.Responses;
-using Common.LoggerManager;
 
 namespace Devices.Verifone
 {
@@ -540,8 +540,6 @@ namespace Devices.Verifone
                         //TODO: REFACTOR
                         if (activePackageIsEpic || activePackageIsNJT)
                         {
-                            //vipaResponse = VipaDevice.ConfigurationFiles(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model);
-                            //vipaResponse = VipaDevice.EmvConfigurationPackage(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activePackageIsEpic);
                             vipaResponse = VipaDevice.LockDeviceConfiguration0(activePackageIsEpic, activeSigningMethodIsSphere);
                         }
                         // TTQ MSD ONLY
@@ -560,36 +558,18 @@ namespace Devices.Verifone
 
                             (DevicePTID devicePTID, int VipaResponse) response = (null, (int)VipaSW1SW2Codes.Success);
 
-                            // TGZ files require reboot
-                            //if (activePackageIsEpic)
-                            //{
-                            //    Console.Write("DEVICE: RELOADING CONFIGURATION...");
-                            //    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = VipaDevice.DeviceExtendedReset();
+                            Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
+                            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = VipaDevice.DeviceCommandReset();
 
-                            //    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                            //    {
-                            //        Console.WriteLine("SUCCESS!");
-                            //    }
-                            //    else
-                            //    {
-                            //        Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
-                            //    }
-                            //}
-                            //else
+                            if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.Write("DEVICE: REQUESTING DEVICE REBOOT...");
-                                (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifierExteneded = VipaDevice.DeviceCommandReset();
-
-                                if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
-                                {
-                                    Console.WriteLine("SUCCESS!");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
-                                }
-                                response = VipaDevice.DeviceReboot();
+                                Console.WriteLine("SUCCESS!");
                             }
+                            else
+                            {
+                                Console.WriteLine("FAILURE - PLEASE REBOOT DEVICE!");
+                            }
+                            response = VipaDevice.DeviceReboot();
 
                             if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
@@ -1293,7 +1273,7 @@ namespace Devices.Verifone
 
                             // EMV CONFIG BUNDLE
                             Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
-                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.EMVVersion?.Version) && 
+                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.EMVVersion?.Version) &&
                                 !DeviceInformation.FirmwareVersion.Equals(vipaVersions.DALCdbData.EMVVersion?.Version?.Replace("_", ".")))
                             {
                                 Console.WriteLine($"!!!!!!: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +

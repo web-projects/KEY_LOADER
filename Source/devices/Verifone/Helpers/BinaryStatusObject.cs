@@ -239,13 +239,13 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_EPIC_LOCK_CONFIG8_HASH_11 = "BF5BC7559859A457587C0DC0701E25B0";
         public const int SPHERE_EPIC_LOCK_CONFIG8_SIZE_11 = 0x0000FEB8;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_11 = "sphere_VIPA_cfg_68211_NJT_slot0_210623.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_11 = "3FF143C9B46FD5F1D6D03AAC7B8FAA54";
-        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_11 = 0x00007719;
+        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_11 = "sphere.njt.emv_attended.FD....6_8_2_11.210714.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_11 = "D4C4197948EBA76CE5EF5E75DC963254";
+        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_11 = 0x00007707;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_11 = "sphere_VIPA_cfg_68211_NJT_slot8_210623.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_11 = "9423606FB43EA007DBB97EF5A0BABF04";
-        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_11 = 0x00007711;
+        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_11 = "sphere.njt.emv_attended.FD....6_8_2_11.210714_S8.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_11 = "EBCF2B53804CD9558B48B3877B62010B";
+        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_11 = 0x00007717;
         #endregion --- SLOT LOCK "SPHERE SIGNED" BUNDLES ---
 
         #region --- SLOT LOCK "VERIFONE-DEV SIGNED" BUNDLES ---
@@ -282,13 +282,13 @@ namespace Devices.Verifone.Helpers
         public const string SPHERE_EPIC_LOCK_CONFIG8_HASH_17 = "AF6CF38460B60BBFF98AA372995A2256";
         public const int SPHERE_EPIC_LOCK_CONFIG8_SIZE_17 = 0x0000FE3B;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_17 = "FB296545B4F02692D0211A3D07633783";
-        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00010217;
+        public const string SPHERE_NJT_LOCK_CONFIG0_BUNDLE_17 = "sphere.njt.emv_attended.FD....6_8_2_17.210714.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG0_HASH_17 = "8FC1FC67075BE7A4D61E8223FABCE6A6";
+        public const int SPHERE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00007C30;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210702_S8.tgz";
-        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_17 = "857A9AD4EFF0C5AABD725B090E14EA2C";
-        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_17 = 0x000102F4;
+        public const string SPHERE_NJT_LOCK_CONFIG8_BUNDLE_17 = "sphere.njt.emv_attended.FD.6_8_2_17.210714_S8.tgz";
+        public const string SPHERE_NJT_LOCK_CONFIG8_HASH_17 = "95926BAD53A62BDC18485F9E844F500E";
+        public const int SPHERE_NJT_LOCK_CONFIG8_SIZE_17 = 0x00007C38;
         #endregion --- SLOT LOCK "SPHERE-DEV SIGNED" BUNDLES ---
 
         #region --- SLOT LOCK "VERIFONE-DEV SIGNED" BUNDLES ---
@@ -394,74 +394,6 @@ namespace Devices.Verifone.Helpers
                 ["VERIFO_NJT-19"] = (VIPA_BUNDLES_19, BinaryStatusObject.ALL_DEVICES, VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_19, VERIFONE_NJT_LOCK_CONFIG8_HASH_19, VERIFONE_NJT_LOCK_CONFIG8_SIZE_19),
             };
         #endregion --- ADE SLOT CONFIGURATION ---
-
-        //TODO: DELETE
-        //#region --- emv configuration packages ---
-        //// ATTENDED TERMINAL --------------------------------------------------------------------------------------------------------------
-        //public const string ATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        //// VIPA 6.8.2.11 CONFIGURATIONS
-        //// ---------- SPHERE SIGNED
-        //public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_11 = "sphere.sphere.emv.attended.FD...6_8_2_11.210714.tgz";
-        //public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "FB1E876C0CFA804DAE8D8ED818C05675";
-        //public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FEA8;
-
-        //// ---------- VERIFONE-DEV SIGNED
-        //public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_11 = "verifone.njt.emv.attended.FD...6_8_2_11.210714.tgz";
-        //public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_11 = "197352E90033EE0DDCD7F4954E4F51E2";
-        //public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0001025B;
-
-        //// VIPA 6.8.2.17 CONFIGURATIONS
-        //public const string ATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        //// ---------- SPHERE SIGNED
-        //public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_17 = "sphere.sphere.emv.attended.FD...6_8_2_17.210714.tgz";
-        //public const string SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "1E8A745CC1ABFCBB8214C70E8260AD86";
-        //public const int SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0000FEFD;
-        //// ---------- VERIFONE-DEV SIGNED
-        //public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_17 = "verifone.njt.emv.attended.FD...6_8_2_17.210714.tgz";
-        //public const string VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_17 = "4C22BD34F2603AF81ABAFE4F806CAC0A";
-        //public const int VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x000102BF;
-
-        //// UNATTENDED TERMINAL ------------------------------------------------------------------------------------------------------------
-        //// VIPA 6.8.2.11 CONFIGURATIONS
-        //public const string UNATTENDED_VIPA_BUNDLES_11 = "6.8.2.11";
-        //// ---------- SPHERE SIGNED
-        //public const string SPHERE_UNATTENDED_EMV_CONFIG_PKG_11 = "sphere.sphere.emv.unattended.FD...6_2_8_11.210625.tgz";
-        //public const string SPHERE_UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "CB61852C57D1D86287A8921E1BE8E5F3";
-        //public const int SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0000FF94;
-        //// ---------- VERIFONE-DEV SIGNED
-        //public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_11 = "verifone.njt.emv.unattended.FD...6_2_8_11.210625.tgz";
-        //public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_11 = "BFC85B30170E4E5B537BF50C693C501A";
-        //public const int VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_11 = 0x0001045A;
-
-        //// VIPA 6.8.2.17 CONFIGURATIONS
-        //public const string UNATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        //// ---------- SPHERE SIGNED
-        //public const string SPHERE_UNATTENDED_EMV_CONFIG_PKG_17 = "sphere.sphere.emv.unattended.FD...6_2_8_17.210625.tgz";
-        //public const string SPHERE_UNATTENDED_EMV_CONFIG_PKG_HASH_17 = "5F81D419513ED949D56B6205267C4702";
-        //public const int SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x0001009D;
-        //// ---------- VERIFONE-DEV SIGNED
-        //public const string VERIFONE_UNATTENDED_VIPA_BUNDLES_17 = "6.8.2.17";
-        //public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_17 = "verifone.njt.emv.unattended.FD...6_2_8_17.210625.tgz";
-        //public const string VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_17 = "8B6B912D18E51CD9FEA31651C1D4B7BF";
-        //public const int VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17 = 0x00010472;
-
-        //// EMV CONFIGURATION PACKAGE
-        //public static Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> emvConfigurationPackages =
-        //     new Dictionary<string, (string configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)>()
-        //     {
-        //         // VIPA 6.8.2.11
-        //         ["SPHERE_ATT-11"] = (ATTENDED_VIPA_BUNDLES_11, BinaryStatusObject.ENGAGE_DEVICES, SPHERE_ATTENDED_EMV_CONFIG_PKG_11, SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_11, SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11),
-        //         ["SPHERE_UNA-11"] = (UNATTENDED_VIPA_BUNDLES_11, BinaryStatusObject.UX_DEVICES, SPHERE_UNATTENDED_EMV_CONFIG_PKG_11, SPHERE_UNATTENDED_EMV_CONFIG_PKG_HASH_11, SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //         ["VERIFO_ATT-11"] = (ATTENDED_VIPA_BUNDLES_11, BinaryStatusObject.ENGAGE_DEVICES, VERIFONE_ATTENDED_EMV_CONFIG_PKG_11, VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_11, VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_11),
-        //         ["VERIFO_UNA-11"] = (UNATTENDED_VIPA_BUNDLES_11, BinaryStatusObject.UX_DEVICES, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_11, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_11, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //         // VIPA 6.8.2.17
-        //         ["SPHERE_ATT-17"] = (ATTENDED_VIPA_BUNDLES_17, BinaryStatusObject.ENGAGE_DEVICES, SPHERE_ATTENDED_EMV_CONFIG_PKG_17, SPHERE_ATTENDED_EMV_CONFIG_PKG_HASH_17, SPHERE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //         ["SPHERE_UNA-17"] = (UNATTENDED_VIPA_BUNDLES_17, BinaryStatusObject.UX_DEVICES, SPHERE_UNATTENDED_EMV_CONFIG_PKG_17, SPHERE_UNATTENDED_EMV_CONFIG_PKG_HASH_17, SPHERE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //         ["VERIFO_ATT-17"] = (ATTENDED_VIPA_BUNDLES_17, BinaryStatusObject.ENGAGE_DEVICES, VERIFONE_ATTENDED_EMV_CONFIG_PKG_17, VERIFONE_ATTENDED_EMV_CONFIG_PKG_HASH_17, VERIFONE_ATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //         ["VERIFO_UNA-17"] = (UNATTENDED_VIPA_BUNDLES_17, BinaryStatusObject.UX_DEVICES, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_17, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_HASH_17, VERIFONE_UNATTENDED_EMV_CONFIG_PKG_FILESIZE_17),
-        //     };
-
-        //#endregion --- emv configuration packages ---
 
         #region --- IDLE SCREEN PACKAGE ---
         /*public const string IDLE_MSG = "idle.msg";

@@ -33,13 +33,7 @@ namespace Devices.Verifone.VIPA
 
         (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) GetEMVKernelChecksum();
 
-        //[Obsolete]
-        int ConfigurationFiles(string deviceModel);
-
         int ConfigurationPackage(string deviceModel, bool activeSigningMethodIsSphere);
-
-        //TODO: DELETE
-        //int EmvConfigurationPackage(string deviceModel, bool activePackageIsEpic);
 
         int ValidateConfiguration(string deviceModel, bool activeSigningMethodIsSphere);
 
