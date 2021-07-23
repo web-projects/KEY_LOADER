@@ -301,13 +301,13 @@ namespace Devices.Verifone.Helpers
         public const string VERIFONE_EPIC_LOCK_CONFIG8_HASH_17 = "01A88EEC231CFF476B7E7B3716F7F1EA";
         public const int VERIFONE_EPIC_LOCK_CONFIG8_SIZE_17 = 0x000079AB;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_8_2_17.210714.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_17 = "4C22BD34F2603AF81ABAFE4F806CAC0A";
-        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_17 = 0x000102BF;
+        public const string VERIFONE_NJT_LOCK_CONFIG0_BUNDLE_17 = "verifone.njt.emv.attended.FD...6_8_2_17.210714.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG0_HASH_17 = "8FC1FC67075BE7A4D61E8223FABCE6A6";
+        public const int VERIFONE_NJT_LOCK_CONFIG0_SIZE_17 = 0x00007C30;
         // NJT ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone.njt.emv.unattended.FD...6_8_2_17.210714_S8.tgz";
-        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_17 = "569066A52B7AB239B0BAE2DBEB686ABB";
-        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_17 = 0x00010297;
+        public const string VERIFONE_NJT_LOCK_CONFIG8_BUNDLE_17 = "verifone.njt.emv.attended.FD...6_8_2_17.210714_S8.tgz";
+        public const string VERIFONE_NJT_LOCK_CONFIG8_HASH_17 = "95926BAD53A62BDC18485F9E844F500E";
+        public const int VERIFONE_NJT_LOCK_CONFIG8_SIZE_17 = 0x00007C38;
         #endregion --- SLOT LOCK "VERIFONE-DEV SIGNED" BUNDLES ---
 
         #endregion --- VIPA 6.8.2.17 CONFIGURATIONS ---
