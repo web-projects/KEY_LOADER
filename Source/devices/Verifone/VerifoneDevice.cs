@@ -133,10 +133,12 @@ namespace Devices.Verifone
             deviceSectionConfig = config;
             if (VipaConnection != null)
             {
-                Console.WriteLine($"\r\nACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
+                Console.WriteLine($"\r\n\r\nACTIVE SIGNATURE _____: {deviceSectionConfig.Verifone?.SigningMethodActive}");
+                Console.WriteLine($"ACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
                 string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.DUKPTEngineIPP ? "IPP" : "VSS";
                 Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
                 Console.WriteLine($"HMAC ENABLEMENT ACTIVE: {EnableHMAC.ToString().ToUpper()}");
+                Console.WriteLine("");
                 VipaConnection.LoadDeviceSectionConfig(deviceSectionConfig);
             }
         }

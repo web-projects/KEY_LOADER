@@ -724,7 +724,7 @@ namespace Devices.Verifone.VIPA
                     if (activeSigningMethodIsSphere)
                     {
                         if (activeConfigurationIsEpic)
-                        { 
+                        {
                             if (!configFile.Value.fileName.StartsWith("sphere.sphere"))
                             {
                                 continue;
@@ -740,9 +740,19 @@ namespace Devices.Verifone.VIPA
                     }
                     else
                     {
-                        if (!configFile.Value.fileName.StartsWith("verifone.njt"))
+                        if (activeConfigurationIsEpic)
                         {
-                            continue;
+                            if (!configFile.Value.fileName.StartsWith("verifone.sphere"))
+                            {
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (!configFile.Value.fileName.StartsWith("verifone.njt"))
+                            {
+                                continue;
+                            }
                         }
                     }
 
