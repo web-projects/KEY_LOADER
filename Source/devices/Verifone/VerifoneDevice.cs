@@ -403,32 +403,55 @@ namespace Devices.Verifone
                         bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
                         bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
+                        // ADE PROD KEY
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
                         config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
+                        
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
-                            Console.WriteLine($"DEVICE: FIRMARE VERSION ___={deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
-                            Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
+                            Console.WriteLine($"DEVICE: FIRMARE VERSION ___: {deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
+                            Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____: {config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
+                            
+                            bool prodADEKeyFound = false;
+                            bool testADEKeyFound = false;
+                            
                             if (config.securityConfigurationObject.SRedCardKSN != null)
                             {
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID _={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID ={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
+                                prodADEKeyFound = true;
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID _: {config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6)}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID : {config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5)}");
                             }
 
+                            // ADE TEST KEY
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADETestSlot);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____={config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID _={config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6) ?? "[ *** NOT FOUND *** ]"}");
-                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID ={config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5) ?? "[ *** NOT FOUND *** ]"}");
+                                testADEKeyFound = true;
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____: {config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID _: {config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6) ?? "[ *** NOT FOUND *** ]"}");
+                                Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID : {config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5) ?? "[ *** NOT FOUND *** ]"}");
                             }
-                            Console.WriteLine($"DEVICE: ADE SLOT NUMBER ___=0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
+                            Console.WriteLine($"DEVICE: ADE SLOT NUMBER ___: 0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
+
+                            if (deviceSectionConfig.Verifone.ADEKeySetId == VerifoneSettingsSecurityConfiguration.ADEHostIdProd)
+                            {
+                                Console.WriteLine($"DEVICE: ADE KEY SLOT STATE : {(prodADEKeyFound ? "VALID" : "*** INVALID ***")}");
+                            }
+                            else if (deviceSectionConfig.Verifone.ADEKeySetId == VerifoneSettingsSecurityConfiguration.ADEHostIdTest)
+                            {
+                                Console.WriteLine($"DEVICE: ADE KEY SLOT STATE : {(testADEKeyFound ? "VALID" : "*** INVALID ***")}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("DEVICE: ADE KEY SLOT STATE : INVALID SLOT");
+                            }
+
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: DEBIT PIN KEY STORE={(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
-                                Console.WriteLine($"DEVICE: DEBIT PIN KEY SLOT =0x0{(deviceSectionConfig.Verifone?.OnlinePinKeySetId)}");
-                                Console.WriteLine($"DEVICE: DEBIT PIN KSN _____={config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
+                                Console.WriteLine($"DEVICE: DEBIT PIN KEY STORE: {(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
+                                Console.WriteLine($"DEVICE: DEBIT PIN KEY SLOT : 0x0{(deviceSectionConfig.Verifone?.OnlinePinKeySetId)} - DUKPT{deviceSectionConfig.Verifone?.OnlinePinKeySetId-1}");
+                                Console.WriteLine($"DEVICE: DEBIT PIN KSN _____: {config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
                             }
 
                             // Terminal datetime
@@ -437,14 +460,14 @@ namespace Devices.Verifone
                             {
                                 if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
                                 {
-                                    Console.WriteLine("DEVICE: TERMINAL DATETIME _=[ *** NOT FOUND *** ]");
+                                    Console.WriteLine("DEVICE: TERMINAL DATETIME _: [ *** NOT FOUND *** ]");
                                 }
                                 else
                                 {
                                     string terminalDateTimeStamp = string.Format("{1}/{2}/{0}-{3}:{4}:{5}",
                                         terminalDateTime.Timestamp.Substring(0, 4), terminalDateTime.Timestamp.Substring(4, 2), terminalDateTime.Timestamp.Substring(6, 2),
                                         terminalDateTime.Timestamp.Substring(8, 2), terminalDateTime.Timestamp.Substring(10, 2), terminalDateTime.Timestamp.Substring(12, 2));
-                                    Console.WriteLine($"DEVICE: TERMINAL DATETIME _={terminalDateTimeStamp}");
+                                    Console.WriteLine($"DEVICE: TERMINAL DATETIME _: {terminalDateTimeStamp}");
                                 }
                             }
 
@@ -454,19 +477,19 @@ namespace Devices.Verifone
                             {
                                 if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
                                 {
-                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_=[ *** NOT SET *** ]");
+                                    Console.WriteLine("DEVICE: TERMINAL DATETIME_: [ *** NOT SET *** ]");
                                 }
                                 else
                                 {
                                     if (string.IsNullOrEmpty(reboot24Hour.Timestamp) || reboot24Hour.Timestamp.Length < 6)
                                     {
-                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ____=[ *** NOT SET *** ]");
+                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ____: [ *** NOT SET *** ]");
                                     }
                                     else
                                     {
                                         string rebootDateTimeStamp = string.Format("{0}:{1}:{2}",
                                             reboot24Hour.Timestamp.Substring(0, 2), reboot24Hour.Timestamp.Substring(2, 2), reboot24Hour.Timestamp.Substring(4, 2));
-                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ____={rebootDateTimeStamp}");
+                                        Console.WriteLine($"DEVICE: 24 HOUR REBOOT ____: {rebootDateTimeStamp}");
                                     }
                                 }
                             }
@@ -475,12 +498,71 @@ namespace Devices.Verifone
                             int vipaResponse = VipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
-                                Console.WriteLine($"DEVICE: CONFIGURATION IS VALID\n");
+                                Console.WriteLine($"DEVICE: EMV CONFIGURATION _: VALID");
+
+                                // EMV Kernel Validation
+                                (KernelConfigurationObject kernelConfigurationObject, int VipaResponse) response = VipaDevice.GetEMVKernelChecksum();
+                                if (response.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                                {
+                                    string[] kernelInformation = response.kernelConfigurationObject.ApplicationKernelInformation.SplitByLength(8).ToArray();
+
+                                    if (kernelInformation.Length == 4)
+                                    {
+                                        Console.WriteLine(string.Format("DEVICE: EMV KERNEL CHECKSUM: {0}-{1}-{2}-{3}",
+                                           kernelInformation[0], kernelInformation[1], kernelInformation[2], kernelInformation[3]));
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(string.Format("VIPA EMV KERNEL CHECKSUM __: {0}",
+                                            response.kernelConfigurationObject.ApplicationKernelInformation));
+                                    }
+
+                                    bool IsEngageDevice = BinaryStatusObject.ENGAGE_DEVICES.Any(x => x.Contains(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model.Substring(0, 4)));
+
+                                    if (response.kernelConfigurationObject.ApplicationKernelInformation.Substring(BinaryStatusObject.EMV_KERNEL_CHECKSUM_OFFSET).Equals(IsEngageDevice ? BinaryStatusObject.ENGAGE_EMV_KERNEL_CHECKSUM : BinaryStatusObject.UX301_EMV_KERNEL_CHECKSUM,
+                                        StringComparison.CurrentCultureIgnoreCase))
+                                    {
+                                        Console.WriteLine("DEVICE: EMV KERNEL STATUS _: VALID");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("DEVICE: EMV KERNEL STATUS _: INVALID");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine(string.Format("DEVICE: FAILED GET KERNEL CHECKSUM REQUEST WITH ERROR=0x{0:X4}\n", response.VipaResponse));
+                                }
                             }
                             else
                             {
                                 Console.WriteLine(string.Format("DEVICE: CONFIGURATION VALIDATION FAILED WITH ERROR=0x{0:X4}\n", vipaResponse));
                             }
+
+                            // HMAC Secrets Test
+                            //(string HMAC, int VipaResponse) hmacConfig = VipaDevice.GenerateHMAC();
+                            //if (hmacConfig.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                            //{
+                            //    Console.WriteLine($"DEVICE: HMAC KEYS GENERATED: {hmacConfig.HMAC}\n");
+                            //}
+                            LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, EnableHMAC, ActiveCustomerId);
+
+                            if (vipaVersions.DALCdbData is { })
+                            {
+                                string signature = vipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING";
+
+                                // VIPA BUNDLE
+                                string vipaDateCode = vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***";
+
+                                // EMV CONFIG BUNDLE
+                                string emvDateCode = vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***";
+
+                                // IDLE IMAGE BUNDLE
+                                string idleDateCode = vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***";
+
+                                Console.WriteLine($"DEVICE: BUNDLE, {signature}, VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
+                            }
+
                             Console.WriteLine("");
                         }
                         else
