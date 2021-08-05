@@ -58,11 +58,13 @@ namespace Devices.Verifone
 
         string ConfigurationPackageActive { get => deviceSectionConfig?.Verifone?.ConfigurationPackageActive; }
 
-        string SigningMethodActive { get => deviceSectionConfig?.Verifone?.SigningMethodActive; }
+        string SigningMethodActive { get; set; }
 
         string ActiveCustomerId { get => deviceSectionConfig?.Verifone?.ActiveCustomerId; }
 
-        bool EnableHMAC { get => (bool)(deviceSectionConfig?.Verifone?.EnableHMAC); }
+        bool EnableHMAC { get; set; }
+
+        LinkDALRequestIPA5Object VipaVersions { get; set; }
 
         public VerifoneDevice()
         {
@@ -128,12 +130,50 @@ namespace Devices.Verifone
             return VipaConnection;
         }
 
+        private void GetBundleSignatures()
+        {
+            if (VipaDevice != null)
+            {
+                if (!IsConnected)
+                {
+                    VipaDevice.Dispose();
+                    SerialConnection = new SerialConnection(DeviceInformation);
+                    IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
+                }
+
+                if (IsConnected)
+                {
+                    (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceIdentifier = VipaDevice.DeviceCommandReset();
+
+                    if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
+                    {
+                        VipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, EnableHMAC, ActiveCustomerId);
+                    }
+
+                    DeviceSetIdle();
+                }
+            }
+
+        }
+
         public void SetDeviceSectionConfig(DeviceSection config)
         {
             deviceSectionConfig = config;
+
+            // BUNDLE Signatures
+            GetBundleSignatures();
+
+            SigningMethodActive = "UNSIGNED";
+
+            if (VipaVersions.DALCdbData is { })
+            {
+                SigningMethodActive = VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING";
+            }
+            EnableHMAC =  SigningMethodActive.Equals("SPHERE", StringComparison.CurrentCultureIgnoreCase) ? false : true;
+
             if (VipaConnection != null)
             {
-                Console.WriteLine($"\r\n\r\nACTIVE SIGNATURE _____: {deviceSectionConfig.Verifone?.SigningMethodActive}");
+                Console.WriteLine($"\r\n\r\nACTIVE SIGNATURE _____: {SigningMethodActive.ToUpper()}");
                 Console.WriteLine($"ACTIVE CONFIGURATION _: {deviceSectionConfig.Verifone?.ConfigurationPackageActive}");
                 string onlinePINSource = deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.DUKPTEngineIPP ? "IPP" : "VSS";
                 Console.WriteLine($"ONLINE DEBIT PIN STORE: {onlinePINSource}");
@@ -406,15 +446,15 @@ namespace Devices.Verifone
                         // ADE PROD KEY
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
                         config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
-                        
+
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: FIRMARE VERSION ___: {deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                             Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____: {config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
-                            
+
                             bool prodADEKeyFound = false;
                             bool testADEKeyFound = false;
-                            
+
                             if (config.securityConfigurationObject.SRedCardKSN != null)
                             {
                                 prodADEKeyFound = true;
@@ -450,7 +490,7 @@ namespace Devices.Verifone
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: DEBIT PIN KEY STORE: {(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
-                                Console.WriteLine($"DEVICE: DEBIT PIN KEY SLOT : 0x0{(deviceSectionConfig.Verifone?.OnlinePinKeySetId)} - DUKPT{deviceSectionConfig.Verifone?.OnlinePinKeySetId-1}");
+                                Console.WriteLine($"DEVICE: DEBIT PIN KEY SLOT : 0x0{(deviceSectionConfig.Verifone?.OnlinePinKeySetId)} - DUKPT{deviceSectionConfig.Verifone?.OnlinePinKeySetId - 1}");
                                 Console.WriteLine($"DEVICE: DEBIT PIN KSN _____: {config.securityConfigurationObject.OnlinePinKSN ?? "[ *** NOT FOUND *** ]"}");
                             }
 
@@ -545,22 +585,22 @@ namespace Devices.Verifone
                             //{
                             //    Console.WriteLine($"DEVICE: HMAC KEYS GENERATED: {hmacConfig.HMAC}\n");
                             //}
-                            LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, EnableHMAC, ActiveCustomerId);
 
-                            if (vipaVersions.DALCdbData is { })
+                            // Bundle Versions
+                            if (VipaVersions.DALCdbData is { })
                             {
-                                string signature = vipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING";
+                                string signature = VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING";
 
                                 // VIPA BUNDLE
-                                string vipaDateCode = vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***";
+                                string vipaDateCode = VipaVersions.DALCdbData.VIPAVersion.DateCode ?? "_NONE";
 
                                 // EMV CONFIG BUNDLE
-                                string emvDateCode = vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***";
+                                string emvDateCode = VipaVersions.DALCdbData.EMVVersion.DateCode ?? "_NONE";
 
                                 // IDLE IMAGE BUNDLE
-                                string idleDateCode = vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***";
+                                string idleDateCode = VipaVersions.DALCdbData.IdleVersion.DateCode ?? "_NONE";
 
-                                Console.WriteLine($"DEVICE: BUNDLE, {signature}, VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
+                                Console.WriteLine($"DEVICE: {signature} BUNDLE(S) __: VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
                             }
 
                             Console.WriteLine("");
@@ -1340,35 +1380,34 @@ namespace Devices.Verifone
                         //bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
                         //bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
-                        LinkDALRequestIPA5Object vipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model,
-                            EnableHMAC, ActiveCustomerId);
+                        VipaVersions = VipaDevice.VIPAVersions(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, EnableHMAC, ActiveCustomerId);
 
-                        if (vipaVersions.DALCdbData is { })
+                        if (VipaVersions.DALCdbData is { })
                         {
                             // VIPA BUNDLE
-                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {vipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
-                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.VIPAVersion?.Version) &&
-                                !DeviceInformation.FirmwareVersion.Equals(vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")))
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {VipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
+                            if (!string.IsNullOrEmpty(VipaVersions.DALCdbData.VIPAVersion?.Version) &&
+                                !DeviceInformation.FirmwareVersion.Equals(VipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")))
                             {
                                 Console.WriteLine($"!!!!!!: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
-                                    $"REPORTED [{vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
+                                    $"REPORTED [{VipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
                                 Logger.error($"VIPA_VER.TXT: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
-                                    $"REPORTED [{vipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
+                                    $"REPORTED [{VipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")}]");
                             }
 
                             // EMV CONFIG BUNDLE
-                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {vipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
-                            if (!string.IsNullOrEmpty(vipaVersions.DALCdbData.EMVVersion?.Version) &&
-                                !DeviceInformation.FirmwareVersion.Equals(vipaVersions.DALCdbData.EMVVersion?.Version?.Replace("_", ".")))
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {VipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
+                            if (!string.IsNullOrEmpty(VipaVersions.DALCdbData.EMVVersion?.Version) &&
+                                !DeviceInformation.FirmwareVersion.Equals(VipaVersions.DALCdbData.EMVVersion?.Version?.Replace("_", ".")))
                             {
                                 Console.WriteLine($"!!!!!!: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
-                                    $"REPORTED [{vipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
+                                    $"REPORTED [{VipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
                                 Logger.error($"EMV_VER.TXT: VERSION MISMATCHED - EXPECTED [{DeviceInformation.FirmwareVersion}], " +
-                                    $"REPORTED [{vipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
+                                    $"REPORTED [{VipaVersions.DALCdbData.EMVVersion.Version.Replace("_", ".")}]");
                             }
 
                             // IDLE IMAGE BUNDLE
-                            Console.WriteLine($"DEVICE: {vipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {vipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {VipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
                         }
                     }
                 }

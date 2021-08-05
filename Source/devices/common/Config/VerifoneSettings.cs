@@ -13,10 +13,8 @@ namespace Devices.Common.Config
         public byte ADEKeySetId { get; set; } = VerifoneSettingsSecurityConfiguration.ADEKeySetId;
         public List<string> ConfigurationPackages { get; internal set; } = new List<string>();
         public string ConfigurationPackageActive { get; set; } = VerifoneSettingsConfigurationPackages.Epic;
-        public string SigningMethodActive { get; set; } = VerifoneSettingsSigningMethods.Sphere;
         public string ActiveCustomerId { get; set; } = CustomerIdentifers.Default;
         public string Reboot24Hour { get; set; } = "020000";
-        public bool EnableHMAC { get; set; } = false;
     }
 
     /// <summary>

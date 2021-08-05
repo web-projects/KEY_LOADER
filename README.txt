@@ -3,6 +3,14 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.050.00 (08/05/2021)
+
+1. Removed active configuration setting and changed it to dynamic method.
+   Defaults is 'UNSIGNED'
+
+2. Improved STATUS information to indicate IPP key slot and bundle versions.
+
+-------------------------------------------------------------------------------
 VERSION.049.00 (07/20/2021)
 
 1. Corrected VIPA minor version transposition and added check to confirm version
