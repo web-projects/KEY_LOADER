@@ -1115,7 +1115,7 @@ namespace Devices.Verifone.VIPA
             foreach (var configFile in configObject)
             {
                 // VIPA version matching
-                if (configFile.Value.configVersion.Equals(DeviceInformation.FirmwareVersion, StringComparison.OrdinalIgnoreCase))
+                if (DeviceInformation.FirmwareVersion.StartsWith(configFile.Value.configVersion, StringComparison.OrdinalIgnoreCase))
                 {
                     // Device model matching
                     if (!configFile.Value.deviceTypes.Any(x => x.Contains(deviceModel.Substring(0, 4))))
