@@ -11,6 +11,7 @@ using Devices.Common.Interfaces;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.VIPA;
+using Helpers;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -440,15 +441,21 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
+                        TimeTracker tracker = new TimeTracker();
+
                         bool activeSigningMethodIsSphere = SigningMethodActive.Equals("SPHERE");
                         bool activeSigningMethodIsVerifone = SigningMethodActive.Equals("VERIFONE");
 
                         // ADE PROD KEY
+                        tracker.StartTracking();
                         (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
                         config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
+                        TimeSpan span = tracker.GetTimeLapsed();
 
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
+                            Logger.info(string.Format("DEVICE: ADE-PROD KEY READ TIME _____ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+
                             Console.WriteLine($"DEVICE: FIRMARE VERSION ___: {deviceIdentifier.deviceInfoObject.LinkDeviceResponse.FirmwareVersion}");
                             Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} KEY KSN ____: {config.securityConfigurationObject.SRedCardKSN ?? "[ *** NOT FOUND *** ]"}");
 
@@ -463,7 +470,12 @@ namespace Devices.Verifone
                             }
 
                             // ADE TEST KEY
+                            tracker.StartTracking();
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADETestSlot);
+                            
+                            span = tracker.GetTimeLapsed();
+                            Logger.info(string.Format("DEVICE: ADE-PROD KEY READ TIME _____ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 testADEKeyFound = true;
@@ -486,7 +498,12 @@ namespace Devices.Verifone
                                 Console.WriteLine("DEVICE: ADE KEY SLOT STATE : INVALID SLOT");
                             }
 
+                            tracker.StartTracking();
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
+                            
+                            span = tracker.GetTimeLapsed();
+                            Logger.info(string.Format("DEVICE: DEBIT PIN KEY READ TIME ____ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+                            
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: DEBIT PIN KEY STORE: {(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
@@ -495,7 +512,12 @@ namespace Devices.Verifone
                             }
 
                             // Terminal datetime
+                            tracker.StartTracking();
                             (string Timestamp, int VipaResponse) terminalDateTime = VipaDevice.GetTerminalDateTime();
+                            
+                            span = tracker.GetTimeLapsed();
+                            Logger.info(string.Format("DEVICE: TERMINAL DATETIME READ TIME  : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+
                             if (terminalDateTime.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
@@ -512,7 +534,12 @@ namespace Devices.Verifone
                             }
 
                             // 24 HOUR REBOOT
+                            tracker.StartTracking();
                             (string Timestamp, int VipaResponse) reboot24Hour = VipaDevice.Get24HourReboot();
+                            
+                            span = tracker.GetTimeLapsed();
+                            Logger.info(string.Format("DEVICE: 24 HOUR REBOOT READ TIME ___ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+
                             if (reboot24Hour.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 if (string.IsNullOrEmpty(terminalDateTime.Timestamp))
@@ -535,7 +562,12 @@ namespace Devices.Verifone
                             }
 
                             // validate configuration
+                            tracker.StartTracking();
                             int vipaResponse = VipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
+                            
+                            span = tracker.GetTimeLapsed();
+                            Logger.info(string.Format("DEVICE: BUNDLE SIGNATURE(S) READ TIME: [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
+
                             if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: EMV CONFIGURATION _: VALID");
