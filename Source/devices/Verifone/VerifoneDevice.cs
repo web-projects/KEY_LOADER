@@ -170,7 +170,7 @@ namespace Devices.Verifone
             {
                 SigningMethodActive = VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING";
             }
-            EnableHMAC =  SigningMethodActive.Equals("SPHERE", StringComparison.CurrentCultureIgnoreCase) ? false : true;
+            EnableHMAC = SigningMethodActive.Equals("SPHERE", StringComparison.CurrentCultureIgnoreCase) ? false : true;
 
             if (VipaConnection != null)
             {
@@ -448,8 +448,8 @@ namespace Devices.Verifone
 
                         // ADE PROD KEY
                         tracker.StartTracking();
-                        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config = (new SecurityConfigurationObject(), (int)VipaSW1SW2Codes.Failure);
-                        config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
+                        (SecurityConfigurationObject securityConfigurationObject, int VipaResponse) config =
+                            VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, DeviceInformation.ADEKeySetId);
                         TimeSpan span = tracker.GetTimeLapsed();
 
                         if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
@@ -472,7 +472,7 @@ namespace Devices.Verifone
                             // ADE TEST KEY
                             tracker.StartTracking();
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, config.securityConfigurationObject.ADETestSlot);
-                            
+
                             span = tracker.GetTimeLapsed();
                             Logger.info(string.Format("DEVICE: ADE-PROD KEY READ TIME _____ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
 
@@ -500,10 +500,10 @@ namespace Devices.Verifone
 
                             tracker.StartTracking();
                             config = VipaDevice.GetSecurityConfiguration(deviceSectionConfig.Verifone.ConfigurationHostId, deviceSectionConfig.Verifone.OnlinePinKeySetId);
-                            
+
                             span = tracker.GetTimeLapsed();
                             Logger.info(string.Format("DEVICE: DEBIT PIN KEY READ TIME ____ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
-                            
+
                             if (config.VipaResponse == (int)VipaSW1SW2Codes.Success)
                             {
                                 Console.WriteLine($"DEVICE: DEBIT PIN KEY STORE: {(deviceSectionConfig.Verifone?.ConfigurationHostId == VerifoneSettingsSecurityConfiguration.ConfigurationHostId ? "IPP" : "VSS")}");
@@ -514,7 +514,7 @@ namespace Devices.Verifone
                             // Terminal datetime
                             tracker.StartTracking();
                             (string Timestamp, int VipaResponse) terminalDateTime = VipaDevice.GetTerminalDateTime();
-                            
+
                             span = tracker.GetTimeLapsed();
                             Logger.info(string.Format("DEVICE: TERMINAL DATETIME READ TIME  : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
 
@@ -536,7 +536,7 @@ namespace Devices.Verifone
                             // 24 HOUR REBOOT
                             tracker.StartTracking();
                             (string Timestamp, int VipaResponse) reboot24Hour = VipaDevice.Get24HourReboot();
-                            
+
                             span = tracker.GetTimeLapsed();
                             Logger.info(string.Format("DEVICE: 24 HOUR REBOOT READ TIME ___ : [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
 
@@ -564,7 +564,7 @@ namespace Devices.Verifone
                             // validate configuration
                             tracker.StartTracking();
                             int vipaResponse = VipaDevice.ValidateConfiguration(deviceIdentifier.deviceInfoObject.LinkDeviceResponse.Model, activeSigningMethodIsSphere);
-                            
+
                             span = tracker.GetTimeLapsed();
                             Logger.info(string.Format("DEVICE: BUNDLE SIGNATURE(S) READ TIME: [{0:D2}:{1:D2}.{2:D3}]", span.Minutes, span.Seconds, span.Milliseconds));
 
@@ -632,7 +632,14 @@ namespace Devices.Verifone
                                 // IDLE IMAGE BUNDLE
                                 string idleDateCode = VipaVersions.DALCdbData.IdleVersion.DateCode ?? "_NONE";
 
-                                Console.WriteLine($"DEVICE: {signature} BUNDLE(S) __: VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
+                                if (signature.Equals("VERIFONE", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    Console.WriteLine($"DEVICE: {signature} BUNDLE(S) : VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"DEVICE: {signature} BUNDLE(S) __: VIPA{vipaDateCode}, EMV{emvDateCode}, IDLE{idleDateCode}");
+                                }
                             }
 
                             Console.WriteLine("");
