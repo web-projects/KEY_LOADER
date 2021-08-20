@@ -336,13 +336,13 @@ namespace Devices.Verifone.Helpers
 
         #region --- SPHERE-SIGNED UNATTENDED CONFIGURATIONS ---
         // EPIC ADE SLOT-0 LOCK CONFIGURATIONS
-        public const string SPHERE_EPIC_UNATTENDED_CONFIG0_BUNDLE_19 = "";
-        public const string SPHERE_EPIC_UNATTENDED_CONFIG0_HASH_19 = "";
-        public const int SPHERE_EPIC_UNATTENDED_CONFIG0_SIZE_19 = 0x00007C24;
+        public const string SPHERE_EPIC_UNATTENDED_CONFIG0_BUNDLE_19 = "sphere.sphere.emv.unattended.FD...6_8_2_19.210816.tgz";
+        public const string SPHERE_EPIC_UNATTENDED_CONFIG0_HASH_19 = "E4ADABAB2474BB0E940067B51B8C776B";
+        public const int SPHERE_EPIC_UNATTENDED_CONFIG0_SIZE_19 = 0x0000FDDD;
         // EPIC ADE SLOT-8 LOCK CONFIGURATIONS
-        public const string SPHERE_EPIC_UNATTENDED_CONFIG8_BUNDLE_19 = "";
-        public const string SPHERE_EPIC_UNATTENDED_CONFIG8_HASH_19 = "";
-        public const int SPHERE_EPIC_UNATTENDED_CONFIG8_SIZE_19 = 0x00007C27;
+        public const string SPHERE_EPIC_UNATTENDED_CONFIG8_BUNDLE_19 = "sphere.sphere.emv.unattended.FD...6_8_2_19.210816_S8.tgz";
+        public const string SPHERE_EPIC_UNATTENDED_CONFIG8_HASH_19 = "A0885ACD0A14D10C94CD29BB7E571DF6";
+        public const int SPHERE_EPIC_UNATTENDED_CONFIG8_SIZE_19 = 0x0000FE8B;
         // NJT ADE SLOT-0 LOCK CONFIGURATIONS
         public const string SPHERE_NJT_UNATTENDED_CONFIG0_BUNDLE_19 = "sphere.njt.emv.unattended.FD...6_8_2_19.210714.tgz";
         public const string SPHERE_NJT_UNATTENDED_CONFIG0_HASH_19 = "94A7B8144727D0FD69473DA5EADF960B";
