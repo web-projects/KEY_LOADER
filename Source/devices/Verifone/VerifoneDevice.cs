@@ -1424,7 +1424,7 @@ namespace Devices.Verifone
                         if (VipaVersions.DALCdbData is { })
                         {
                             // VIPA BUNDLE
-                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {VipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.VIPAVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: VIPA_VER DATECODE {VipaVersions.DALCdbData.VIPAVersion.DateCode ?? "*** NONE ***"} - BUNDLE VER: [{VipaVersions.DALCdbData.VIPAVersion.Version}]");
                             if (!string.IsNullOrEmpty(VipaVersions.DALCdbData.VIPAVersion?.Version) &&
                                 !DeviceInformation.FirmwareVersion.Equals(VipaVersions.DALCdbData.VIPAVersion.Version.Replace("_", ".")))
                             {
@@ -1435,7 +1435,7 @@ namespace Devices.Verifone
                             }
 
                             // EMV CONFIG BUNDLE
-                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {VipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.EMVVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: EMV_VER DATECODE  {VipaVersions.DALCdbData.EMVVersion.DateCode ?? "*** NONE ***"} - BUNDLE VER: [{VipaVersions.DALCdbData.EMVVersion.Version}]");
                             if (!string.IsNullOrEmpty(VipaVersions.DALCdbData.EMVVersion?.Version) &&
                                 !DeviceInformation.FirmwareVersion.Equals(VipaVersions.DALCdbData.EMVVersion?.Version?.Replace("_", ".")))
                             {
@@ -1446,7 +1446,7 @@ namespace Devices.Verifone
                             }
 
                             // IDLE IMAGE BUNDLE
-                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {VipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"}");
+                            Console.WriteLine($"DEVICE: {VipaVersions.DALCdbData.IdleVersion.Signature?.ToUpper() ?? "MISSING"} SIGNED BUNDLE: IDLE_VER DATECODE {VipaVersions.DALCdbData.IdleVersion.DateCode ?? "*** NONE ***"} - BUNDLE VER: [{VipaVersions.DALCdbData.IdleVersion.Version}]");
                         }
                     }
                 }
