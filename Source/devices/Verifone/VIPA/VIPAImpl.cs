@@ -1097,8 +1097,6 @@ namespace Devices.Verifone.VIPA
         private LinkDALRequestIPA5Object ReportVIPAVersions(Dictionary<string, (string configVersion, BinaryStatusObject.DeviceConfigurationTypes configType, string[] deviceTypes, string fileName, string fileHash, int fileSize)> configObject,
             string deviceModel, string activeCustomerId)
         {
-            Debug.WriteLine(ConsoleMessages.VIPAVersions.GetStringValue());
-
             LinkDALRequestIPA5Object linkActionRequestIPA5Object = new LinkDALRequestIPA5Object()
             {
                 DALCdbData = new DALCDBData()
@@ -1137,7 +1135,7 @@ namespace Devices.Verifone.VIPA
                     // assume version string is not found
                     versions[configFile.Value.fileName] = bundleNotFound;
 
-                    // check for access to the file
+                    // GetBinaryStatus: check for access to the file
                     (BinaryStatusObject binaryStatusObject, int VipaResponse) fileStatus = GetBinaryStatus(configFile.Value.fileName);
 
                     // When the file cannot be accessed, VIPA returns SW1SW2 equal to 9F13
@@ -1154,7 +1152,7 @@ namespace Devices.Verifone.VIPA
                         continue;
                     }
 
-                    // Setup for FILE OPERATIONS
+                    // SelectFile: Setup for FILE OPERATIONS
                     fileStatus = SelectFileForOps(configFile.Value.fileName);
 
                     if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
@@ -1164,45 +1162,45 @@ namespace Devices.Verifone.VIPA
                         continue;
                     }
 
-                    // Get Binary Status
-                    (BinaryStatusObject binaryStatusObject, int VipaResponse) fileBinaryStatus = GetBinaryStatus(configFile.Value.fileName);
+                    // GetBinaryStatus
+                    //(BinaryStatusObject binaryStatusObject, int VipaResponse) fileBinaryStatus = GetBinaryStatus(configFile.Value.fileName);
 
-                    if (fileBinaryStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
-                    {
-                        Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
-                            configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
+                    //if (fileBinaryStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
+                    //{
+                    //    Debug.WriteLine(string.Format("VIPA {0} ACCESS ERROR=0x{1:X4} - '{2}'",
+                    //        configFile.Value.fileName, fileStatus.VipaResponse, ((VipaSW1SW2Codes)fileStatus.VipaResponse).GetStringValue()));
 
-                        // Clean up pool allocation, clearing the array
-                        if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
-                        {
-                            ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
-                        }
+                    //    // Clean up pool allocation, clearing the array
+                    //    if (fileStatus.binaryStatusObject.ReadResponseBytes != null)
+                    //    {
+                    //        ArrayPool<byte>.Shared.Return(fileStatus.binaryStatusObject.ReadResponseBytes, true);
+                    //    }
 
-                        continue;
-                    }
+                    //    continue;
+                    //}
 
                     // Check for size match
-                    if (fileBinaryStatus.binaryStatusObject.FileSize != configFile.Value.fileSize)
-                    {
-                        Logger.error($"VIPA: {configFile.Value.fileName} SIZE MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileSize}");
+                    //if (fileBinaryStatus.binaryStatusObject.FileSize != configFile.Value.fileSize)
+                    //{
+                        //Logger.error($"VIPA: {configFile.Value.fileName} SIZE MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileSize}");
 
                         // requires CustId to process proper image version
                         //if (configFile.Value.configType != BinaryStatusObject.DeviceConfigurationTypes.IdleConfiguration)
                         //{
                         //    continue;
                         //}
-                    }
+                    //}
 
                     // Check for HASH Match
-                    if (!fileBinaryStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Logger.error($"VIPA: {configFile.Value.fileName} HASH MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileCheckSum}");
+                    //if (!fileBinaryStatus.binaryStatusObject.FileCheckSum.Equals(configFile.Value.fileHash, StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    Logger.error($"VIPA: {configFile.Value.fileName} HASH MISMATCH! - actual={fileBinaryStatus.binaryStatusObject.FileCheckSum}");
                         // requires CustId to process proper image version
                         //if (configFile.Value.configType != BinaryStatusObject.DeviceConfigurationTypes.IdleConfiguration)
                         //{
                         //    continue;
                         //}
-                    }
+                    //}
 
                     // Read File Contents
                     fileStatus = ReadBinaryDataFromSelectedFile(0x00, (byte)fileStatus.binaryStatusObject.FileSize);
@@ -1708,6 +1706,8 @@ namespace Devices.Verifone.VIPA
             VIPACommand command = new VIPACommand { nad = 0x01, pcb = 0x00, cla = 0x00, ins = 0xB0, p1 = 0x00, p2 = readOffset };
             command.includeLE = true;
             command.le = bytesToRead;
+
+            Debug.WriteLine($"Send VIPA Command:[{VIPACommandType.ReadBinary}]");
             WriteSingleCmd(command);
 
             var deviceBinaryStatus = DeviceBinaryStatusInformation.Task.Result;

@@ -18,5 +18,8 @@ namespace Devices.Common
         public string SigningMethodActive { get; set; }
         public string ActiveCustomerId { get; set; }
         public bool EnableHMAC { get; set; } = false;
+        public string VipaPackageTag { get; set; }
+        public string CertPackageTag { get; set; }
+        public string IdleImagePackageTag { get; set; }
     }
 }
