@@ -1,16 +1,16 @@
-﻿using Xunit;
-using TestHelper;
-using Devices.Verifone.VIPA;
-using Common.XO.Private;
-using System.Threading.Tasks;
-using Devices.Verifone.Helpers;
-using System.IO;
-using System;
-using System.Text;
-using System.Buffers;
+﻿using Common.XO.Private;
 using Devices.Common;
 using Devices.Common.Config;
+using Devices.Verifone.Helpers;
+using Devices.Verifone.VIPA;
+using System;
+using System.Buffers;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using TestHelper;
+using Xunit;
 
 namespace Devices.Verifone.Tests
 {
@@ -50,7 +50,7 @@ namespace Devices.Verifone.Tests
             string fileName = Environment.CurrentDirectory;
             int position = fileName.IndexOf("bin");
             if (position > 0)
-            { 
+            {
                 fileName = Path.Combine(fileName.Substring(0, position), Path.Combine("Bundles", fileVersion));
             }
 
@@ -146,7 +146,7 @@ namespace Devices.Verifone.Tests
                     await Task.Delay(ResponseHandlerDelay);
                     Debug.WriteLine("EMV_VER: SelectFile - set");
                     subject.DeviceBinaryStatusInformation.TrySetResult((binaryStatusObject, (int)VipaSW1SW2Codes.Success));
-                    // ReadBinaryDataFromSelectedFile
+                    // ReadBinary
                     await Task.Delay(ResponseHandlerDelay);
                     Debug.WriteLine("EMV_VER: ReadBinary - set");
                     subject.DeviceBinaryStatusInformation.TrySetResult((binaryStatusObject, (int)VipaSW1SW2Codes.Success));
@@ -172,7 +172,7 @@ namespace Devices.Verifone.Tests
                     await Task.Delay(ResponseHandlerDelay);
                     Debug.WriteLine("IDLE_VER: SelectFile - set");
                     subject.DeviceBinaryStatusInformation.TrySetResult((binaryStatusObject, (int)VipaSW1SW2Codes.Success));
-                    // ReadBinaryDataFromSelectedFile
+                    // ReadBinary
                     await Task.Delay(ResponseHandlerDelay);
                     Debug.WriteLine("IDLE_VER: ReadBinary - set");
                     subject.DeviceBinaryStatusInformation.TrySetResult((binaryStatusObject, (int)VipaSW1SW2Codes.Success));
@@ -192,6 +192,36 @@ namespace Devices.Verifone.Tests
             else
             {
                 Assert.False(string.IsNullOrEmpty(vipaVersions.DALCdbData.IdleVersion.Version));
+            }
+        }
+
+        [Fact]
+        public void ProcessVersion_Maps_Correctly_WhenMutipleFilesPresent_InSourceDirectory()
+        {
+            string filepath = Environment.CurrentDirectory;
+            int position = filepath.IndexOf("bin");
+            if (position > 0)
+            {
+                filepath = Path.Combine(filepath.Substring(0, position), "Bundles");
+            }
+
+            DirectoryInfo d = new DirectoryInfo(filepath);
+            foreach (FileInfo file in d.GetFiles("*.txt"))
+            {
+                string fileContexts;
+                using (var fileStream = new StreamReader(file.FullName, Encoding.UTF8))
+                {
+                    fileContexts = fileStream.ReadToEnd();
+
+                    DALBundleVersioning bundle = new DALBundleVersioning();
+
+                    Helper.CallPrivateMethod<int>("ProcessVersionString", subject, out int result, new object[] { bundle, fileContexts });
+
+                    Assert.Equal((int)VipaSW1SW2Codes.Success, result);
+                    Assert.False(string.IsNullOrEmpty(bundle.Version));
+
+                    Debug.WriteLine($"VIPA: {file.Name.ToUpper().PadRight(12)} - version=[{bundle.Version}]");
+                }
             }
         }
     }

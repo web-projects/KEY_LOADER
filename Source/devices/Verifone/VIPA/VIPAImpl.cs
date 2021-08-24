@@ -1152,7 +1152,7 @@ namespace Devices.Verifone.VIPA
                         continue;
                     }
 
-                    // SelectFile: Setup for FILE OPERATIONS
+                    // SelectFile: setup for FILE OPERATIONS
                     fileStatus = SelectFileForOps(configFile.Value.fileName);
 
                     if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
@@ -1162,7 +1162,7 @@ namespace Devices.Verifone.VIPA
                         continue;
                     }
 
-                    // GetBinaryStatus
+                    // GetBinaryStatus: validate file SIZE and HASH
                     //(BinaryStatusObject binaryStatusObject, int VipaResponse) fileBinaryStatus = GetBinaryStatus(configFile.Value.fileName);
 
                     //if (fileBinaryStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
@@ -1202,7 +1202,7 @@ namespace Devices.Verifone.VIPA
                         //}
                     //}
 
-                    // Read File Contents
+                    // ReadBinary: read file contents
                     fileStatus = ReadBinaryDataFromSelectedFile(0x00, (byte)fileStatus.binaryStatusObject.FileSize);
 
                     if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
