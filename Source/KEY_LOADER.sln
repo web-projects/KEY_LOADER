@@ -109,7 +109,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Devices.Core", "devices\Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LoggerManager", "LoggerManager", "{350B18E6-D1FD-48A0-9CB6-2EE508D78C7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerManager", "common\LoggerManager\LoggerManager.csproj", "{EB4380C2-B584-417F-85A4-11FFE8E5FADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerManager", "common\LoggerManager\LoggerManager.csproj", "{EB4380C2-B584-417F-85A4-11FFE8E5FADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,7 +20,7 @@ using static Devices.Verifone.VIPA.VIPAImpl;
 using static IPA5.XO.ProtoBuf.LogMessage.Types;
 using EventCodeType = Common.XO.Responses.LinkEventResponse.EventCodeType;
 
-namespace Devices.Simulator.Tests
+namespace Devices.Verifone.Tests
 {
     public class VerifoneDeviceTests
     {
