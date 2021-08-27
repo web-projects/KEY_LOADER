@@ -3,6 +3,11 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
 -------------------------------------------------------------------------------
+VERSION.051.00 (08/27/2021)
+
+1. Idle images update to correct missing version schema attribute.
+
+-------------------------------------------------------------------------------
 VERSION.050.00 (08/05/2021)
 
 1. Removed active configuration setting and changed it to dynamic method.

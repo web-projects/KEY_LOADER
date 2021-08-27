@@ -60,6 +60,8 @@ namespace Devices.Verifone.VIPA
         // Optimal Packet Size for READ/WRITE operations on device
         const int PACKET_SIZE = 1024;
 
+        private const int DefaultDeviceResultTimeoutMS = 15000;
+
         private int ResponseTagsHandlerSubscribed = 0;
 
         public TaskCompletionSource<int> ResponseCodeResult = null;
@@ -219,7 +221,7 @@ namespace Devices.Verifone.VIPA
                 byte p2 = (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ScreenDisplayState | ResetDeviceCfg.BeepDuringReset);
                 SendVipaCommand(VIPACommandType.ResetDevice, 0x02, p2);
 
-                deviceResponse = DeviceIdentifier.Task.Result;
+                deviceResponse = GetDeviceResponse(DefaultDeviceResultTimeoutMS);
 
                 ResponseTagsHandler -= GetDeviceInfoResponseHandler;
                 ResponseTagsHandlerSubscribed--;
@@ -245,7 +247,7 @@ namespace Devices.Verifone.VIPA
                 SendVipaCommand(VIPACommandType.ResetDevice, 0x00,
                     (byte)(ResetDeviceCfg.ReturnSerialNumber | ResetDeviceCfg.ReturnPinpadConfiguration));
 
-                deviceResponse = DeviceIdentifier.Task.Result;
+                deviceResponse = GetDeviceResponse(DefaultDeviceResultTimeoutMS);
 
                 ResponseTagsHandler -= GetDeviceInfoResponseHandler;
                 ResponseTagsHandlerSubscribed--;
@@ -302,7 +304,7 @@ namespace Devices.Verifone.VIPA
 
                 SendVipaCommand(VIPACommandType.ExtendedSoftwareResetDevice, 0x00, 0x00, dataForResetData);
 
-                deviceResponse = DeviceIdentifier.Task.Result;
+                deviceResponse = GetDeviceResponse(DefaultDeviceResultTimeoutMS);
 
                 ResponseTagsHandler -= GetDeviceInfoResponseHandler;
                 ResponseTagsHandlerSubscribed--;
@@ -1465,6 +1467,29 @@ namespace Devices.Verifone.VIPA
             StopKeyboardReader();
 
             return commandResult;
+        }
+
+        private (DeviceInfoObject deviceInfoObject, int VipaResponse) GetDeviceResponse(int timeoutMS)
+        {
+            (DeviceInfoObject deviceInfoObject, int VipaResponse) deviceResponse = (null, (int)VipaSW1SW2Codes.Failure);
+
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            while (stopWatch.ElapsedMilliseconds < timeoutMS)
+            {
+                if (!DeviceIdentifier.Task.IsCompleted)
+                {
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    deviceResponse = DeviceIdentifier.Task.Result;
+                    break;
+                }
+            }
+
+            return deviceResponse;
         }
 
         private int StartKeyboardReader()

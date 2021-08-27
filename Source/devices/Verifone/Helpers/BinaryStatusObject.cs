@@ -472,12 +472,12 @@ namespace Devices.Verifone.Helpers
         };*/
 
         // ---------- M400 SPHERE SIGNED
-        public const string SPHERE_M400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.m400.1.210625.tgz";
-        public const string SPHERE_M400_IMAGE_TGZ_199_HASH = "7D93CA720C249D03AF8F06538CF396BA";
-        public const int SPHERE_M400_IMAGE_TGZ_199_SIZE = 0x000844A1;
-        public const string SPHERE_M400_IMAGE_TGZ_250 = "sphere.sphere.idle...250.m400.1.210625.tgz";
-        public const string SPHERE_M400_IMAGE_TGZ_250_HASH = "C5490C0A4A97A36D665319B36A6E7D20";
-        public const int SPHERE_M400_IMAGE_TGZ_250_SIZE = 0x0003852B;
+        public const string SPHERE_M400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.m400.1.210823.tgz";
+        public const string SPHERE_M400_IMAGE_TGZ_199_HASH = "3F0B195784A89CC929A80D3DDBC2943A";
+        public const int SPHERE_M400_IMAGE_TGZ_199_SIZE = 0x000844AB;
+        public const string SPHERE_M400_IMAGE_TGZ_250 = "sphere.sphere.idle...250.m400.1.210823.tgz";
+        public const string SPHERE_M400_IMAGE_TGZ_250_HASH = "5F5D15C138AF83D1156EE7B67B55B210";
+        public const int SPHERE_M400_IMAGE_TGZ_250_SIZE = 0x00038537;
         // ---------- VERIFONE-DEV SIGNED
         public const string VERIFONE_M400_IMAGE_TGZ_199 = "verifone.njt.idle...199.m400.1.210625.tgz";
         public const string VERIFONE_M400_IMAGE_TGZ_199_HASH = "A5D80BC56912EF237289312EE0FDD926";
@@ -487,12 +487,12 @@ namespace Devices.Verifone.Helpers
         public const int VERIFONE_M400_IMAGE_TGZ_250_SIZE = 0x0003856F;
 
         // ---------- P200 SPHERE SIGNED
-        public const string SPHERE_P200_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p200.1.210625.tgz";
-        public const string SPHERE_P200_IMAGE_TGZ_199_HASH = "804CA000EEF44E26FB6002984E68D07D";
-        public const int SPHERE_P200_IMAGE_TGZ_199_SIZE = 0x000347B8;
-        public const string SPHERE_P200_IMAGE_TGZ_250 = "sphere.sphere.idle...250.p200.1.210625.tgz";
-        public const string SPHERE_P200_IMAGE_TGZ_250_HASH = "D1D61F19B1D71520ED985D472EBFF53D";
-        public const int SPHERE_P200_IMAGE_TGZ_250_SIZE = 0x0000E296;
+        public const string SPHERE_P200_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p200.1.210823.tgz";
+        public const string SPHERE_P200_IMAGE_TGZ_199_HASH = "B9F074CD74D826ACB2A344D7A23B9396";
+        public const int SPHERE_P200_IMAGE_TGZ_199_SIZE = 0x000347D1;
+        public const string SPHERE_P200_IMAGE_TGZ_250 = "sphere.sphere.idle...250.p200.1.210823.tgz";
+        public const string SPHERE_P200_IMAGE_TGZ_250_HASH = "3EC3BB658B0447C40584DC8CACEE22ED";
+        public const int SPHERE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2A6;
         // ---------- VERIFONE-DEV SIGNED
         public const string VERIFONE_P200_IMAGE_TGZ_199 = "verifone.njt.idle...199.p200.1.210625.tgz";
         public const string VERIFONE_P200_IMAGE_TGZ_199_HASH = "EBF16DA99FA497F9898327B30543E42A";
@@ -502,12 +502,12 @@ namespace Devices.Verifone.Helpers
         public const int VERIFONE_P200_IMAGE_TGZ_250_SIZE = 0x0000E2DD;
 
         // ---------- P400 SPHERE SIGNED
-        public const string SPHERE_P400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p400.1.210625.tgz";
-        public const string SPHERE_P400_IMAGE_TGZ_199_HASH = "FFD1E29A15DA9FCD0C94FB3476E95777";
-        public const int SPHERE_P400_IMAGE_TGZ_199_SIZE = 0x00017C6D;
-        public const string SPHERE_P400_IMAGE_TGZ_250 = "sphere.sphere.idle...250.p400.1.210625.tgz";
-        public const string SPHERE_P400_IMAGE_TGZ_250_HASH = "D656519D3584C8D4AE0981687C40FFB9";
-        public const int SPHERE_P400_IMAGE_TGZ_250_SIZE = 0x0003CEC0;
+        public const string SPHERE_P400_IMAGE_TGZ_199 = "sphere.sphere.idle...199.p400.1.210823.tgz";
+        public const string SPHERE_P400_IMAGE_TGZ_199_HASH = "27933349493DF89A276FBD618453E7A6";
+        public const int SPHERE_P400_IMAGE_TGZ_199_SIZE = 0x00017C8B;
+        public const string SPHERE_P400_IMAGE_TGZ_250 = "sphere.sphere.idle...250.p400.1.210823.tgz";
+        public const string SPHERE_P400_IMAGE_TGZ_250_HASH = "68D5A9E1F655B3FB0DC900E1B18F8462";
+        public const int SPHERE_P400_IMAGE_TGZ_250_SIZE = 0x0003CEDB;
         // ---------- VERIFONE-DEV SIGNED
         public const string VERIFONE_P400_IMAGE_TGZ_199 = "verifone.njt.idle...199.p400.1.210625.tgz";
         public const string VERIFONE_P400_IMAGE_TGZ_199_HASH = "EA87F04B4E22275EEDC3342E82C093F4";
