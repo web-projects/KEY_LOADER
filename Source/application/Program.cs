@@ -1,12 +1,12 @@
-﻿using Common.LoggerManager;
-using Common.Config.Config;
+﻿using Common.Config.Config;
+using Common.LoggerManager;
+using Common.XO.Requests;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Common.XO.Requests;
 
 namespace DEVICE_CORE
 {
@@ -39,10 +39,6 @@ namespace DEVICE_CORE
 
         static async Task Main(string[] args)
         {
-            Console.WriteLine($"\r\n==========================================================================================");
-            Console.WriteLine($"{Assembly.GetEntryAssembly().GetName().Name} - Version {Assembly.GetEntryAssembly().GetName().Version}");
-            Console.WriteLine($"==========================================================================================\r\n");
-
             DirectoryInfo di = null;
 
             // create working directory
@@ -50,11 +46,6 @@ namespace DEVICE_CORE
             {
                 di = Directory.CreateDirectory(Constants.TargetDirectory);
             }
-
-            string pluginPath = Path.Combine(Environment.CurrentDirectory, "DevicePlugins");
-
-            IDeviceApplication application = activator.Start(pluginPath);
-            await application.Run().ConfigureAwait(false);
 
             // Get appsettings.json config - AddEnvironmentVariables() requires package: Microsoft.Extensions.Configuration.EnvironmentVariables
             IConfiguration configuration = new ConfigurationBuilder()
@@ -66,6 +57,19 @@ namespace DEVICE_CORE
 
             // logger manager
             SetLogging(configuration);
+
+            // Screen Colors
+            SetScreenColors(configuration);
+
+            Console.WriteLine($"\r\n==========================================================================================");
+            Console.WriteLine($"{Assembly.GetEntryAssembly().GetName().Name} - Version {Assembly.GetEntryAssembly().GetName().Version}");
+            Console.WriteLine($"==========================================================================================\r\n");
+
+            // Device discovery
+            string pluginPath = Path.Combine(Environment.CurrentDirectory, "DevicePlugins");
+
+            IDeviceApplication application = activator.Start(pluginPath);
+            await application.Run().ConfigureAwait(false);
 
             // GET STATUS
             //await application.Command(LinkDeviceActionType.GetStatus).ConfigureAwait(false);
@@ -315,8 +319,47 @@ namespace DEVICE_CORE
             }
             catch (Exception e)
             {
-                Logger.error("main: SetupLogging() - exception={0}", (object)e.Message);
+                Logger.error("main: SetupLogging() - exception={0}", e.Message);
             }
         }
+
+        static void SetScreenColors(IConfiguration configuration)
+        {
+            try
+            {
+                // Set Foreground color
+                Console.ForegroundColor = GetColor(configuration.GetSection("Application:Colors").GetValue<string>("ForeGround"));
+
+                // Set Background color
+                Console.BackgroundColor = GetColor(configuration.GetSection("Application:Colors").GetValue<string>("BackGround"));
+
+                Console.Clear();
+            }
+            catch (Exception ex)
+            {
+                Logger.error("main: SetScreenColors() - exception={0}", ex.Message);
+            }
+        }
+
+        static ConsoleColor GetColor(string color) => color switch
+        {
+            "BLACK" => ConsoleColor.Black,
+            "DARKBLUE" => ConsoleColor.DarkBlue,
+            "DARKGREEEN" => ConsoleColor.DarkGreen,
+            "DARKCYAN" => ConsoleColor.DarkCyan,
+            "DARKRED" => ConsoleColor.DarkRed,
+            "DARKMAGENTA" => ConsoleColor.DarkMagenta,
+            "DARKYELLOW" => ConsoleColor.DarkYellow,
+            "GRAY" => ConsoleColor.Gray,
+            "DARKGRAY" => ConsoleColor.DarkGray,
+            "BLUE" => ConsoleColor.Blue,
+            "GREEN" => ConsoleColor.Green,
+            "CYAN" => ConsoleColor.Cyan,
+            "RED" => ConsoleColor.Red,
+            "MAGENTA" => ConsoleColor.Magenta,
+            "YELLOW" => ConsoleColor.Yellow,
+            "WHITE" => ConsoleColor.White,
+            _ => throw new Exception($"Invalid color identifier '{color}'.")
+        };
     }
 }
