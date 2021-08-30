@@ -6,6 +6,7 @@ DEVICE CONFIGURATION TOOL REVISON HISTORY
 VERSION.051.00 (08/27/2021)
 
 1. Idle images update to correct missing version schema attribute.
+2. Added console fore/back ground configurable colorization.
 
 -------------------------------------------------------------------------------
 VERSION.050.00 (08/05/2021)

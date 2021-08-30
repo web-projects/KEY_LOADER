@@ -483,19 +483,19 @@ namespace Devices.Verifone
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK KEY_ID _: {config.securityConfigurationObject.SRedCardKSN?.Substring(4, 6) ?? "[ *** NOT FOUND *** ]"}");
                                 Console.WriteLine($"DEVICE: ADE-{config.securityConfigurationObject.KeySlotNumber ?? "??"} BDK TRSM ID : {config.securityConfigurationObject.SRedCardKSN?.Substring(10, 5) ?? "[ *** NOT FOUND *** ]"}");
                             }
-                            Console.WriteLine($"DEVICE: ADE SLOT NUMBER ___: 0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
+                            Console.WriteLine($"DEVICE: ADE PROD KEY SLOT _: 0x0{deviceSectionConfig.Verifone.ADEKeySetId}");
 
                             if (deviceSectionConfig.Verifone.ADEKeySetId == VerifoneSettingsSecurityConfiguration.ADEHostIdProd)
                             {
-                                Console.WriteLine($"DEVICE: ADE KEY SLOT STATE : {(prodADEKeyFound ? "VALID" : "*** INVALID ***")}");
+                                Console.WriteLine($"DEVICE: ADE PROD KEY SLOT  : {(prodADEKeyFound ? "VALID" : "*** INVALID ***")}");
                             }
                             else if (deviceSectionConfig.Verifone.ADEKeySetId == VerifoneSettingsSecurityConfiguration.ADEHostIdTest)
                             {
-                                Console.WriteLine($"DEVICE: ADE KEY SLOT STATE : {(testADEKeyFound ? "VALID" : "*** INVALID ***")}");
+                                Console.WriteLine($"DEVICE: ADE TEST KEY SLOT  : {(testADEKeyFound ? "VALID" : "*** INVALID ***")}");
                             }
                             else
                             {
-                                Console.WriteLine("DEVICE: ADE KEY SLOT STATE : INVALID SLOT");
+                                Console.WriteLine("DEVICE: ADE PROD KEY SLOT  : INVALID SLOT");
                             }
 
                             tracker.StartTracking();
