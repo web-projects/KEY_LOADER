@@ -278,7 +278,7 @@ namespace DEVICE_CORE
             return configuration.GetSection("Devices:Verifone").GetValue<bool>("AllowDebugCommands");
         }
 
-        static string[] GetLoggingLeveles(IConfiguration configuration, int index)
+        static string[] GetLoggingLevels(IConfiguration configuration, int index)
         {
             return configuration.GetSection("LoggerManager:Logging").GetValue<string>("Levels").Split("|");
         }
@@ -287,7 +287,7 @@ namespace DEVICE_CORE
         {
             try
             {
-                string[] logLevels = GetLoggingLeveles(configuration, 0);
+                string[] logLevels = GetLoggingLevels(configuration, 0);
 
                 if (logLevels.Length > 0)
                 {

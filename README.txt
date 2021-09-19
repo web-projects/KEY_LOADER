@@ -2,6 +2,17 @@
 DEVICE CONFIGURATION TOOL REVISON HISTORY
 ===============================================================================
 
+.NETFRAME WORK REQUIREMENTS CHECK
+
+from elevated command prompt:
+1. dir %windir%\Microsoft.NET\Framework /AD
+   v4.+
+or
+2. reg query "HKLM\SOFTWARE\Microsoft\Net Framework Setup\NDP\v4" /s
+   Version: 4.+
+
+download: https://dotnet.microsoft.com/download/dotnet-framework
+
 -------------------------------------------------------------------------------
 VERSION.051.00 (08/27/2021)
 

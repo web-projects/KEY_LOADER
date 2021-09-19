@@ -638,6 +638,7 @@ namespace Devices.Verifone.VIPA
                     Debug.WriteLine($"VIPA: RESOURCE '{configFile.Value.fileName}' STATUS=0x{string.Format("{0:X4}", fileStatus.VipaResponse)}");
                     if (fileStatus.VipaResponse != (int)VipaSW1SW2Codes.Success)
                     {
+                        Logger.error($"VIPA: RESOURCE '{configFile.Value.fileName}' ERROR=0x{string.Format("{0:X4}", fileStatus.VipaResponse)}");
                         break;
                     }
                     // 20201012 - ONLY CHECK FOR FILE PRESENCE
@@ -762,7 +763,6 @@ namespace Devices.Verifone.VIPA
                     string targetFile = Path.Combine(Constants.TargetDirectory, configFile.Value.fileName);
                     if (FindEmbeddedResourceByName(fileName, targetFile))
                     {
-
                         fileStatus = PutFile(configFile.Value.fileName, targetFile);
                         if (fileStatus.VipaResponse == (int)VipaSW1SW2Codes.Success && fileStatus.binaryStatusObject != null)
                         {
