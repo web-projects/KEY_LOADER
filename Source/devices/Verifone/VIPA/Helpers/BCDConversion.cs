@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Buffers;
 
-namespace Devices.Verifone.Helpers
+namespace Devices.Verifone.VIPA.Helpers
 {
     public static class BCDConversion
     {

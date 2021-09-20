@@ -1,4 +1,4 @@
-﻿namespace Devices.Verifone.TLV
+﻿namespace Devices.Verifone.VIPA.TagLengthValue
 {
     static public class HMACValidator
     {

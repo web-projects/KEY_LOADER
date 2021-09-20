@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Devices.Verifone.Helpers
+﻿namespace Devices.Verifone.VIPA.Helpers
 {
     public class KernelConfigurationObject
     {

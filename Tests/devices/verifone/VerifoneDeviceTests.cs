@@ -29,7 +29,7 @@ namespace Devices.Verifone.Tests
         readonly DeviceInformation deviceInformation;
         readonly SerialDeviceConfig serialConfig;
 
-        Mock<IVIPADevice> mockIVipa;
+        Mock<IVipa> mockIVipa;
 
         List<EventCodeType> EventsSeen;
         List<string> MonitorMessagesSeen = new List<string>();
@@ -37,7 +37,7 @@ namespace Devices.Verifone.Tests
 
         public VerifoneDeviceTests()
         {
-            mockIVipa = new Mock<IVIPADevice>();
+            mockIVipa = new Mock<IVipa>();
 
             serialConfig = new SerialDeviceConfig
             {
@@ -61,7 +61,7 @@ namespace Devices.Verifone.Tests
                 kernel.Settings.InjectNonPublic = true;
                 kernel.Settings.InjectParentPrivateProperties = true;
 
-                kernel.Bind<IVIPADevice>().ToConstant(mockIVipa.Object).WithConstructorArgument(deviceInformation);
+                kernel.Bind<IVipa>().ToConstant(mockIVipa.Object).WithConstructorArgument(deviceInformation);
                 kernel.Inject(subject);
             }
         }
@@ -120,7 +120,7 @@ namespace Devices.Verifone.Tests
 
             //linkRequest.Actions[0].PaymentRequest.CardWorkflowControls.VerifyAmountEnabled = true;
 
-            Helper.SetPropertyValueToInstance<IVIPADevice>("VipaConnection", false, false, subject, mockIVipa.Object);
+            Helper.SetPropertyValueToInstance<IVipa>("VipaConnection", false, false, subject, mockIVipa.Object);
             //mockIVipa.Setup(e => e.Connect(It.IsAny<SerialConnection>(), currentDeviceInformation)).Returns(true);
             //mockIVipa.Setup(e => e.ResetDevice()).Returns(linkDeviceResponseValue);
             //Assert.Null(subject.Probe(deviceConfig, currentDeviceInformation, out bool active));

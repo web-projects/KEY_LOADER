@@ -25,14 +25,14 @@ namespace Devices.Verifone.Helpers
             GenerateHMAC,
             [StringValue("VIPA: RESET")]
             DeviceReset,
+            [StringValue("VIPA: EXTENDED RESET")]
+            DeviceExtendedReset,
             [StringValue("VIPA: ABORT COMMAND")]
             AbortCommand,
             [StringValue("VIPA: RESTART")]
             VIPARestart, 
             [StringValue("VIPA: REBOOT DEVICE")]
             RebootDevice,
-            [StringValue("VIPA: DEVICE EXTENDED RESET")]
-            DeviceExtendedReset,
             [StringValue("VIPA: GET CARD STATUS")]
             GetCardStatus,
             [StringValue("VIPA: GET CARD INFO")]
@@ -49,6 +49,10 @@ namespace Devices.Verifone.Helpers
             DeviceCLessReaderClosed,
             [StringValue("VIPA: GET SECURITY CONFIGURATION")]
             GetSecurityConfiguration,
+            [StringValue("VIPA: GET SIGNATURE")]
+            GetSignature,
+            [StringValue("VIPA: SET KEYBOARD STATUS")]
+            KeyboardStatus,			
             [StringValue("VIPA: UPDATE IDLE SCREEN")]
             UpdateIdleScreen,
             [StringValue("VIPA: DISPLAY CUSTOM SCREEN")]

@@ -3,6 +3,7 @@ using Devices.Common;
 using Devices.Common.Config;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.VIPA;
+using Devices.Verifone.VIPA.Helpers;
 using System;
 using System.Buffers;
 using System.Diagnostics;

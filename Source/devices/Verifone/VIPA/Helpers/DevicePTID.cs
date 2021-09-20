@@ -1,4 +1,4 @@
-﻿namespace Devices.Verifone.Helpers
+﻿namespace Devices.Verifone.VIPA.Helpers
 {
     public class DevicePTID
     {

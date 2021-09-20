@@ -3,19 +3,19 @@ using Devices.Common;
 using Devices.Common.AppConfig;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
-using Devices.Verifone.TLV;
+using Devices.Verifone.VIPA.Helpers;
+using Devices.Verifone.VIPA.TagLengthValue;
+using System;
 using System.Collections.Generic;
 using static Devices.Verifone.VIPA.VIPAImpl;
 
 namespace Devices.Verifone.VIPA
 {
-    public interface IVIPADevice
+    public interface IVipa : IDisposable
     {
         bool Connect(SerialConnection connection, DeviceInformation deviceInformation);
 
-        void Dispose();
-
-        void ResponseCodeHandler(List<TLVImpl> tags, int responseCode, bool cancelled = false);
+        void ResponseCodeHandler(List<TLV> tags, int responseCode, bool cancelled = false);
 
         bool DisplayMessage(VIPADisplayMessageValue displayMessageValue = VIPADisplayMessageValue.Idle, bool enableBacklight = false, string customMessage = "");
 
@@ -47,7 +47,7 @@ namespace Devices.Verifone.VIPA
 
         (string HMAC, int VipaResponse) GenerateHMAC();
 
-        int UpdateHMACKeys();
+        int UpdateHMACKeys(byte keyId, string MAC);
 
         void LoadDeviceSectionConfig(DeviceSection deviceSectionConfig);
 

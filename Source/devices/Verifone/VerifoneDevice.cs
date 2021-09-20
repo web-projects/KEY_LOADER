@@ -11,6 +11,7 @@ using Devices.Common.Interfaces;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.VIPA;
+using Devices.Verifone.VIPA.Helpers;
 using Helpers;
 using Ninject;
 using System;
@@ -32,6 +33,7 @@ namespace Devices.Verifone
 
         public event PublishEvent PublishEvent;
         public event DeviceEventHandler DeviceEventOccured;
+        public event DeviceLogHandler DeviceLogHandler;
 
         private SerialConnection SerialConnection { get; set; }
 
@@ -41,9 +43,9 @@ namespace Devices.Verifone
         DeviceSection deviceSectionConfig;
 
         [Inject]
-        internal IVIPADevice VipaConnection { get; set; } = new VIPAImpl();
+        internal IVipa VipaConnection { get; set; } = new VIPAImpl();
 
-        public IVIPADevice VipaDevice { get; private set; }
+        public IVipa VipaDevice { get; private set; }
 
         public DeviceInformation DeviceInformation { get; private set; }
 
@@ -95,7 +97,7 @@ namespace Devices.Verifone
             return IsConnected;
         }
 
-        private IVIPADevice LocateDevice(LinkDeviceIdentifier deviceIdentifer)
+        private IVipa LocateDevice(LinkDeviceIdentifier deviceIdentifer)
         {
             // If we have single device connected to the work station
             if (deviceIdentifer == null)
@@ -138,7 +140,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -190,7 +192,7 @@ namespace Devices.Verifone
             DeviceInformation.Manufacturer = ManufacturerConfigID;
             DeviceInformation.ComPort = deviceInfo.ComPort;
 
-            SerialConnection = new SerialConnection(DeviceInformation);
+            SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
             active = IsConnected = VipaConnection.Connect(SerialConnection, DeviceInformation);
 
             if (active)
@@ -292,7 +294,7 @@ namespace Devices.Verifone
         {
             LinkActionRequest linkActionRequest = request.Actions.First();
             //IVIPADevice device = LocateDevice(linkActionRequest?.DALRequest?.DeviceIdentifier);
-            IVIPADevice device = VipaDevice;
+            IVipa device = VipaDevice;
 
             if (device != null)
             {
@@ -336,7 +338,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -372,7 +374,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -431,7 +433,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -684,7 +686,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, null);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -769,7 +771,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -805,7 +807,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -860,7 +862,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -915,7 +917,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -958,7 +960,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -997,7 +999,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1034,7 +1036,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1066,7 +1068,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1076,7 +1078,7 @@ namespace Devices.Verifone
 
                     if (deviceIdentifier.VipaResponse == (int)VipaSW1SW2Codes.Success)
                     {
-                        int vipaResponse = VipaDevice.UpdateHMACKeys();
+                        int vipaResponse = VipaDevice.UpdateHMACKeys(0, "");
                         if (vipaResponse == (int)VipaSW1SW2Codes.Success)
                         {
                             Console.WriteLine($"DEVICE: HMAC KEYS UPDATED SUCCESSFULLY\n");
@@ -1103,7 +1105,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1136,7 +1138,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1208,7 +1210,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1235,7 +1237,7 @@ namespace Devices.Verifone
                         {
                             Console.WriteLine(string.Format("DEVICE: UNSUPPORTED DEVICE ERROR=0x{0:X4}\n", verifyAmountResponse.VipaResponse));
                         }
-                        else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.ResourceNotAvailable)
+                        else if (verifyAmountResponse.VipaResponse == (int)VipaSW1SW2Codes.FileNotFoundOrNotAccessible)
                         {
                             displayMessage = $"VERIFY AMOUNT|Total.....${AmountToDollar(requestedAmount)}|YES|NO";
                             verifyAmountResponse = VipaDevice.DisplayCustomScreen(displayMessage);
@@ -1291,7 +1293,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1359,7 +1361,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
@@ -1406,7 +1408,7 @@ namespace Devices.Verifone
                 if (!IsConnected)
                 {
                     VipaDevice.Dispose();
-                    SerialConnection = new SerialConnection(DeviceInformation);
+                    SerialConnection = new SerialConnection(DeviceInformation, DeviceLogHandler);
                     IsConnected = VipaDevice.Connect(SerialConnection, DeviceInformation);
                 }
 
