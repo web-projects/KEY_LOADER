@@ -77,3 +77,4 @@ This an application to load HMAC KEYS.
 * 20210526 - Added VIPA restart command
 * 20210702 - LoggerManager added
 * 20210716 - Target Build 0.49
+* 20210920 - Target Build 0.52

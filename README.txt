@@ -16,6 +16,11 @@ download: https://dotnet.microsoft.com/download/dotnet-framework
 -------------------------------------------------------------------------------
 VERSION.051.00 (08/27/2021)
 
+1. VIPA 6.8.2.21 EMV Configuration bundles support.
+
+-------------------------------------------------------------------------------
+VERSION.051.00 (08/27/2021)
+
 1. Idle images update to correct missing version schema attribute.
 2. Added console fore/back ground configurable colorization.
 
