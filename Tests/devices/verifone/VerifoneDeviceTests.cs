@@ -7,6 +7,7 @@ using Devices.Verifone;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Tests.Helpers;
 using Devices.Verifone.VIPA;
+using Devices.Verifone.VIPA.Interfaces;
 using Moq;
 using Ninject;
 using System;

@@ -8,6 +8,14 @@ This an application to load HMAC KEYS.
 * 1.00.0.(100)
 * git remote add origin https://github.com/web-projects/KEY_LOADER.git
 
+### To check the latest commits ###
+* 1. Copy the shal of the particular commit.
+* 2. Use the command: git fetch origin <shal>
+* 3. se the command: git checkout FETCH_HEAD
+
+### Build self-contained executable ###
+* dotnet publish -r win10-x64 -c "Release" --self-contained true
+
 ### How do I get set up? ###
 
 * Summary of set up
