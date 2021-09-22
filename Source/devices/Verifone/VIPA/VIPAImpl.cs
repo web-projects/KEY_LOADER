@@ -1423,7 +1423,7 @@ namespace Devices.Verifone.VIPA
                             commandResult.vipaData = 1;
                         }
                         else if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_2.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_STOP.ToString()) ||
-                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.GetStringValue()))
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.ToString()))
                         {
                             commandResult.vipaData = 0;
                         }
@@ -1502,12 +1502,12 @@ namespace Devices.Verifone.VIPA
                         // <O> == 1 : YES
                         // <X> == 2 : NO
                         if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_1.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_OK.ToString()) ||
-                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_GREEN.GetStringValue()))
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_GREEN.ToString()))
                         {
                             commandResult.vipaData = 1;
                         }
                         else if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_2.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_STOP.ToString()) ||
-                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.GetStringValue()))
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.ToString()))
                         {
                             commandResult.vipaData = 0;
                         }

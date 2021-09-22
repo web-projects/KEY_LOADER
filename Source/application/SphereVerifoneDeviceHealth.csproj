@@ -8,6 +8,9 @@
     <FileVersion>1.0.52.0</FileVersion>
     <PackageReleaseNotes>IPA5 Build 5.0.42 Compatible</PackageReleaseNotes>
     <Version>1.0.52.0</Version>
+    <RuntimeIdentifier Condition=" '$(OS)' == 'Windows_NT' ">win10-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition=" '$(OS)' == 'Unix' ">linux-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
