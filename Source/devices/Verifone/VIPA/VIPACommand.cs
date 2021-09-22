@@ -24,6 +24,8 @@ namespace Devices.Verifone.VIPA
         public byte[] data { get; set; }
         public bool includeLE { get; set; }
         public byte le { get; set; }
+
+        public string ChainedResponseAnswerData { get; private set; } = "mapp/signature.html";
     }
 
     public enum VIPACommandType

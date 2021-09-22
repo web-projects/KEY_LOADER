@@ -1,11 +1,11 @@
-﻿using Common.LoggerManager;
-using Devices.Common;
+﻿using Devices.Common;
 using Devices.Verifone.Connection.Interfaces;
 using Devices.Verifone.VIPA;
 using System;
 using System.Buffers;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,7 +39,7 @@ namespace Devices.Verifone.Connection
         public bool IsChainedMessageResponse { get; set; }
 
         // TODO: Dependency should be injected.
-        internal DeviceConfig Config { get; } = new DeviceConfig().SetSerialDeviceConfig(new Common.SerialDeviceConfig());
+        internal DeviceConfig Config { get; } = new DeviceConfig().SetSerialDeviceConfig(new SerialDeviceConfig());
 
         public SerialConnection(DeviceInformation deviceInformation, DeviceLogHandler deviceLogHandler)
         {
@@ -157,6 +157,10 @@ namespace Devices.Verifone.Connection
             }
         }
 
+        private bool IsChainedResponseCommand(VIPACommand command) =>
+            (VIPACommandType)(command.cla << 8 | command.ins) == VIPACommandType.DisplayHTML && command.data != null &&
+            Encoding.UTF8.GetString(command.data).IndexOf(command.ChainedResponseAnswerData, StringComparison.OrdinalIgnoreCase) >= 0;
+
         public void WriteSingleCmd(VIPAResponseHandlers responsehandlers, VIPACommand command)
         {
             if (command == null)
@@ -221,7 +225,7 @@ namespace Devices.Verifone.Connection
             cmdBytes[cmdIndex++] = lrc;
 
             // chained message response
-            IsChainedMessageResponse = ((VIPACommandType)(command.cla << 8 | command.ins) == VIPACommandType.DisplayHTML) ? true : false;
+            IsChainedMessageResponse = IsChainedResponseCommand(command);
 
             Debug.WriteLineIf(LogSerialBytes, $"VIPA-WRITE[{serialPort?.PortName}]: {BitConverter.ToString(cmdBytes)}");
             WriteBytes(cmdBytes, cmdLength);
@@ -235,7 +239,7 @@ namespace Devices.Verifone.Connection
             WriteBytes(buffer, length);
         }
 
-        //[DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         private async Task ReadExistingResponseBytes()
         {
             while (!shouldStopReading)

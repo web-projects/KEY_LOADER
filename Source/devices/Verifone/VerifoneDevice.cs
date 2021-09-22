@@ -12,6 +12,7 @@ using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.VIPA;
 using Devices.Verifone.VIPA.Helpers;
+using Devices.Verifone.VIPA.Interfaces;
 using Helpers;
 using Ninject;
 using System;

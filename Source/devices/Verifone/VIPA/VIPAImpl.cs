@@ -11,6 +11,7 @@ using Devices.Common.Helpers.Templates;
 using Devices.Verifone.Connection;
 using Devices.Verifone.Helpers;
 using Devices.Verifone.VIPA.Helpers;
+using Devices.Verifone.VIPA.Interfaces;
 using Devices.Verifone.VIPA.TagLengthValue;
 using System;
 using System.Buffers;
@@ -1416,11 +1417,13 @@ namespace Devices.Verifone.VIPA
                         Console.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
                         // <O> == 1 : YES
                         // <X> == 2 : NO
-                        if (cardInfo.DALResponseData.Value.Equals("KEY_1") || cardInfo.DALResponseData.Value.Equals("KEY_GREEN"))
+                        if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_1.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_OK.ToString()) ||
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_GREEN.ToString()))
                         {
                             commandResult.vipaData = 1;
                         }
-                        else if (cardInfo.DALResponseData.Value.Equals("KEY_2") || cardInfo.DALResponseData.Value.Equals("KEY_RED"))
+                        else if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_2.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_STOP.ToString()) ||
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.GetStringValue()))
                         {
                             commandResult.vipaData = 0;
                         }
@@ -1498,11 +1501,13 @@ namespace Devices.Verifone.VIPA
                         Console.WriteLine($"KEY PRESSED: {cardInfo.DALResponseData.Value}");
                         // <O> == 1 : YES
                         // <X> == 2 : NO
-                        if (cardInfo.DALResponseData.Value.Equals("KEY_1") || cardInfo.DALResponseData.Value.Equals("KEY_GREEN"))
+                        if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_1.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_OK.ToString()) ||
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_GREEN.GetStringValue()))
                         {
                             commandResult.vipaData = 1;
                         }
-                        else if (cardInfo.DALResponseData.Value.Equals("KEY_2") || cardInfo.DALResponseData.Value.Equals("KEY_RED"))
+                        else if (cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_2.ToString()) || cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_STOP.ToString()) ||
+                            cardInfo.DALResponseData.Value.Equals(DeviceKeys.KEY_RED.GetStringValue()))
                         {
                             commandResult.vipaData = 0;
                         }
@@ -2472,7 +2477,7 @@ namespace Devices.Verifone.VIPA
                         {
                             cardResponse.DALResponseData = new LinkDALActionResponse
                             {
-                                //Status = UserInteraction.UserKeyPressed.GetStringValue(),
+                                Status = UserInteraction.UserKeyPressed.GetStringValue(),
                                 Value = BCDConversion.StringFromByteData(dataTag.Data)
                             };
                             returnResponse = true;

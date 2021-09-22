@@ -6,10 +6,14 @@ namespace Devices.Verifone.VIPA.Helpers
     {
         [StringValue("KEY_NONE")]
         KEY_NONE = 0xFF,
-        [StringValue("KEY_GREEN")]
+        [StringValue("KEY_OK")]
         KEY_OK = 0x0D,
-        [StringValue("KEY_RED")]
+        [StringValue("KEY_GREEN")]
+        KEY_GREEN = 0xFD,
+        [StringValue("KEY_STOP")]
         KEY_STOP = 0x1B,
+        [StringValue("KEY_RED")]
+        KEY_RED = 0xFB,
         [StringValue("KEY_CORR")]
         KEY_CORR = 0x08,
         [StringValue("KEY_UP")]

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using static Devices.Verifone.VIPA.VIPAImpl;
 
-namespace Devices.Verifone.VIPA
+namespace Devices.Verifone.VIPA.Interfaces
 {
     public interface IVipa : IDisposable
     {
