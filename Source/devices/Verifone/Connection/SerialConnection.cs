@@ -159,7 +159,7 @@ namespace Devices.Verifone.Connection
 
         private bool IsChainedResponseCommand(VIPACommand command) =>
             (VIPACommandType)(command.cla << 8 | command.ins) == VIPACommandType.DisplayHTML && command.data != null &&
-            Encoding.UTF8.GetString(command.data).IndexOf(command.ChainedResponseAnswerData, StringComparison.OrdinalIgnoreCase) >= 0;
+            Encoding.UTF8.GetString(command.data).IndexOf(VIPACommand.ChainedResponseAnswerData, StringComparison.OrdinalIgnoreCase) >= 0;
 
         public void WriteSingleCmd(VIPAResponseHandlers responsehandlers, VIPACommand command)
         {
